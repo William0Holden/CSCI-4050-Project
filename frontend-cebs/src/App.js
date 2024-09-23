@@ -71,6 +71,7 @@ function App() {
           <Route exact path='/ManagePromos' element={<ManagePromos/>} />
           <Route exact path='/ManageMovies' element={<ManageMovies/>} />
 
+          <Route exact path='login/' element={<Login/>}/>
         </Routes>
     </Router>
   )
