@@ -4,10 +4,11 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 /*
 // Logged-Out Components
 import Register from './components/logged-out/Register';
-import RegisterConfirm from './components/logged-out/RegisterConfirm';
+import RegisterConfirm from './components/logged-out/RegisterConfirm';*/
+import Login from './components/logged-out/Login';
 
+/*
 // Logged-In Components
-import Login from './components/logged-in/Login';
 import EditProfile from './components/logged-in/EditProfile';
 import ShowtimeSelection from './components/logged-in/ShowtimeSelection';
 import SeatAgeSelection from './components/logged-in/SeatAgeSelection';
@@ -61,6 +62,7 @@ function App() {
         <Routes>
           {/* All User Routes */}
           <Route exact path='/' element={<MovieSelection movieData={movieData}/>} />
+          <Route exact path='login/' element={<Login/>}/>
         </Routes>
     </Router>
   )
