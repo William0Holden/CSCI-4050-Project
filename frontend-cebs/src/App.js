@@ -8,7 +8,6 @@ import RegistrationConfirmation from './components/logged-out/RegistrationConfir
 
 /*
 // Logged-In Components
-import Login from './components/logged-in/Login';
 import EditProfile from './components/logged-in/EditProfile';
 import ShowtimeSelection from './components/logged-in/ShowtimeSelection';
 import SeatAgeSelection from './components/logged-in/SeatAgeSelection';
@@ -72,6 +71,7 @@ function App() {
           <Route exact path='/ManagePromos' element={<ManagePromos/>} />
           <Route exact path='/ManageMovies' element={<ManageMovies/>} />
 
+          <Route exact path='login/' element={<Login/>}/>
         </Routes>
     </Router>
   )
