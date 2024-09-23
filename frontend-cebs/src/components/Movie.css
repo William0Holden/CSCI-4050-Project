@@ -1,0 +1,21 @@
+.movie {
+    display: inline-block;
+    width: 30%;
+    margin: 1.5%;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.movie img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.movie-title {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #555;
+}
+.movie:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
