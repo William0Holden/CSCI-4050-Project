@@ -6,8 +6,11 @@
     transition: transform 0.3s, box-shadow 0.3s;
 }
 .movie img {
-    width: 100%;
-    height: auto;
+    width: 100%; 
+    height: auto; 
+    object-fit: contain; 
+    height: auto; 
+    object-fit: cover; 
     border-radius: 8px;
 }
 .movie-title {
@@ -18,4 +21,12 @@
 .movie:hover {
     transform: scale(1.05);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.main-backdrop {
+    position: relative;
+    width: 30%;
+    margin: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
