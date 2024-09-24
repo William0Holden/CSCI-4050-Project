@@ -1,30 +1,33 @@
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
-/*
+
 // Logged-Out Components
 import Register from './components/logged-out/Register';
-import RegisterConfirm from './components/logged-out/RegisterConfirm';
+import RegistrationConfirmation from './components/logged-out/RegistrationConfirmation';
 
+/*
 // Logged-In Components
 import Login from './components/logged-in/Login';
 import EditProfile from './components/logged-in/EditProfile';
 import ShowtimeSelection from './components/logged-in/ShowtimeSelection';
 import SeatAgeSelection from './components/logged-in/SeatAgeSelection';
 import OrderSummary from './components/logged-in/OrderSummary';
+*/
 import CheckoutForm from './components/logged-in/CheckoutForm';
 import OrderConfirm from './components/logged-in/OrderConfirm';
 
+
 // Admin Components
-import Admin from './components/admin/AdminHome';
+import AdminHome from './components/admin/AdminHome';
 import ManagePromos from './components/admin/ManagePromos';
+
 import ManageMovies from './components/admin/ManageMovies';
-import ManageUsers from './components/admin/ManageUsers';
-*/
+//import ManageUsers from './components/admin/ManageUsers';
+
 
 // All User Components
 import MovieSelection from './components/MovieSelection';
-
 
 function App() {
 
@@ -61,6 +64,14 @@ function App() {
         <Routes>
           {/* All User Routes */}
           <Route exact path='/' element={<MovieSelection movieData={movieData}/>} />
+          <Route exact path='/Register' element={<Register/>} />
+          <Route exact path='/RegistrationConfirmation' element={<RegistrationConfirmation/>} />
+          <Route exact path='/AdminHome' element={<AdminHome/>} />
+          <Route exact path='/CheckoutForm' element={<CheckoutForm/>} />
+          <Route exact path='/OrderConfirm' element={<OrderConfirm/>} />
+          <Route exact path='/ManagePromos' element={<ManagePromos/>} />
+          <Route exact path='/ManageMovies' element={<ManageMovies/>} />
+
         </Routes>
     </Router>
   )
