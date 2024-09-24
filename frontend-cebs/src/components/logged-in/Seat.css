@@ -1,0 +1,16 @@
+.seat {
+    background-color: #444;
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+}
+.seat.selected {
+    background-color: #6c7ae0;
+}
+.seat.occupied {
+    background-color: #fff;
+    cursor: not-allowed;
+}
