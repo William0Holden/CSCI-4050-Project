@@ -18,7 +18,7 @@ class Movie(models.Model):
     picture_url = models.URLField(max_length=200)
     trailer_url = models.URLField(max_length=200)
     mpaa_us_rating = models.CharField(max_length=5)
-    show_dates_times = models.JSONField()
+    show_dates_times = models.TextField()
     
     def __str__(self):
         return self.title
