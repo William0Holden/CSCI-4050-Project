@@ -30,7 +30,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 # register the router
-router.register(r'tasks',views.MovieView, 'task')
+router.register(r'movies',views.MovieView, 'movie')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
