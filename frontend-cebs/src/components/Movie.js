@@ -1,7 +1,9 @@
 import React from 'react';
 import './Movie.css';
+import TrailerModal from './TrailerModal';
 
 const Movie = (props) => {
+
     return (
         <li key={props.id} className="movie">
             <div className="main-backdrop">
@@ -14,8 +16,9 @@ const Movie = (props) => {
                     </div>
                 </div>
             </div>
+                <TrailerModal trailer_url={props.trailer_url} />
         </li>
-    )
+    );
 }
 
 export default Movie;
