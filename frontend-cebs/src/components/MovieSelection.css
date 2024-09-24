@@ -1,31 +1,48 @@
 h1 {
-    text-align: center;
-    color: #444;
+  text-align: center;
+  background-color: #c58383;
+  color: #444;
 }
-
+input {
+  background-color: #b61717;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .movie-selection {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .movies {
-    margin: 2rem auto;
-    width: 90%;
-    max-width: 40rem;
-  }
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 40rem;
+}
   
-  .movies ul {
-    background-color:#CCD5AE;;
-    list-style: none;
-    padding: 1rem;
-  }
+.movies ul {
+  background-color: #CCD5AE;
+  list-style: none;
+  padding: 1rem;
+}
   
-  .movies li {
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-  }
+.movies li {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+nav { 
+  background-color: #c58383;
+  color: #444;
+  padding: 10px;
+  text-align: left; /* Align text to the left */
+}
