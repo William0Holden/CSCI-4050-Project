@@ -1,17 +1,19 @@
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
+// All User Components
+import MovieSelection from './components/MovieSelection';
 
 // Logged-Out Components
 import Register from './components/logged-out/Register';
 import RegistrationConfirmation from './components/logged-out/RegistrationConfirmation';
+import Login from './components/logged-out/Login';
 
 // Logged-In Components
 import EditProfile from './components/logged-in/EditProfile';
 import ShowtimeSelection from './components/logged-in/ShowtimeSelection';
 import SeatAgeSelection from './components/logged-in/SeatAgeSelection';
-import OrderSummary from './components/logged-in/OrderSummary';
-*/
+//import OrderSummary from './components/logged-in/OrderSummary';
 import CheckoutForm from './components/logged-in/CheckoutForm';
 import OrderConfirm from './components/logged-in/OrderConfirm';
 
@@ -20,13 +22,8 @@ import OrderConfirm from './components/logged-in/OrderConfirm';
 import AdminHome from './components/admin/AdminHome';
 import ManagePromos from './components/admin/ManagePromos';
 
-*/
 import ManageMovies from './components/admin/ManageMovies';
 //import ManageUsers from './components/admin/ManageUsers';
-
-
-// All User Components
-import MovieSelection from './components/MovieSelection';
 
 function App() {
 
@@ -76,19 +73,23 @@ function App() {
         <Routes>
           {/* All User Routes */}
           <Route exact path='/' element={<MovieSelection movieData={movieData}/>} />
-          <Route exact path='/Register' element={<Register/>} />
-          <Route exact path='/RegistrationConfirmation' element={<RegistrationConfirmation/>} />
-          <Route exact path='/AdminHome' element={<AdminHome/>} />
-          <Route exact path='/CheckoutForm' element={<CheckoutForm/>} />
-          <Route exact path='/OrderConfirm' element={<OrderConfirm/>} />
-          <Route exact path='/ManagePromos' element={<ManagePromos/>} />
-          <Route exact path='/ManageMovies' element={<ManageMovies/>} />
 
+          {/* Logged-Out User Routes */}
+          <Route exact path='/register' element={<Register/>} />
+          <Route exact path='/reg-confirm' element={<RegistrationConfirmation/>} />
           <Route exact path='/login' element={<Login/>}/>
+
+          {/* Logged-In User Routes */}       
           <Route exact path='/edit-profile' element={<EditProfile/>}/>
           <Route exact path='/select-showtime' element={<ShowtimeSelection/>}/>
-          <Route exact path='/select-seat' element={<SeatAgeSelection seatData={seatData}/>}/>
+          <Route exact path='/select-seat' element={<SeatAgeSelection seatData={seatData}/>}/>   
+          <Route exact path='/checkout' element={<CheckoutForm/>} />
+          <Route exact path='/order-confirm' element={<OrderConfirm/>} />
+
+          {/* Admin User Routes */}    
+          <Route exact path='/admin-home' element={<AdminHome/>} />
           <Route exact path='/manage-movies' element={<ManageMovies/>}/>
+          <Route exact path='/manage-promos' element={<ManagePromos/>} />
         </Routes>
     </Router>
   )
