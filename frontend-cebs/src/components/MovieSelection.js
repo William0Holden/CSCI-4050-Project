@@ -1,6 +1,8 @@
 import Movie from './Movie';
 import React, { useState } from 'react';
 import TrailerModal from './TrailerModal';
+import NavBar from './NavBar';
+import './MovieSelection.css'; // Make sure to create and style this CSS file
 
 
 
@@ -14,50 +16,41 @@ const MovieSelection = (props) => {
         setSearchTerm(event.target.value);
     };
 
-    const Navbar = () => {
-        return (
-            <nav className="navbar">
-                <ul>
-                    <li><a href="/login">Log-In</a></li>
-                    <li><a href="/register">Register</a></li>
-                    <li><a href="/checkout">Checkout</a></li>
-                    <li><a href="/admin">Admin</a></li>
-                </ul>
-            </nav>
-        );
-    };
-
     const filteredMovies = props.movieData.filter((movie) =>
         movie.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
-        <div>
-            <Navbar />
-            <div className="movie-selection">
-                <h1>Select a Movie</h1>
-                
+        <body>
+            <header>
+                <h1>Cinema EBooking!</h1>
+            </header>
+            <nav>
+            <NavBar />
+            </nav>
+                <h1>Select a Movie</h1> 
                 <input
                     type="text"
                     placeholder="Search for a movie..."
                     value={searchTerm}
                     onChange={handleSearchChange}
                 />
-
-                <ul>
-                    {filteredMovies && filteredMovies.map((movie) => (
-                        <Movie
-                            key={movie.id}
-                            title={movie.title}
-                            rating={movie.mpaa_us_rating}
-                            img={movie.picture_url}
-                            showtimes={movie.show_dates_times}
-                            trailer_url={movie.trailer_url}
-                        />
-                    ))}
-                </ul>
+            <div className="limited-height-div"> 
+                    <div className="five-column-div">
+                        {filteredMovies.map((movie) => (
+                            <Movie
+                                key={movie.id}
+                                title={movie.title}
+                                rating={movie.mpaa_us_rating}
+                                img={movie.picture_url}
+                                showtimes={movie.show_dates_times}
+                                trailer_url={movie.trailer_url}
+                                category={movie.category}
+                            />
+                        ))}
+                    </div>
             </div>
-        </div>
+        </body>
     );
 };
 

@@ -5,19 +5,21 @@ import TrailerModal from './TrailerModal';
 const Movie = (props) => {
 
     return (
-        <li key={props.id} className="movie">
-            <div className="main-backdrop">
-                <img src={props.img} alt={props.title} className="movie-image" />
-                <h2>{props.title}</h2>
-                <div className="footer-backdrop">
-                    <div className="columns">
-                        <h2>{props.rating}</h2>
-                        <p>{props.genre}</p>
+        <div className="container">
+            <div className="row">
+                <div className="col-md-4 movie-card">
+                    <div className="card">
+                        <img src={props.img} className="card-img-top" alt="Movie Poster" />
+                        <div className="card-body">
+                            <h5 className="card-title">{props.title}</h5>
+                            <p className="card-text">Rating: {props.rating}</p>
+                            <p className="card-text">Category: {props.category}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
                 <TrailerModal trailer_url={props.trailer_url} />
-        </li>
+            </div>
+        </div>
     );
 }
 

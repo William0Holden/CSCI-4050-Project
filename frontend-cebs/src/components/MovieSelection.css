@@ -1,48 +1,50 @@
+.limited-height-div {
+  max-height: 80vh;
+  overflow-y: auto;
+}
 h1 {
+  width: 100%;
   text-align: center;
-  background-color: #c58383;
+  background-color: #83c583;
   color: #444;
 }
 input {
-  background-color: #b61717;
+  background-color: #b3b3b3;
   padding: 10px;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-.movie-selection {
-  width: 80%;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  position : relative;
 }
 
-.movies {
-  margin: 2rem auto;
-  width: 90%;
-  max-width: 40rem;
+.five-column-div {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
 }
   
-.movies ul {
-  background-color: #CCD5AE;
-  list-style: none;
-  padding: 1rem;
-}
-  
-.movies li {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  padding: 10px;
-  position: absolute;
-  top: 0;
-  left: 0;
+nav {
+  display: flex;
+  flex-direction: row;
+  width: 100%;     /* Full width of the page */
+  position: relative;  /* Ensure it stays in normal flow */
+  top: 0;          /* Position it at the top */
+  left: 0;         /* Align it to the left */
+  background-color: #83c583;  /* Optional background for visibility */
+  padding: 20px;   /* Optional padding */
+  box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
-nav { 
-  background-color: #c58383;
+body {
+  background-color: #f2f2f2;
   color: #444;
-  padding: 10px;
-  text-align: left; /* Align text to the left */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column; /* Arrange elements from top to bottom */
+  align-items: flex-start; /* Align items to the start (left) of the container */
 }
+
+div {
+  width : 100%;
+}
+
+

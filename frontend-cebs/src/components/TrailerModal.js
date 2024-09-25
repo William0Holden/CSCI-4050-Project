@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import './TrailerModal.css'; // Make sure to create and style this CSS file
 
 const TrailerModal = ({ trailer_url }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
