@@ -1,13 +1,11 @@
 import Movie from './Movie';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link
 import TrailerModal from './TrailerModal';
 import NavBar from './NavBar';
 import './MovieSelection.css'; // Make sure to create and style this CSS file
 
-
-
-//look at backend/backend/movie/models.py for the fields
-
+// Look at backend/backend/movie/models.py for the fields
 
 const MovieSelection = (props) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -21,25 +19,25 @@ const MovieSelection = (props) => {
     );
 
     return (
-        <body>
+        <div>
             <header>
                 <h1>Cinema EBooking!</h1>
             </header>
             <nav>
-            <NavBar />
+                <NavBar />
             </nav>
-                <h1>Select a Movie</h1> 
-                <input
-                    type="text"
-                    placeholder="Search for a movie..."
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                />
+            <h1>Select a Movie</h1> 
+            <input
+                type="text"
+                placeholder="Search for a movie..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+            />
             <div className="limited-height-div"> 
-                    <div className="five-column-div">
-                        {filteredMovies.map((movie) => (
+                <div className="five-column-div">
+                    {filteredMovies.map((movie) => (
+                        <Link to="/showtime-selection" key={movie.id}> {/* Wrap Movie in Link */}
                             <Movie
-                                key={movie.id}
                                 title={movie.title}
                                 rating={movie.mpaa_us_rating}
                                 img={movie.picture_url}
@@ -47,10 +45,11 @@ const MovieSelection = (props) => {
                                 trailer_url={movie.trailer_url}
                                 category={movie.category}
                             />
-                        ))}
-                    </div>
+                        </Link>
+                    ))}
+                </div>
             </div>
-        </body>
+        </div>
     );
 };
 

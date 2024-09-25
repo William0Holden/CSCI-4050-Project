@@ -22,9 +22,6 @@ form {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-div {
-    margin-bottom: 1em;
-}
 label {
     display: block;
     margin-bottom: 0.5em;

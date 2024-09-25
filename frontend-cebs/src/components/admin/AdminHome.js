@@ -4,13 +4,13 @@ import './AdminHome.css';
 
 const AdminHome = (props) => {
   const manageMovies = () => {
-    window.location.href = '/ManageMovies';
+    window.location.href = '/admin/manage-movies';
   };
   const manageUsers = () => {
-    window.location.href = '/ManageUsers';
+    window.location.href = '/admin/manage-users';
   };
   const managePromotions = () => {
-    window.location.href = '/ManagePromos';
+    window.location.href = '/admin/manage-promos';
   };
 
   return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './RegistrationConfirmation.css';
 
@@ -8,7 +9,7 @@ const RegistrationConfirmation = (props) => {
             <div class="confirmation-container">
                 <h1>Registration Successful!</h1>
                 <p>Thank you for registering. Your account has been successfully created.</p>
-                <a href="loginPage.html">Go to Login</a>
+                <a href="/login">Go to Login</a>
             </div>
         </body>
     );

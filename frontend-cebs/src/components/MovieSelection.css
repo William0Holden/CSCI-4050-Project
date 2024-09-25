@@ -7,7 +7,17 @@ h1 {
   text-align: center;
   background-color: #83c583;
   color: #444;
+  height: 100px;
 }
+
+header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #83c583;
+}
+
 input {
   background-color: #b3b3b3;
   padding: 10px;
@@ -28,7 +38,7 @@ nav {
   top: 0;          /* Position it at the top */
   left: 0;         /* Align it to the left */
   background-color: #83c583;  /* Optional background for visibility */
-  padding: 20px;   /* Optional padding */
+  padding: 5px;   /* Optional padding */
   box-sizing: border-box; /* Ensure padding is included in the width */
 }
 

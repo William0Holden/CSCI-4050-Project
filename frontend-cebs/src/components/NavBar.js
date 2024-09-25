@@ -18,6 +18,9 @@ const NavBar = () => {
                 <li className="navbar-item">
                     <Link to="/admin" className="navbar-link">Admin</Link>
                 </li>
+                <li className="navbar-item">
+                    <Link to="/edit-profile" className="navbar-link">Edit Profile</Link>
+                </li>
             </ul>
         </nav>
     );

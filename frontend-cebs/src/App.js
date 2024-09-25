@@ -1,18 +1,15 @@
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
-/*
-// Logged-Out Components
+//Logged-Out Components
 import Register from './components/logged-out/Register';
-import RegisterConfirm from './components/logged-out/RegisterConfirm';*/
+import RegisterConfirm from './components/logged-out/RegistrationConfirmation';
 import Login from './components/logged-out/Login';
 
-/*
-// Logged-In Components
+//Logged-In Components
 import EditProfile from './components/logged-in/EditProfile';
 import ShowtimeSelection from './components/logged-in/ShowtimeSelection';
 import SeatAgeSelection from './components/logged-in/SeatAgeSelection';
-import OrderSummary from './components/logged-in/OrderSummary';
 import CheckoutForm from './components/logged-in/CheckoutForm';
 import OrderConfirm from './components/logged-in/OrderConfirm';
 
@@ -20,8 +17,6 @@ import OrderConfirm from './components/logged-in/OrderConfirm';
 import Admin from './components/admin/AdminHome';
 import ManagePromos from './components/admin/ManagePromos';
 import ManageMovies from './components/admin/ManageMovies';
-import ManageUsers from './components/admin/ManageUsers';
-*/
 
 // All User Components
 import MovieSelection from './components/MovieSelection';
@@ -68,14 +63,26 @@ class App extends Component {
   };
 
   render() {
-
     return (
       <Router>
-          <Routes>
-            {/* All User Routes */}
-            <Route exact path='/' element={<MovieSelection movieData={this.state.movieList}/>} />
-            <Route exact path='login/' element={<Login/>}/>
-          </Routes>
+        <Routes>
+        {/* All User Routes */}
+        <Route exact path='/' element={<MovieSelection movieData={this.state.movieList}/>} />
+        <Route exact path='/login' element={<Login/>}/>
+        {/* Logged-Out Routes */}
+        <Route exact path='/register' element={<Register/>} />
+        <Route exact path='/register/confirm' element={<RegisterConfirm/>} />
+        {/* Logged-In Routes */}
+        <Route exact path='/edit-profile' element={<EditProfile/>} />
+        <Route exact path='/showtime-selection' element={<ShowtimeSelection/>} />
+        <Route exact path='/seat-age-selection' element={<SeatAgeSelection/>} />
+        <Route exact path='/checkout' element={<CheckoutForm/>} />
+        <Route exact path='/order-confirm' element={<OrderConfirm/>} />
+        {/* Admin Routes */}
+        <Route exact path='/admin' element={<Admin/>} />
+        <Route exact path='/admin/manage-promos' element={<ManagePromos/>} />
+        <Route exact path='/admin/manage-movies' element={<ManageMovies/>} />
+        </Routes>
       </Router>
     )
   }

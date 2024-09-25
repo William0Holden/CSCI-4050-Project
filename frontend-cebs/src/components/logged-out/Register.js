@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './Register.css';
 
@@ -57,7 +58,9 @@ const Register = (props) => {
                 <input type="text" id="cvv" name="cvv"/>
             </div>
 
+            <Link to="/register/confirm">
             <button type="submit">Register</button>
+            </Link>
         </form>
     </div>
     );

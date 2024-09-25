@@ -1,25 +1,39 @@
-import Card from '../Card';
-import Seat from './Seat';
+import React, { useState } from 'react';
 import './SeatAgeSelection.css';
 
-const SeatAgeSelection = (props) => {
+const SeatAgeSelection = () => {
+    const [selectedSeats, setSelectedSeats] = useState([]);
+
+    const handleSeatClick = (index) => {
+        if (!selectedSeats.includes(index)) {
+            setSelectedSeats([...selectedSeats, index]);
+        } else {
+            setSelectedSeats(selectedSeats.filter(seat => seat !== index));
+        }
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        
+        window.location.href = '/order-confirm';
+    };
+
     return (
-        <div class="container">
+        <div className="container">
             <h1>Select Your Seat</h1>
-
-            <div class="screen">Screen</div>
-
-            <Card className ="seats">
-                {props.seatData && props.seatData.map((seat) => (
-                    <Seat
-                        key={seat.id}
-                    />
+            <div className="screen">Screen</div>
+            <div className="seats">
+                {[...Array(100)].map((_, index) => (
+                    <div
+                        key={index}
+                        className={`seat ${selectedSeats.includes(index) ? 'selected' : ''}`}
+                        onClick={() => handleSeatClick(index)}
+                    ></div>
                 ))}
-            </Card>
-
-            <form id="ageForm">
-                <label for="age">Enter your age:</label>
-                <input type="number" id="age" name="age" min="1" max="120" required/>
+            </div>
+            <form id="ageForm" onSubmit={handleSubmit}>
+                <label htmlFor="age">Enter your age:</label>
+                <input type="number" id="age" name="age" min="1" max="120" required />
                 <button type="submit">Submit</button>
             </form>
         </div>

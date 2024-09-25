@@ -1,0 +1,16 @@
+.card {
+    background-color: #f8f9fa; /* Light background color */
+    border-radius: 8px;        /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px;             /* Padding inside the card */
+    margin: 20px 0;            /* Margin for spacing between other elements */
+    width: 100%;               /* Full width */
+    box-sizing: border-box;     /* Ensures padding is included in the width */
+  }
+  
+  .card.seats {
+    display: flex;
+    flex-wrap: wrap;          /* Seats will wrap onto the next line if they overflow */
+    justify-content: space-around;
+  }
+  
