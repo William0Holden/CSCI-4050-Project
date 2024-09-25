@@ -1,6 +1,5 @@
 import Movie from './Movie';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link
 import TrailerModal from './TrailerModal';
 import NavBar from './NavBar';
 import './MovieSelection.css'; // Make sure to create and style this CSS file
@@ -36,7 +35,7 @@ const MovieSelection = (props) => {
             <div className="limited-height-div"> 
                 <div className="five-column-div">
                     {filteredMovies.map((movie) => (
-                        <Link to="/showtime-selection" key={movie.id}> {/* Wrap Movie in Link */}
+
                             <Movie
                                 title={movie.title}
                                 rating={movie.mpaa_us_rating}
@@ -45,7 +44,6 @@ const MovieSelection = (props) => {
                                 trailer_url={movie.trailer_url}
                                 category={movie.category}
                             />
-                        </Link>
                     ))}
                 </div>
             </div>
