@@ -43,7 +43,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 	phone_num = models.CharField(max_length=10)
 	first_name = models.CharField(max_length=50)
 	last_name = models.CharField(max_length=50)
-	card_number = models.CharField(blank=True, max_length=19)
+	card_number = models.CharField(blank=True, max_length=19) # need to figure out how to make it required
 	card_exp_date = models.CharField(blank=True, max_length=5)
 	card_cvv = models.CharField(blank=True, max_length=4)
 	home_street = models.CharField(blank=True, max_length=100)
