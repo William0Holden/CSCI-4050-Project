@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.permissions import AllowAny
 
 # Create your views here.
 
@@ -12,6 +13,8 @@ from .models import Movie
 
 # create a class for the Movie model viewsets
 class MovieView(viewsets.ModelViewSet):
+    # define the permission classes
+    permission_classes = [AllowAny]
 
     # create a serializer class and 
     # assign it to the MovieSerializer class

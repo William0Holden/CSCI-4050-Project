@@ -1,19 +1,38 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import axios from 'axios';
 
 const Login = (props) => {
-  return (
-    <div class="login-container">
-        <h2>Login</h2>
-        <form action="/login" method="post">
-            <input type="text" name="email" placeholder="Email" required/>
-            <input type="password" name="password" placeholder="Password" required/>
-            <button type="submit">Login</button>
-        </form>
-    </div>
-    );
+    const navigate = useNavigate(); // Initialize the navigate function
 
+    const handleLogin = async (event) => {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+
+        try {
+            const response = await axios.post('http://localhost:8000/api/login', { email, password });
+            console.log('Login successful:', response.data);
+            // Handle successful login (e.g., store token, etc.)
+            // Redirect to home page
+            navigate('/'); // Redirect to home page (http://localhost:3000)
+        } catch (error) {
+            console.error('Login failed:', error);
+            // Handle login failure (e.g., show error message)
+        }
+    };
+
+    return (
+        <div className="login-container">
+            <h2>Login</h2>
+            <form onSubmit={handleLogin}>
+                <input type="text" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    );
 };
 
 export default Login;
