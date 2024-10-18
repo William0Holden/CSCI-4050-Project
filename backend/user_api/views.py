@@ -6,18 +6,34 @@ from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerial
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
 from rest_framework import generics
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import EmailMessage
 
+def email_verification(request, user):
+	mail_subject = 'Account Verification'
+	message = "Congratulations! You have successfully registered.\n\n"
+	to_email = user.email
+	email = EmailMessage(
+		mail_subject, message, from_email='cinemaebooker@gmail.com', to=[to_email]
+	)
+	email.send()
 
 class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
+
     def post(self, request):
         clean_data = custom_validation(request.data)
         serializer = UserRegisterSerializer(data=clean_data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.create(clean_data)
             if user:
+                email_verification(request, user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class UserEdit(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)

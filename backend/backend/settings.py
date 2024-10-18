@@ -121,13 +121,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = 'cinemaebooker@gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'cinemaebooker@gmail.com'
-EMAIL_HOST_PASSWORD = 'byqtmheodrvrzqrd' #byqt mheo drvr zqrd
+EMAIL_HOST_PASSWORD = 'byqt mheo drvr zqrd' #byqt mheo drvr zqrd
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'cinemaebooker@gmail.com'
 
 # White listing the localhost:3000 port
 # for React
