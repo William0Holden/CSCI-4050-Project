@@ -77,8 +77,8 @@ const Register = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Register</h2>
+    <div className="register-container">
+      <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">Username <span>*</span></label>
         <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required />

@@ -21,14 +21,14 @@ const TrailerModal = ({ trailer_url }) => {
 
     return (
         <div>
-            <button onClick={openModal}>Watch Trailer</button>
+            <button className="modal-button" onClick={openModal}>Watch Trailer</button>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
                 contentLabel="Trailer Modal"
                 ariaHideApp={false}
             >
-                <button onClick={closeModal}>Close</button>
+                <button className="modal-button" onClick={closeModal}>Close</button>
                 <div className="video-responsive">
                     <iframe
                         width="560"

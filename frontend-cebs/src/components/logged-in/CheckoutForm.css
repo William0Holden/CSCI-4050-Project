@@ -1,17 +1,11 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-.container {
+.checkout-container {
     width: 50%;
     margin: 50px auto;
     background: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.movie-image {
+.checkout-image {
     width: 100%;
     height: auto;
 }
@@ -27,7 +21,7 @@ body {
     padding: 8px;
     box-sizing: border-box;
 }
-.btn {
+.checkout-button {
     display: inline-block;
     padding: 10px 20px;
     color: #fff;
@@ -36,6 +30,6 @@ body {
     cursor: pointer;
     text-align: center;
 }
-.btn:hover {
+.checkout-button:hover {
     background-color: #28a745;
 }

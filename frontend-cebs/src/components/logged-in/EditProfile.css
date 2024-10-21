@@ -1,40 +1,21 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+.edit-profile-container {
+    max-width: 600px;
+    width: 80%;
+    margin: 50px auto;
 }
-header {
-    background-color: #28a745;
-    color: white;
-    padding: 1em 0;
-    text-align: center;
-}
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
-}
-form {
+.edit-profile-form {
     background: white;
     padding: 2em;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-label {
-    display: block;
-    margin-bottom: 0.5em;
-}
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+.input-field {
     width: 100%;
     padding: 0.5em;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-button {
+.green-button {
     background-color: #4CAF50;
     color: white;
     padding: 0.7em 1.5em;
@@ -42,10 +23,16 @@ button {
     border-radius: 4px;
     cursor: pointer;
 }
-button:hover {
+.green-button:hover {
     background-color: #45a049;
 }
 .forms {
     display:none;
     margin-top: 1em;
+}
+.row {
+    display: flex;
+}
+.column {
+    flex: 50%;
 }

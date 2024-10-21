@@ -1,7 +1,5 @@
 import Movie from './Movie';
 import React, { useState } from 'react';
-import TrailerModal from './TrailerModal';
-import NavBar from './NavBar';
 import './MovieSelection.css'; // Make sure to create and style this CSS file
 
 // Look at backend/backend/movie/models.py for the fields
@@ -18,15 +16,10 @@ const MovieSelection = (props) => {
     );
 
     return (
-        <div>
-            <header>
-                <h1>Cinema EBooking!</h1>
-            </header>
-            <nav>
-                <NavBar />
-            </nav>
+        <div className="movie-selection">
             <h1>Select a Movie</h1> 
             <input
+                className='search-bar'
                 type="text"
                 placeholder="Search for a movie..."
                 value={searchTerm}
@@ -35,7 +28,6 @@ const MovieSelection = (props) => {
             <div className="limited-height-div"> 
                 <div className="five-column-div">
                     {filteredMovies.map((movie) => (
-
                             <Movie
                                 title={movie.title}
                                 rating={movie.mpaa_us_rating}

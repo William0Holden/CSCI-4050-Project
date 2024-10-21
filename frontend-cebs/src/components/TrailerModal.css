@@ -1,4 +1,4 @@
-button {
+.modal-button {
     background-color: #4CAF50; /* Replace with your desired color */
     color: white;
     border: none;
@@ -12,6 +12,6 @@ button {
     border-radius: 4px;
 }
 
-button:hover {
+.modal-button:hover {
     background-color: #45a049; /* Slightly darker shade for hover effect */
 }

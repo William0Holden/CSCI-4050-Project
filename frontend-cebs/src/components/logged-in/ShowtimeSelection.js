@@ -4,14 +4,14 @@ import './ShowtimeSelection.css';
 
 const ShowtimeSelection = () => {
   return (
-    <div className="container">
+    <div className="showtime-container">
+      <h1>Select a Time</h1>
+      
       <img 
         src="https://m.media-amazon.com/images/M/MV5BZTk5ODY0MmQtMzA3Ni00NGY1LThiYzItZThiNjFiNDM4MTM3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" 
         alt="Movie Poster" 
-        className="movie-image" 
+        className="showtime-image" 
       />
-
-      <h1>Select a Time</h1>
       
       <div className="time-selection">
         {/* Use Link to wrap the buttons */}

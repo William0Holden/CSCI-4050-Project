@@ -1,16 +1,26 @@
 /* NavBar.css */
-.navbar {
+nav {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    width: 100%;     /* Full width of the page */
+    position: relative;  /* Ensure it stays in normal flow */
+    top: 0;          /* Position it at the top */
+    left: 0;         /* Align it to the left */
+    background-color: #83c583;  /* Optional background for visibility */
+    padding: 5px;   /* Optional padding */
+    box-sizing: border-box; /* Ensure padding is included in the width */
 }
-.navbar {
-    display: flex;
-    justify-content: space-between;
-}
+
 .navbar {
     background-color: #333;
-    overflow: hidden;
+}
+
+.navbar-list {
+    list-style: none;
+}
+
+.navbar-item {
+    display: inline;
 }
 
 .navbar a {

@@ -19,7 +19,7 @@ const SeatAgeSelection = () => {
     };
 
     return (
-        <div className="container">
+        <div className="seat-age-container">
             <h1>Select Your Seat</h1>
             <div className="screen">Screen</div>
             <div className="seats">

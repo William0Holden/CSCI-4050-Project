@@ -1,29 +1,22 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-.container {
+.admin-container {
     max-width: 600px;
-    margin: auto;
+    width: 80%;
+    margin: 50px auto;
 }
-form {
+.admin-form {
     margin-bottom: 20px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-input[type="text"], input[type="number"] {
+.admin-input {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-input[type="submit"] {
+.admin-submit {
     padding: 10px 20px;
     background-color: #28a745;
     color: white;
@@ -31,6 +24,6 @@ input[type="submit"] {
     border-radius: 5px;
     cursor: pointer;
 }
-input[type="submit"]:hover {
+.admin-submit:hover {
     background-color: #218838;
 }

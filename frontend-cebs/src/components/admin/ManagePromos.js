@@ -4,14 +4,10 @@ import './ManagePromos.css';
 
 const ManagePromos = (props) => {
   return (
-    <body>
-        <header>
-            <div class="container">
-                <div id="branding">
+    <div className="manage-promos-container">
+
                     <h1>Theatre Admin</h1>
-                </div>
-            </div>
-        </header>
+
         <div class="container">
             <div class="main-content">
                 <h2>Manage Promotions</h2>
@@ -38,7 +34,7 @@ const ManagePromos = (props) => {
                 </form>
             </div>
         </div>
-    </body>
+</div>
   )
 };
 export default ManagePromos;

@@ -4,12 +4,12 @@ import './CheckoutForm.css';
 
 const CheckoutForm = (props) => {
   return (
-    <div className="container">
+    <div className="checkout-container">
       <h1>Checkout</h1>
       <img 
         src="https://m.media-amazon.com/images/M/MV5BZTk5ODY0MmQtMzA3Ni00NGY1LThiYzItZThiNjFiNDM4MTM3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" 
         alt="Movie Poster" 
-        className="movie-image"
+        className="checkout-image"
       />
       <form>
         <div className="form-group">

@@ -1,47 +1,41 @@
-.container {
-    margin-top: 20px;
+.movie-container {
+    width: 80%;
+    margin: 50px auto;
 }
-
-.card {
-    width: 200px; /* Adjust the width to make the card smaller */
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.2s;
-}
-
 .movie-card {
-    margin-bottom: 20px;
-}
-
-.card {
+    max-width: 300px; /* Adjust the width to make the card smaller */
     border: 1px solid #ddd;
     border-radius: 10px;
     overflow: hidden;
     transition: transform 0.2s;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    min-height: 600px;
 }
 
-.card:hover {
+.movie-card:hover {
     transform: scale(1.05);
 }
 
-.card-img-top {
+.movie-card-img {
     width: 100%;
-    height: auto;
+    height: 300px;
     border-bottom: 1px solid #ddd;
 }
 
-.card-body {
+.movie-card-body {
     padding: 15px;
     text-align: center;
 }
 
-.card-title {
+.movie-card-title {
     font-size: 1.25rem;
     margin-bottom: 10px;
 }
 
-.card-text {
+.movie-card-text {
     font-size: 1rem;
     color: #555;
 }
