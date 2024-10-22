@@ -11,6 +11,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
+from .models import AppUser
 
 def email_verification(request, user):
 	mail_subject = 'Account Verification'
@@ -35,13 +36,25 @@ class UserRegister(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserEdit(generics.RetrieveUpdateAPIView):
+class UserEdit(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    def patch(self, request, args, **kwargs):
-        clean_data = custom_validation(request.data)
-        serializer = UserEditSerializer(data=clean_data)
-        if serializer.is_valid(raise_exception=True):
-            return self.partial_update(request,args, **kwargs)
+    authentication_classes = (SessionAuthentication,)
+
+    def put(self, request, pk=None):  # Add pk here
+        if pk is not None:
+            try:
+                user = AppUser.objects.get(pk=pk)  # Retrieve the user by pk
+            except AppUser.DoesNotExist:
+                return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            clean_data = custom_validation(request.data)
+            serializer = UserEditSerializer(user, data=clean_data)  # Pass user instead of request.user
+            if serializer.is_valid(raise_exception=True):
+                serializer.update(user, clean_data)  # Update the correct user
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response({'error': 'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class UserLogin(APIView):
