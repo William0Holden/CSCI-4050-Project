@@ -23,7 +23,9 @@ class UserEditSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
 		fields = '__all__'
+	
 	def update(self, instance, validated_data):
+		validated_data.pop('email', None)  # Remove email if present in validated_data
 		for attr, value in validated_data.items():
 			if attr == 'password':
 				instance.set_password(value)
