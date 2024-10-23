@@ -25,7 +25,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-.login-container button {
+.login-container button[type="submit"] {
     width: 524px;
     padding: 10px;
     margin: 10px 0;
@@ -35,6 +35,21 @@
     border-radius: 4px;
     cursor: pointer;
 }
-.login-container button:hover {
+.login-container button[type="submit"]:hover {
     background-color: #45a049;
+}
+
+.login-container button[type="cancel"] {
+    width: 524px;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #993535;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-container button[type="cancel"]:hover {
+    background-color: #7c2929;
 }

@@ -12,7 +12,9 @@ const EditProfile = (props) => {
                 <div class="column">
                     <div>
                         <label for="email">Email:</label>
-                        <input className="input-field" type="email" id="email" name="email" required/>
+                    </div>
+                    <div>
+                        <label for="cinemaebooker@gmail.com"> cinemaebooker@gmail.com</label>
                     </div>
                     <div>
                         <label for="first-name">First Name:</label>
@@ -29,6 +31,10 @@ const EditProfile = (props) => {
                     <div>
                         <label for="confirm-password">Confirm Password:</label>
                         <input className="input-field" type="password" id="confirm-password" name="confirm-password" required/>
+                    </div>
+                    <div>
+                        <input type="checkbox"/>   
+                        <label> Register for Promo</label>
                     </div>
                 </div>
                 <div class="column">
@@ -53,28 +59,27 @@ const EditProfile = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div>
-                    <button className="green-button">Add Payment Information</button>
-                    <div id="payment-form" class="forms">
-                        <div>
-                            <label for="card-number">Card Number:</label>
-                            <input className="input-field" type="text" id="card-number" name="card-number"/>
-                        </div>
-                        <div>
-                            <label for="expiry-date">Expiry Date:</label>
-                            <input className="input-field" type="text" id="expiry-date" name="expiry-date"/>
-                        </div>
-                        <div>
-                            <label for="cvv">CVV:</label>
-                            <input className="input-field" type="text" id="cvv" name="cvv"/>
+                <div class="column">
+                    <div>
+                        <div id="payment-form">
+                            <div>
+                                <label for="card-number">Card Number:</label>
+                                <input className="input-field" type="text" id="card-number" name="card-number"/>
+                            </div>
+                            <div>
+                                <label for="expiry-date">Expiry Date:</label>
+                                <input className="input-field" type="text" id="expiry-date" name="expiry-date"/>
+                            </div>
+                            <div>
+                                <label for="cvv">CVV:</label>
+                                <input className="input-field" type="text" id="cvv" name="cvv"/>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button className="green-button">Save Changes</button>
-                </div>
+            </div>
+            <div>
+                <button className="green-button">Save Changes</button>
             </div>
         </form>
     </div>
