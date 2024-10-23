@@ -25,7 +25,10 @@ class UserEditSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 	def update(self, instance, validated_data):
 		for attr, value in validated_data.items():
-			setattr(instance, attr, value)
+			if attr == 'password':
+				instance.set_password(value)
+			else:
+				setattr(instance, attr, value)
 		instance.save()
 		return instance
 
@@ -42,4 +45,4 @@ class UserLoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
-		fields = ('email', 'username')
+		fields = ('email', 'username', 'user_id')

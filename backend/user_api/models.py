@@ -21,7 +21,7 @@ class AppUserManager(BaseUserManager):
         
         email = self.normalize_email(email)
         user = self.model(email=email, phone_num=phone_num, first_name=first_name, last_name=last_name, **extra_fields)
-        user.set_password(password)
+        user.set_password(password) # automatically hashes the password
         user.save()
         return user
 
@@ -37,8 +37,9 @@ class AppUserManager(BaseUserManager):
         return self.create_user(email, password=password, **extra_fields)
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
+    user_id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=50, unique=True)
-    username = models.CharField(max_length=50, primary_key= True)
+    username = models.CharField(max_length=50)
     phone_num = models.CharField(max_length=10)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
