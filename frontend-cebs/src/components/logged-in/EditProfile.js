@@ -30,6 +30,10 @@ const EditProfile = (props) => {
                         <label for="confirm-password">Confirm Password:</label>
                         <input className="input-field" type="password" id="confirm-password" name="confirm-password" required/>
                     </div>
+                    <div>
+                        <input type="checkbox"/>   
+                        <label> Register for Promo</label>
+                    </div>
                 </div>
                 <div class="column">
                     <div>
@@ -75,6 +79,7 @@ const EditProfile = (props) => {
                 <div>
                     <button className="green-button">Save Changes</button>
                 </div>
+                
             </div>
         </form>
     </div>
