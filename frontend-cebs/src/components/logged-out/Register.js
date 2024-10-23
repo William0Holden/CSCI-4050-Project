@@ -101,8 +101,25 @@ const Register = () => {
         <label htmlFor="phone">Phone Number</label>
         <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleInputChange} />
 
-        <label htmlFor="add-address">Add Home Address</label>
-        <input type="checkbox" id="add-address" name="addAddress" checked={formData.addAddress} onChange={handleInputChange} />
+        <div className="row">
+          <div className="column">
+            <label> Register for Promo</label>
+          </div>
+          <div className="column">
+            <input type="checkbox"/>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="column">
+            <label htmlFor="add-address">Add Home Address</label>
+          </div>
+          <div className="column">
+            <input type="checkbox" id="add-address" name="addAddress" checked={formData.addAddress} onChange={handleInputChange} />
+          </div>
+        </div>
+        
+        
 
         {formData.addAddress && (
           <div id="address-form">
@@ -120,8 +137,14 @@ const Register = () => {
           </div>
         )}
 
-        <label htmlFor="add-payment">Add Payment Information</label>
-        <input type="checkbox" id="add-payment" name="addPayment" checked={formData.addPayment} onChange={handleInputChange} />
+        <div className="row">
+          <div className="column">
+            <label htmlFor="add-payment">Add Payment Information</label>
+          </div>
+          <div className="column">
+            <input type="checkbox" id="add-payment" name="addPayment" checked={formData.addPayment} onChange={handleInputChange} />
+          </div>
+        </div>
 
         {formData.addPayment && (
           <div id="payment-form">
@@ -135,9 +158,11 @@ const Register = () => {
             <input type="text" id="cvv" name="cvv" value={formData.cvv} onChange={handleInputChange} />
           </div>
         )}
+        
 
         <button type="submit">Register</button>
       </form>
+      
     </div>
   );
 };

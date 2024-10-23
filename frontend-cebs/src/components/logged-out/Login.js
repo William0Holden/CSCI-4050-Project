@@ -30,6 +30,7 @@ const Login = (props) => {
                 <input type="text" name="email" placeholder="Email" required />
                 <input type="password" name="password" placeholder="Password" required />
                 <button type="submit">Login</button>
+                <button type="cancel">Forgot Password</button>
             </form>
         </div>
     );
