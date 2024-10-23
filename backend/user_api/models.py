@@ -21,7 +21,7 @@ class AppUserManager(BaseUserManager):
         
         email = self.normalize_email(email)
         user = self.model(email=email, phone_num=phone_num, first_name=first_name, last_name=last_name, **extra_fields)
-        user.set_password(password)
+        user.set_password(password) # automatically hashes the password
         user.save()
         return user
 
@@ -37,14 +37,15 @@ class AppUserManager(BaseUserManager):
         return self.create_user(email, password=password, **extra_fields)
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
+    user_id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=50, unique=True)
-    username = models.CharField(max_length=50, primary_key= True)
+    username = models.CharField(max_length=50)
     phone_num = models.CharField(max_length=10)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    card_number1 = models.CharField(blank=True, max_length=19)
-    card_exp_date1 = models.CharField(blank=True, max_length=5)
-    card_cvv1 = models.CharField(blank=True, max_length=4)
+    card_number = models.CharField(blank=True, max_length=19)
+    card_exp_date = models.CharField(blank=True, max_length=5)
+    card_cvv = models.CharField(blank=True, max_length=4)
     card_number2 = models.CharField(blank=True, max_length=19)
     card_exp_date2 = models.CharField(blank=True, max_length=5)
     card_cvv2 = models.CharField(blank=True, max_length=4)
@@ -73,7 +74,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
 
     # the below like concatinates your websites reset password url and the reset email token which will be required at a later stage
-    email_plaintext_message = "Open the link to reset your password" + " " + "{}{}".format(instance.request.build_absolute_uri("http://localhost:3000/login#/reset-password-form/"), reset_password_token.key)
+    email_plaintext_message = "Open the link to reset your password" + " " + "{}{}".format(instance.request.build_absolute_uri("http://localhost:3000/reset-password-form/"), reset_password_token.key)
     
     """
         takes up some parameter (title(email title), message(email body), from(email sender), to(recipient(s))

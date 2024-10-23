@@ -23,9 +23,14 @@ class UserEditSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
 		fields = '__all__'
+	
 	def update(self, instance, validated_data):
+		validated_data.pop('email', None)  # Remove email if present in validated_data
 		for attr, value in validated_data.items():
-			setattr(instance, attr, value)
+			if attr == 'password':
+				instance.set_password(value)
+			else:
+				setattr(instance, attr, value)
 		instance.save()
 		return instance
 
@@ -42,4 +47,9 @@ class UserLoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
-		fields = ('email', 'username')
+		fields = (
+			'user_id', 'email', 'username', 'phone_num', 'first_name', 'last_name',
+			'card_number', 'card_exp_date', 'card_cvv', 'card_number2', 'card_exp_date2',
+			'card_cvv2', 'card_number3', 'card_exp_date3', 'card_cvv3', 'home_street',
+			'home_city', 'home_state', 'zipcode', 'promotions'
+		)
