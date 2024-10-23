@@ -47,4 +47,9 @@ class UserLoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
-		fields = ('email', 'username', 'user_id')
+		fields = (
+			'user_id', 'email', 'username', 'phone_num', 'first_name', 'last_name',
+			'card_number', 'card_exp_date', 'card_cvv', 'card_number2', 'card_exp_date2',
+			'card_cvv2', 'card_number3', 'card_exp_date3', 'card_cvv3', 'home_street',
+			'home_city', 'home_state', 'zipcode', 'promotions'
+		)
