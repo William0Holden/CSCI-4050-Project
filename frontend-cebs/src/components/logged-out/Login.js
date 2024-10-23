@@ -4,6 +4,10 @@ import './Login.css';
 import axios from 'axios';
 
 const Login = ({ setLoginStatus }) => {
+    axios.defaults.withCredentials = true;
+    axios.defaults.xsrfCookieName = 'csrftoken';
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.withXSRFToken = true;
     const navigate = useNavigate();
 
     const handleLogin = async (event) => {

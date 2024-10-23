@@ -22,6 +22,7 @@ import { Component } from 'react';
 axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+axios.defaults.withXSRFToken = true;
 
 class App extends Component {
 
@@ -90,7 +91,15 @@ class App extends Component {
           <Route exact path='/login' element={<Login setLoginStatus={this.setLoginStatus} />} />
           <Route exact path='/register' element={<Register />} />
           <Route exact path='/register/confirm' element={<RegisterConfirm />} />
-          <Route exact path='/edit-profile' element={<EditProfile />} />
+          
+          {/* Pass user data to EditProfile component */}
+          <Route 
+  exact 
+  path='/edit-profile' 
+  element={<EditProfile />} 
+/>
+
+          
           <Route exact path='/showtime-selection' element={<ShowtimeSelection />} />
           <Route exact path='/seat-age-selection' element={<SeatAgeSelection />} />
           <Route exact path='/checkout' element={<CheckoutForm />} />
