@@ -15,6 +15,8 @@ import ManagePromos from './components/admin/ManagePromos';
 import ManageMovies from './components/admin/ManageMovies';
 import MovieSelection from './components/MovieSelection';
 import NavBar from './components/NavBar';
+import PasswordReset from './components/logged-out/PasswordReset';
+import ResetPasswordForm from './components/logged-out/ResetPasswordForm';
 
 import axios from 'axios';
 import { Component } from 'react';
@@ -107,6 +109,8 @@ class App extends Component {
           <Route exact path='/admin' element={<Admin />} />
           <Route exact path='/admin/manage-promos' element={<ManagePromos />} />
           <Route exact path='/admin/manage-movies' element={<ManageMovies />} />
+          <Route exact path='/forgot-password' element={<PasswordReset />} />
+          <Route path="reset-password-form/:token" element={<ResetPasswordForm />} />
         </Routes>
       </Router>
     )
