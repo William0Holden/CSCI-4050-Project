@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Cookies from 'js-cookie'; // Import js-cookie to manage cookies
 
 axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -12,6 +12,7 @@ const ResetPasswordForm = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const { token } = useParams();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,22 +22,17 @@ const ResetPasswordForm = () => {
         }
 
         try {
-            const csrfToken = Cookies.get('csrftoken'); // Get the CSRF token from cookies
-            console.log(csrfToken);
-            const token = csrfToken;
 
+            console.log('Token:', token); // FIX THIS FIX THIS FIX THIS FIX THIS
             const response = await axios.post(
-                `http://localhost:8000/api/password_reset/confirm/`, // Use backticks for template literals
-                { password }, {token} // Pass only the password in the payload
-            );
-
-        console.log(response); // FIX THIS FIX THIS FIX THIS FIX THIS
+                'http://localhost:8000/api/password_reset/confirm/', 
+                { password, token }  // Token is passed with the password in the request body
+              ); 
             setSuccess('Password reset successfully');
             setError('');
         } catch (err) {
             console.log(err);
-            setSuccess('Error resetting password');
-            setSuccess('Password reset successfully');
+            setError('Error resetting password');
         }
     };
 
