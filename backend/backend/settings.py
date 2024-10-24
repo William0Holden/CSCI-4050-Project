@@ -27,9 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
-
-CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1',
@@ -48,7 +45,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'user_api.apps.UserApiConfig',
-    'django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +56,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'

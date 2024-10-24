@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from django.urls import include
 
 urlpatterns = [
 	path('register', views.UserRegister.as_view(), name='register'),
@@ -8,5 +7,4 @@ urlpatterns = [
 	path('logout', views.UserLogout.as_view(), name='logout'),
 	path('user', views.UserView.as_view(), name='user'),
     path('edit/<str:pk>', views.UserEdit.as_view(), name='edit'),
-    path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]

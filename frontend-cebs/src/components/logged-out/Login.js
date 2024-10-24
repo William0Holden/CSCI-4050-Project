@@ -3,12 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import axios from 'axios';
 
-const Login = ({ setLoginStatus }) => {
-    axios.defaults.withCredentials = true;
-    axios.defaults.xsrfCookieName = 'csrftoken';
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.withXSRFToken = true;
-    const navigate = useNavigate();
+const Login = (props) => {
+    const navigate = useNavigate(); // Initialize the navigate function
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -18,10 +14,12 @@ const Login = ({ setLoginStatus }) => {
         try {
             const response = await axios.post('http://localhost:8000/api/login', { email, password });
             console.log('Login successful:', response.data);
-            setLoginStatus(true); // Update login state in App.js
-            navigate('/'); // Redirect to the home page
+            // Handle successful login (e.g., store token, etc.)
+            // Redirect to home page
+            navigate('/'); // Redirect to home page (http://localhost:3000)
         } catch (error) {
             console.error('Login failed:', error);
+            // Handle login failure (e.g., show error message)
         }
     };
 
@@ -32,7 +30,7 @@ const Login = ({ setLoginStatus }) => {
                 <input type="text" name="email" placeholder="Email" required />
                 <input type="password" name="password" placeholder="Password" required />
                 <button type="submit">Login</button>
-                <button type="button" onClick={() => navigate('/forgot-password')}>Forgot Password</button>
+                <button type="cancel">Forgot Password</button>
             </form>
         </div>
     );
