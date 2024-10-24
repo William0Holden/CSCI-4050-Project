@@ -87,31 +87,30 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <NavBar isLoggedIn={this.state.isLoggedIn} setLoginStatus={this.setLoginStatus} />
-        <Routes>
-          <Route exact path='/' element={<MovieSelection movieData={this.state.movieList} />} />
-          <Route exact path='/login' element={<Login setLoginStatus={this.setLoginStatus} />} />
-          <Route exact path='/register' element={<Register />} />
-          <Route exact path='/register/confirm' element={<RegisterConfirm />} />
-          
-          {/* Pass user data to EditProfile component */}
-          <Route 
-  exact 
-  path='/edit-profile' 
-  element={<EditProfile />} 
-/>
-
-          
-          <Route exact path='/showtime-selection' element={<ShowtimeSelection />} />
-          <Route exact path='/seat-age-selection' element={<SeatAgeSelection />} />
-          <Route exact path='/checkout' element={<CheckoutForm />} />
-          <Route exact path='/order-confirm' element={<OrderConfirm />} />
-          <Route exact path='/admin' element={<Admin />} />
-          <Route exact path='/admin/manage-promos' element={<ManagePromos />} />
-          <Route exact path='/admin/manage-movies' element={<ManageMovies />} />
-          <Route exact path='/forgot-password' element={<PasswordReset />} />
-          <Route path="reset-password-form/:token" element={<ResetPasswordForm />} />
-        </Routes>
+      <NavBar isLoggedIn={this.state.isLoggedIn} setLoginStatus={this.setLoginStatus} />
+      <Routes>
+        <Route exact path='/' element={<MovieSelection movieData={this.state.movieList} />} />
+        <Route exact path='/login' element={<Login setLoginStatus={this.setLoginStatus} />} />
+        <Route exact path='/register' element={<Register />} />
+        <Route exact path='/register/confirm' element={<RegisterConfirm />} />
+        
+        {/* Pass user data to EditProfile component */}
+        <Route 
+        exact 
+        path='/edit-profile' 
+        element={<EditProfile />} 
+        />
+        
+        <Route exact path='/showtime-selection' element={<ShowtimeSelection />} />
+        <Route exact path='/seat-age-selection' element={<SeatAgeSelection />} />
+        <Route exact path='/checkout' element={<CheckoutForm />} />
+        <Route exact path='/order-confirm' element={<OrderConfirm />} />
+        <Route exact path='/admin' element={<Admin />} />
+        <Route exact path='/admin/manage-promos' element={<ManagePromos />} />
+        <Route exact path='/admin/manage-movies' element={<ManageMovies />} />
+        <Route exact path='/forgot-password' element={<PasswordReset />} />
+        <Route path="reset-password-form/:token" element={<ResetPasswordForm />} />
+      </Routes>
       </Router>
     )
   }
