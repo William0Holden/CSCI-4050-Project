@@ -137,7 +137,89 @@ const EditProfile = () => {
       />
 
       <h3>Card Information</h3>
-      {/* Card information fields here... */}
+      {
+    
+    }
+    <label>Card Number:</label>
+    <input
+      type="text"
+      name="card_number"
+      value={user.card_number}
+      onChange={handleChange}
+      maxLength="19"
+    />
+
+    <label>Card Expiration Date:</label>
+    <input
+      type="text"
+      name="card_exp_date"
+      value={user.card_exp_date}
+      onChange={handleChange}
+      maxLength="5"
+    />
+
+    <label>Card CVV:</label>
+    <input
+      type="text"
+      name="card_cvv"
+      value={user.card_cvv}
+      onChange={handleChange}
+      maxLength="4"
+    />
+
+    <label>Card Number 2:</label>
+    <input
+      type="text"
+      name="card_number2"
+      value={user.card_number2}
+      onChange={handleChange}
+      maxLength="19"
+    />
+
+    <label>Card Expiration Date 2:</label>
+    <input
+      type="text"
+      name="card_exp_date2"
+      value={user.card_exp_date2}
+      onChange={handleChange}
+      maxLength="5"
+    />
+
+    <label>Card CVV 2:</label>
+    <input
+      type="text"
+      name="card_cvv2"
+      value={user.card_cvv2}
+      onChange={handleChange}
+      maxLength="4"
+    />
+
+    <label>Card Number 3:</label>
+    <input
+      type="text"
+      name="card_number3"
+      value={user.card_number3}
+      onChange={handleChange}
+      maxLength="19"
+    />
+
+    <label>Card Expiration Date 3:</label>
+    <input
+      type="text"
+      name="card_exp_date3"
+      value={user.card_exp_date3}
+      onChange={handleChange}
+      maxLength="5"
+    />
+
+    <label>Card CVV 3:</label>
+    <input
+      type="text"
+      name="card_cvv3"
+      value={user.card_cvv3}
+      onChange={handleChange}
+      maxLength="4"
+    />
 
       <h3>Address Information</h3>
 
