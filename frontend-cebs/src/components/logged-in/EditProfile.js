@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import "./EditProfile.css"
 
 const EditProfile = () => {
   const [user, setUser] = useState({
@@ -72,193 +73,234 @@ const EditProfile = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Edit Profile</h2>
-
-      <label>Email:</label>
-      <input
-        type="email"
-        name="email"
-        value={user.email}
-        onChange={handleChange}
-        maxLength="50"
-        required
-        disabled
-      />
-
-      <label>Username:</label>
-      <input
-        type="text"
-        name="username"
-        value={user.username}
-        onChange={handleChange}
-        maxLength="50"
-        required
-      />
-
-      <label>Phone Number:</label>
-      <input
-        type="text"
-        name="phone_num"
-        value={user.phone_num}
-        onChange={handleChange}
-        maxLength="10"
-        required
-      />
-
-      <label>First Name:</label>
-      <input
-        type="text"
-        name="first_name"
-        value={user.first_name}
-        onChange={handleChange}
-        maxLength="50"
-        required
-      />
-
-      <label>Last Name:</label>
-      <input
-        type="text"
-        name="last_name"
-        value={user.last_name}
-        onChange={handleChange}
-        maxLength="50"
-        required
-      />
-
-      {/* Password field */}
-      <label>New Password:</label>
-      <input
-        type="password"
-        name="password"
-        value={user.password} // Accessing the password state
-        onChange={handleChange}
-        maxLength="100"
-      />
-
-      <h3>Card Information</h3>
-      {
-    
-    }
-    <label>Card Number:</label>
-    <input
-      type="text"
-      name="card_number"
-      value={user.card_number}
-      onChange={handleChange}
-      maxLength="19"
-    />
-
-    <label>Card Expiration Date:</label>
-    <input
-      type="text"
-      name="card_exp_date"
-      value={user.card_exp_date}
-      onChange={handleChange}
-      maxLength="5"
-    />
-
-    <label>Card CVV:</label>
-    <input
-      type="text"
-      name="card_cvv"
-      value={user.card_cvv}
-      onChange={handleChange}
-      maxLength="4"
-    />
-
-    <label>Card Number 2:</label>
-    <input
-      type="text"
-      name="card_number2"
-      value={user.card_number2}
-      onChange={handleChange}
-      maxLength="19"
-    />
-
-    <label>Card Expiration Date 2:</label>
-    <input
-      type="text"
-      name="card_exp_date2"
-      value={user.card_exp_date2}
-      onChange={handleChange}
-      maxLength="5"
-    />
-
-    <label>Card CVV 2:</label>
-    <input
-      type="text"
-      name="card_cvv2"
-      value={user.card_cvv2}
-      onChange={handleChange}
-      maxLength="4"
-    />
-
-    <label>Card Number 3:</label>
-    <input
-      type="text"
-      name="card_number3"
-      value={user.card_number3}
-      onChange={handleChange}
-      maxLength="19"
-    />
-
-    <label>Card Expiration Date 3:</label>
-    <input
-      type="text"
-      name="card_exp_date3"
-      value={user.card_exp_date3}
-      onChange={handleChange}
-      maxLength="5"
-    />
-
-    <label>Card CVV 3:</label>
-    <input
-      type="text"
-      name="card_cvv3"
-      value={user.card_cvv3}
-      onChange={handleChange}
-      maxLength="4"
-    />
-
-      <h3>Address Information</h3>
-
-      <label>Home Street:</label>
-      <input
-        type="text"
-        name="home_street"
-        value={user.home_street}
-        onChange={handleChange}
-        maxLength="100"
-      />
-
-      <label>Home City:</label>
-      <input
-        type="text"
-        name="home_city"
-        value={user.home_city}
-        onChange={handleChange}
-        maxLength="50"
-      />
-
-      <label>Home State:</label>
-      <input
-        type="text"
-        name="home_state"
-        value={user.home_state}
-        onChange={handleChange}
-        maxLength="2"
-      />
-
-      <label>Zip Code:</label>
-      <input
-        type="text"
-        name="zipcode"
-        value={user.zipcode}
-        onChange={handleChange}
-        maxLength="9"
-      />
-
+    <div className="edit-profile-container">
+      <form className="edit-profile-form" action="/updateProfile" method="post">
+        <h1>Edit Profile</h1>
+        <div class="row">
+          <div class="column">
+              <div>
+                <label htmlFor="email">Email:</label>
+                <input
+                  className="input-field"
+                  type="email"
+                  name="email"
+                  value={user.email}
+                  onChange={handleChange}
+                  maxLength="50"
+                  required
+                  disabled
+                />
+              </div>
+              <div>
+                <label htmlFor="username">Username:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="username"
+                  value={user.username}
+                  onChange={handleChange}
+                  maxLength="50"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor ="phone_num">Phone Number:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="phone_num"
+                  value={user.phone_num}
+                  onChange={handleChange}
+                  maxLength="10"
+                  required
+                />
+              </div>
+            <div>
+              <label htmlFor="first_name">First Name:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="first_name"
+                value={user.first_name}
+                onChange={handleChange}
+                maxLength="50"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="last_name">Last Name:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="last_name"
+                value={user.last_name}
+                onChange={handleChange}
+                maxLength="50"
+                required
+              />
+            </div>
+            <div>
+              {/* Password field */}
+              <label htmlFor ="">New Password:</label>
+              <input
+                className="input-field"
+                type="password"
+                name="password"
+                value={user.password} // Accessing the password state
+                onChange={handleChange}
+                maxLength="100"
+              />
+            </div>
+          </div>
+          <div className="column">
+            <div>
+              <label htmlFor="card_number">Card Number:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="card_number"
+                value={user.card_number}
+                onChange={handleChange}
+                maxLength="19"
+              />
+            </div>
+            <div>
+              <label htmlFor="card_exp_date">Card Expiration Date:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="card_exp_date"
+                value={user.card_exp_date}
+                onChange={handleChange}
+                maxLength="5"
+              />
+            </div>
+            <div>
+              <label htmlFor="card_cvv">Card CVV:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="card_cvv"
+                value={user.card_cvv}
+                onChange={handleChange}
+                maxLength="4"
+              />
+            </div>
+            <div>
+              <label htmlFor="card_number_2">Card Number 2:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="card_number2"
+                value={user.card_number2}
+                onChange={handleChange}
+                maxLength="19"
+              />
+            </div>
+            <div>
+              <label htmlFor="card_exp_date_2">Card Expiration Date 2:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="card_exp_date2"
+                value={user.card_exp_date2}
+                onChange={handleChange}
+                maxLength="5"
+              />
+            </div>
+            <div>
+              <label htmlFor="card_cvv_2">Card CVV 2:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="card_cvv2"
+                value={user.card_cvv2}
+                onChange={handleChange}
+                maxLength="4"
+              />
+            </div>
+            <div>
+              <label htmlFor="card_number_3">Card Number 3:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="card_number3"
+                value={user.card_number3}
+                onChange={handleChange}
+                maxLength="19"
+              />
+            </div>
+            <div>
+              <label htmlFor="card_exp_date_3">Card Expiration Date 3:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="card_exp_date3"
+                value={user.card_exp_date3}
+                onChange={handleChange}
+                maxLength="5"
+              />
+            </div>
+            <div>
+              <label htmlFor="card_cvv_3">Card CVV 3:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="card_cvv3"
+                value={user.card_cvv3}
+                onChange={handleChange}
+                maxLength="4"
+              />
+            </div>
+          </div>
+          <div className="column">
+            <div>
+              <label htmlFor="home_street">Home Street:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="home_street"
+                value={user.home_street}
+                onChange={handleChange}
+                maxLength="100"
+              />
+            </div>
+            <div>
+              <label htmlFor="home_city">Home City:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="home_city"
+                value={user.home_city}
+                onChange={handleChange}
+                maxLength="50"
+              />
+            </div>
+            <div>
+              <label  htmlFor="home_state">Home State:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="home_state"
+                value={user.home_state}
+                onChange={handleChange}
+                maxLength="2"
+              />
+            </div>
+            <div>
+              <label htmlFor="zipcode">Zip Code:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="zipcode"
+                value={user.zipcode}
+                onChange={handleChange}
+                maxLength="9"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
       <label>Receive Promotions:</label>
       <input
         type="checkbox"
@@ -267,8 +309,8 @@ const EditProfile = () => {
         onChange={handleChange}
       />
 
-      <button type="submit">Save Changes</button>
-    </form>
+      <button className="green-button" type="submit">Save Changes</button>
+    </div>
   );
 };
 
