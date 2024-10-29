@@ -8,7 +8,7 @@ const RegistrationConfirmation = (props) => {
         <body>
             <div class="confirmation-container">
                 <h1>Registration Successful!</h1>
-                <p>Thank you for registering. Your account has been successfully created.</p>
+                <p>Thank you for registering. Check you email to verify your account before logging in.</p>
                 <a href="/login">Go to Login</a>
             </div>
         </body>
