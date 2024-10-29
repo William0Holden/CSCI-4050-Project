@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import "./EditProfile.css"
+import "./EditProfile.css";
 
 const EditProfile = () => {
   const [user, setUser] = useState({
@@ -142,6 +142,7 @@ const EditProfile = () => {
             <div>
               {/* Password field */}
               <label htmlFor ="">New Password:</label>
+              <p>Must enter your existing password or a new password to submit changes.</p>
               <input
                 className="input-field"
                 type="password"
