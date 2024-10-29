@@ -309,8 +309,7 @@ const EditProfile = () => {
         checked={user.promotions}
         onChange={handleChange}
       />
-
-      <button className="green-button" type="submit">Save Changes</button>
+      <button className="green-button" type="submit" onClick={handleSubmit}>Save Changes</button>
     </div>
   );
 };
