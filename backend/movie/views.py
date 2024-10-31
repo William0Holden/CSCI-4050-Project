@@ -1,5 +1,10 @@
 from django.shortcuts import render
 from rest_framework.permissions import AllowAny
+import stripe
+from django.conf import settings
+from django.shortcuts import redirect
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # Create your views here.
 
@@ -64,3 +69,38 @@ class SeatView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = SeatSerializer
     queryset = Seat.objects.all()
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+class CreateStripeCheckoutSession(APIView):
+    #sending product id from frontend
+    def post(self, request, *args, **kwargs):
+        prod_id = self.kwargs['pk']
+        try:
+            product = Ticket.objects.get(id=prod_id)
+            checkout_session = stripe.checkout.Session.create(
+                line_items=[
+                    {
+                        'price_data':{
+                            'currency':'usd',
+                            'unit_amount':product.ticket_price,
+                            'product_data':{
+                                'booking':product.booking,
+                                'ticket number':product.ticket_number,
+                                'ticket type':product.ticket_type
+                            }
+                        },
+                        'quantity':1,
+                    },
+                ],
+                metadata={
+                    'product_id':product.id
+                },
+                mode = 'payment',
+                success_url='http://localhost:3000/' + '?success=true',
+                cancel_url='http://localhost:3000/' + '?canceled=true',
+            )
+            return redirect(checkout_session.url, code=303)
+        except Exception as e:
+            return Response({'msg':'something went wrong while creating stripe session','error':str(e)}, status=500)
+        
