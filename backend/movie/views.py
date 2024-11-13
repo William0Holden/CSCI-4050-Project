@@ -29,6 +29,7 @@ from .models import Ticket
 from .models import Showing
 from .models import ShowRoom
 from .models import Seat
+from .models import PaymentHistory
 
 
 # create a class for the Movie model viewsets
