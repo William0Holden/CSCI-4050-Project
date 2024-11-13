@@ -1,4 +1,5 @@
 from django.db import models
+from user_api.models import AppUser
 # Create your models here.
 
 # DO NOT DELETE MODELS
@@ -64,3 +65,13 @@ class Seat(models.Model):
     
     def __str__(self):
         return self.show_room.show_room_number + ' - ' + self.seat_number
+    
+class PaymentHistory(models.Model):
+    user=models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, null=True)
+    product=models.ForeignKey(Ticket, on_delete=models.SET_NULL, blank=True, null=True)
+    date=models.DateTimeField(auto_now_add=True)
+    payment_status=models.BooleanField()
+
+
+    def __str__(self):
+        return self.product.booking.movie.title + ' - ' + self.product.booking.show_date_time + ' - ' + self.product.ticket_number
