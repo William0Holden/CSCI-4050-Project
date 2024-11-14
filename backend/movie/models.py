@@ -68,10 +68,26 @@ class Seat(models.Model):
     
 class PaymentHistory(models.Model):
     user=models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, null=True)
-    product=models.ForeignKey(Ticket, on_delete=models.SET_NULL, blank=True, null=True)
+    products=models.ManyToManyField(Ticket)
     date=models.DateTimeField(auto_now_add=True)
     payment_status=models.BooleanField()
-
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return self.product.booking.movie.title + ' - ' + self.product.booking.show_date_time + ' - ' + self.product.ticket_number
+        return self.products.all()
+    
+class Coupon(models.Model):
+    id=models.CharField(max_length=100, primary_key=True)
+    percent_off=models.IntegerField()
+
+    def __str__(self):
+        return self.percent_off
+    
+class Discount(models.Model):
+    #coupon, can get id from this
+    coupon=models.ForeignKey(Coupon, on_delete=models.CASCADE, unique=True)
+    #customer-facing code
+    code=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.code

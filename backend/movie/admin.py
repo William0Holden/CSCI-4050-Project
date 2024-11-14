@@ -8,6 +8,9 @@ from .models import Ticket
 from .models import Showing
 from .models import ShowRoom
 from .models import Seat
+from .models import PaymentHistory
+from .models import Coupon
+from .models import Discount
 
 
 class MovieAdmin(admin.ModelAdmin):
@@ -47,3 +50,21 @@ class SeatAdmin(admin.ModelAdmin):
     search_fields = ('show_room', 'seat_number', 'seat_type', 'seat_price')
 
 admin.site.register(Seat, SeatAdmin)
+
+admin.site.register(PaymentHistory)
+
+class PaymentHistoryAdmin(admin.ModelAdmin):
+    readonly_fields = ('user', 'product', 'date', 'payment_status')
+    search_fields = ('user')
+
+admin.site.register(Coupon)
+
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ('id', 'percent_off')
+    search_fields = ('id')
+
+admin.site.register(Discount)
+
+class DiscountAdmin(admin.ModelAdmin):
+    list_display = ('coupon', 'code')
+    search_fields = ('code')

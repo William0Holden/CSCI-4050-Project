@@ -8,6 +8,8 @@ from .models import Ticket
 from .models import Showing
 from .models import ShowRoom
 from .models import Seat
+from .models import Coupon
+from .models import Discount
 
 
 # create a serializer class
@@ -52,4 +54,18 @@ class SeatSerializer(serializers.ModelSerializer):
                 class Meta:
                     model = Seat
                     fields = ('id', 'show_room', 'seat_number', 'seat_type', 'seat_price')
+
+class CouponSerializer(serializers.ModelSerializer):
+            
+                # create a meta class
+                class Meta:
+                    model = Coupon
+                    fields = ('id', 'percent_off')
+
+class DiscountSerializer(serializers.ModelSerializer):
+            
+                # create a meta class
+                class Meta:
+                    model = Discount
+                    fields = ('coupon','code')
                     

@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 # Create your views here.
 
@@ -74,6 +75,40 @@ class SeatView(viewsets.ModelViewSet):
     serializer_class = SeatSerializer
     queryset = Seat.objects.all()
 
+from .serializers import CouponSerializer
+from .models import Coupon
+class CouponView(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
+    serializer_class = CouponSerializer
+    queryset = Coupon.objects.all()
+
+from .serializers import DiscountSerializer
+from .models import Discount
+class DiscountView(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
+    serializer_class = DiscountSerializer
+    queryset = Discount.objects.all()
+
+def send_promo(request, user, to_email, percent_off, code):
+    username = user.username
+    subject='CINEMAEBOOKING PROMO CODE!!',
+    message=f'Dear {username},\nUse promo code {code} for {percent_off} off your purchase!'
+    email = EmailMessage(subject, message, to=[to_email])
+    try:
+        email.send()
+    except:
+        print("error sending email")
+
+def send_return_conf(request, user, to_email):
+    username = user.username
+    subject='Return Successful',
+    message=f'Dear {username},\nYour return was processed, and you should be receiving a full refund shortly. Thank you for booking with us!'
+    email = EmailMessage(subject, message, to=[to_email])
+    try:
+        email.send()
+    except:
+        print("error sending email")
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class CreateStripeCheckoutSession(APIView):
@@ -87,7 +122,7 @@ class CreateStripeCheckoutSession(APIView):
                     {
                         'price_data':{
                             'currency':'usd',
-                            'unit_amount':product.ticket_price,
+                            'unit_amount':int(product.ticket_price)*100,
                             'product_data':{
                                 'booking':product.booking,
                                 'ticket number':product.ticket_number,
@@ -100,6 +135,7 @@ class CreateStripeCheckoutSession(APIView):
                 metadata={
                     'product_id':product.id
                 },
+                allow_promotion_codes=True,
                 mode = 'payment',
                 success_url='http://localhost:3000/' + '?success=true',
                 cancel_url='http://localhost:3000/' + '?canceled=true',
@@ -141,3 +177,22 @@ def stripe_webhook_view(request):
         PaymentHistory.objects.create(product=product, payment_status=True)
     return HttpResponse(status=200)
         
+class CreatePaymentIntent(APIView):
+    def post(self, request, *args, **kwargs):
+        prod_id = request.data
+        if prod_id is not None:
+            product = Ticket.objects.get(id=prod_id)
+            try:
+                intent = stripe.PaymentIntent.create(
+                    amount = int(product.ticket_price)*100,
+                    currency='usd',
+                    automatic_payment_methods={
+                        'enabled':True,
+                    },
+                    metadata={
+                        'product_id':product.id
+                    }
+                )
+                return Response({'clientSecret':intent['client_secret']}, status=200)
+            except Exception as e:
+                return Response({'error':str(e)}, status=400)
