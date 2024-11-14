@@ -23,48 +23,52 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
     
-class Booking(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    user = models.CharField(max_length=100) # temporary placeholder for users
-    show_date_time = models.CharField(max_length=100)
-    seat_number = models.CharField(max_length=10)
-    booking_date_time = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return self.movie.title + ' - ' + self.show_date_time
-
-class Ticket(models.Model):
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
-    ticket_number = models.CharField(max_length=10)
-    ticket_type = models.CharField(max_length=10)
-    ticket_price = models.DecimalField(max_digits=5, decimal_places=2)
-    
-    def __str__(self):
-        return self.booking.movie.title + ' - ' + self.booking.show_date_time + ' - ' + self.ticket_number
-    
 class Showing(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    show_date_time = models.CharField(max_length=100)
-    seat_numbers = models.TextField()
+    date = models.CharField(max_length=100)
+    time = models.CharField(max_length=100)
+    showRoom = models.ForeignKey('ShowRoom', on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.movie.title + ' - ' + self.show_date_time
+        return self.movie.title + ' - ' + self.date + ' ' + self.time
+
+class Booking(models.Model):
+    tickets = models.ManyToManyField('Ticket')
+    cardUsed = models.CharField(max_length=100)
+    datePlaced = models.DateTimeField(auto_now_add=True)
+    showtime = models.ForeignKey(Showing, on_delete=models.CASCADE)
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.showtime.movie.title + ' - ' + self.showtime.date + ' ' + self.showtime.time
+
+class Ticket(models.Model):
+    seat = models.ForeignKey('Seat', on_delete=models.CASCADE)
+    TICKET_TYPE_CHOICES = [
+        ('child', 'Child'),
+        ('adult', 'Adult'),
+        ('senior', 'Senior'),
+    ]
+    type = models.CharField(max_length=10, choices=TICKET_TYPE_CHOICES)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return self.seat.__str__() + ' - ' + self.type
     
 class ShowRoom(models.Model):
     show_room_number = models.CharField(max_length=5)
-    seat_capacity = models.IntegerField()
+    seats = models.ManyToManyField('Seat')
     
     def __str__(self):
         return self.show_room_number
     
 class Seat(models.Model):
-    show_room = models.ForeignKey(ShowRoom, on_delete=models.CASCADE)
-    seat_number = models.CharField(max_length=5)
-    seat_type = models.CharField(max_length=10)
-    seat_price = models.DecimalField(max_digits=5, decimal_places=2)
+    row = models.CharField(max_length=5)
+    col = models.CharField(max_length=5)
+    available = models.BooleanField()
     
     def __str__(self):
-        return self.show_room.show_room_number + ' - ' + self.seat_number
+        return self.row + self.col
     
 class PaymentHistory(models.Model):
     user=models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, null=True)
@@ -74,14 +78,14 @@ class PaymentHistory(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return self.products.all()
+        return ', '.join([str(product) for product in self.products.all()])
     
 class Coupon(models.Model):
     id=models.CharField(max_length=100, primary_key=True)
     percent_off=models.IntegerField()
 
     def __str__(self):
-        return self.percent_off
+        return str(self.percent_off) + '%'
     
 class Discount(models.Model):
     #coupon, can get id from this

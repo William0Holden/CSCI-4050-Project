@@ -57,6 +57,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     home_state = models.CharField(blank=True, max_length=2)
     zipcode = models.CharField(blank=True, max_length=9)
     promotions = models.BooleanField(default=False)
+    bookings = models.ManyToManyField('movie.Booking', blank=True)
 
     # New fields
     is_staff = models.BooleanField(default=False)
