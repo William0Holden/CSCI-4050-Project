@@ -46,6 +46,7 @@ class MovieView(viewsets.ModelViewSet):
     # with the Movie list objects
     queryset = Movie.objects.all()
 
+
 # import the BookingSerializer from the serializer file
 from .serializers import BookingSerializer
 from .models import Booking
@@ -84,6 +85,7 @@ class CouponView(viewsets.ModelViewSet):
 
 from .serializers import DiscountSerializer
 from .models import Discount
+from rest_framework import generics
 class DiscountView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = DiscountSerializer

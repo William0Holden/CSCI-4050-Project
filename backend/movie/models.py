@@ -8,6 +8,7 @@ from user_api.models import AppUser
 
 
 class Movie(models.Model):
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     category = models.CharField(max_length=50)
     cast = models.TextField()
@@ -19,6 +20,7 @@ class Movie(models.Model):
     trailer_url = models.URLField(max_length=500)
     mpaa_us_rating = models.CharField(max_length=5)
     show_dates_times = models.TextField()
+    coming_soon = models.BooleanField(default=False)
     
     def __str__(self):
         return self.title
