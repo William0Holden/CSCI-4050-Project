@@ -19,17 +19,16 @@ class Movie(models.Model):
     picture_url = models.URLField(max_length=500)
     trailer_url = models.URLField(max_length=500)
     mpaa_us_rating = models.CharField(max_length=5)
-    show_dates_times = models.TextField()
     coming_soon = models.BooleanField(default=False)
     
     def __str__(self):
         return self.title
     
 class Showing(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     date = models.CharField(max_length=100)
     time = models.CharField(max_length=100)
     showRoom = models.ForeignKey('ShowRoom', on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, related_name="showings", on_delete=models.CASCADE)
     
     def __str__(self):
         return self.movie.title + ' - ' + self.date + ' ' + self.time

@@ -29,6 +29,8 @@ const MovieSelection = (props) => {
                 <div className="five-column-div">
                     {filteredMovies.map((movie) => (
                             <Movie
+                                isLoggedIn={props.isLoggedIn}
+                                movie_id={movie.id}
                                 title={movie.title}
                                 rating={movie.mpaa_us_rating}
                                 img={movie.picture_url}

@@ -85,7 +85,6 @@ class CouponView(viewsets.ModelViewSet):
 
 from .serializers import DiscountSerializer
 from .models import Discount
-from rest_framework import generics
 class DiscountView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = DiscountSerializer

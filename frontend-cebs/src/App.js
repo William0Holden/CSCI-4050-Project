@@ -89,7 +89,7 @@ class App extends Component {
       <Router>
       <NavBar isLoggedIn={this.state.isLoggedIn} setLoginStatus={this.setLoginStatus} />
       <Routes>
-        <Route exact path='/' element={<MovieSelection movieData={this.state.movieList} />} />
+        <Route exact path='/' element={<MovieSelection movieData={this.state.movieList} isLoggedIn = {this.state.isLoggedIn} />} />
         <Route exact path='/login' element={<Login setLoginStatus={this.setLoginStatus} />} />
         <Route exact path='/register' element={<Register />} />
         <Route exact path='/register/confirm' element={<RegisterConfirm />} />
@@ -102,6 +102,7 @@ class App extends Component {
         />
         
         <Route exact path='/showtime-selection' element={<ShowtimeSelection />} />
+        <Route path="/showtime-selection/:movie_id" element={<ShowtimeSelection />} />
         <Route exact path='/seat-age-selection' element={<SeatAgeSelection />} />
         <Route exact path='/checkout' element={<CheckoutForm />} />
         <Route exact path='/order-confirm' element={<OrderConfirm />} />

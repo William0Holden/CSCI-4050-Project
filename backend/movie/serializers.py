@@ -4,11 +4,6 @@ from .models import Movie, Booking, Ticket, Showing, ShowRoom, Seat, Coupon, Dis
 
 
 # Create a serializer class for each model
-class MovieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = ('id', 'title', 'category', 'cast', 'director', 'producer', 'synopsis', 'reviews', 'picture_url', 'trailer_url', 'mpaa_us_rating', 'show_dates_times', 'coming_soon')
-
 
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,6 +21,14 @@ class ShowingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Showing
         fields = ('id', 'movie', 'date', 'time', 'showRoom')
+
+
+class MovieSerializer(serializers.ModelSerializer):
+    showings = ShowingSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Movie
+        fields = ('id', 'title', 'category', 'cast', 'director', 'producer', 'synopsis', 'reviews', 'picture_url', 'trailer_url', 'mpaa_us_rating', 'coming_soon', 'showings')
 
 
 class ShowRoomSerializer(serializers.ModelSerializer):

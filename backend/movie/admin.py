@@ -1,9 +1,17 @@
 from django.contrib import admin
 from .models import Movie, Booking, Ticket, Showing, ShowRoom, Seat, PaymentHistory, Coupon, Discount
 
+
+class ShowingInline(admin.TabularInline):  
+    model = Showing
+    extra = 1  
+
 class MovieAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'director', 'producer', 'mpaa_us_rating')
     search_fields = ('title', 'category', 'director', 'producer', 'mpaa_us_rating')
+
+    inlines = [ShowingInline]
+
 
 admin.site.register(Movie, MovieAdmin)
 
@@ -32,7 +40,7 @@ class TicketAdmin(admin.ModelAdmin):
 admin.site.register(Ticket, TicketAdmin)
 
 class ShowingAdmin(admin.ModelAdmin):
-    list_display = ('movie', 'get_show_date_time', 'get_showroom_number')
+    list_display = ('get_show_date_time', 'get_showroom_number')
     search_fields = ('movie__title', 'date', 'time')
 
     def get_show_date_time(self, obj):
