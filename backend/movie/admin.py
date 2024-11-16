@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Movie, Booking, Ticket, Showing, ShowRoom, Seat, PaymentHistory, Coupon, Discount
+from .models import Movie, Booking, Ticket, Showing, ShowRoom, Seat, PaymentHistory, Coupon, Discount, SeatAssignment
 
 
 class ShowingInline(admin.TabularInline):  
@@ -39,6 +39,18 @@ class TicketAdmin(admin.ModelAdmin):
 
 admin.site.register(Ticket, TicketAdmin)
 
+class SeatAssignmentInline(admin.TabularInline):
+    model = SeatAssignment
+    extra = 0
+    readonly_fields = ('seat',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "seat":
+            if hasattr(request, "showing_instance"):
+                showing_instance = request.showing_instance
+                kwargs["queryset"] = Seat.objects.filter(showroom=showing_instance.showRoom)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 class ShowingAdmin(admin.ModelAdmin):
     list_display = ('get_show_date_time', 'get_showroom_number')
     search_fields = ('movie__title', 'date', 'time')
@@ -50,6 +62,12 @@ class ShowingAdmin(admin.ModelAdmin):
     def get_showroom_number(self, obj):
         return obj.showRoom.show_room_number
     get_showroom_number.short_description = 'Show Room Number'
+
+    inlines = [SeatAssignmentInline]
+
+    def get_form(self, request, obj=None, **kwargs):
+        request.showing_instance = obj
+        return super().get_form(request, obj, **kwargs)
 
 admin.site.register(Showing, ShowingAdmin)
 
