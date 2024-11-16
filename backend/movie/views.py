@@ -76,6 +76,12 @@ class SeatView(viewsets.ModelViewSet):
     serializer_class = SeatSerializer
     queryset = Seat.objects.all()
 
+    def post (self, request, *args, **kwargs):
+        seat = self.get_object()
+        seat.available = False
+        seat.save()
+        return Response({'message':'seat booked'}, status=200)
+
 from .serializers import CouponSerializer
 from .models import Coupon
 class CouponView(viewsets.ModelViewSet):

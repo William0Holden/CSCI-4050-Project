@@ -6,4 +6,6 @@ urlpatterns = [
     path('showrooms/<int:id>/', views.ShowRoomView.as_view({'get': 'retrieve'}), name='showroom'), 
     path('showings/', views.ShowingView.as_view({'get': 'list'}), name='showing-list'), 
     path('showings/<int:pk>/', views.ShowingView.as_view({'get': 'retrieve'}), name='showing-detail'), 
+    path('seats/', views.SeatView.as_view({'get': 'list'}), name='seats'),
+    path('seats/<int:id>/', views.SeatView.as_view({'get': 'retrieve'}), name='seat'),
 ]

@@ -1,6 +1,5 @@
 from django.db import models
 from user_api.models import AppUser
-from django.core.exceptions import ValidationError
 # Create your models here.
 
 # DO NOT DELETE MODELS
@@ -60,8 +59,6 @@ class Ticket(models.Model):
     
 class ShowRoom(models.Model):
     show_room_number = models.CharField(max_length=5)
-    showings = models.ManyToManyField('Showing')
-    seats = models.ManyToManyField('Seat', related_name='seats_in_showrooms')  # Updated related_name
 
     def __str__(self):
         return self.show_room_number
@@ -69,31 +66,13 @@ class ShowRoom(models.Model):
 class Seat(models.Model):
     row = models.CharField(max_length=5)
     col = models.CharField(max_length=5)
-    showroom = models.ForeignKey(ShowRoom, related_name='showroom_seats', on_delete=models.CASCADE)  # Updated related_name
-    available = models.BooleanField()
+    showroom = models.ForeignKey(ShowRoom, on_delete=models.CASCADE)
+    showing = models.ForeignKey(Showing, on_delete=models.CASCADE)
+    available = models.BooleanField(default=True)
 
     def __str__(self):
         return self.row + self.col
     
-class SeatAssignment(models.Model):
-    seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
-    showing = models.ForeignKey(Showing, on_delete=models.CASCADE)
-    is_booked = models.BooleanField(default=False)  
-
-    class Meta:
-        unique_together = ('seat', 'showing')  
-
-    def clean(self):
-        overlapping_assignments = SeatAssignment.objects.filter(
-            seat=self.seat,
-            showing__date=self.showing.date,
-            showing__time=self.showing.time
-        ).exclude(pk=self.pk)
-        if overlapping_assignments.exists():
-            raise ValidationError("This seat is already assigned to another showing at the same time.")
-
-    def __str__(self):
-        return f"{self.seat} - {self.showing}"
 
 class PaymentHistory(models.Model):
     user=models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, null=True)

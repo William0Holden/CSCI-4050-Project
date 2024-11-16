@@ -34,13 +34,13 @@ class MovieSerializer(serializers.ModelSerializer):
 class ShowRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShowRoom
-        fields = ('id', 'show_room_number', 'seats', 'showings')
+        fields = ('id', 'show_room_number')
 
 
 class SeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat
-        fields = ('id', 'row', 'col', 'available', 'showroom')
+        fields = ('id', 'row', 'col', 'available', 'showroom', 'showing')
 
 
 class CouponSerializer(serializers.ModelSerializer):
