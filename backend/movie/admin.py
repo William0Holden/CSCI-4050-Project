@@ -64,7 +64,7 @@ class ShowRoomAdmin(admin.ModelAdmin):
 admin.site.register(ShowRoom, ShowRoomAdmin)
 
 class SeatAdmin(admin.ModelAdmin):
-    list_display = ('row', 'col', 'available')
+    list_display = ('row', 'col', 'available', 'showroom')
     search_fields = ('row', 'col')
 
 admin.site.register(Seat, SeatAdmin)

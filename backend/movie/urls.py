@@ -1,10 +1,9 @@
 from django.urls import path
 from . import views
-from django.urls import include
 
 urlpatterns = [
-	path('showings/<int: id>', views.ShowingView.as_view(), name='showing'),
-    path('showrooms/<int: id', views.ShowRoomView.as_view(), name='showroom'),
-    path('seats/<int: id', views.SeatView.as_view(), name='seat'),
-    path('movie/<str: title', views.MovieView.as_view(), name='movie'),
+    path('showrooms/', views.ShowRoomView.as_view({'get': 'list'}), name='showrooms'),
+    path('showrooms/<int:id>/', views.ShowRoomView.as_view({'get': 'retrieve'}), name='showroom'), 
+    path('showings/', views.ShowingView.as_view({'get': 'list'}), name='showing-list'), 
+    path('showings/<int:pk>/', views.ShowingView.as_view({'get': 'retrieve'}), name='showing-detail'), 
 ]

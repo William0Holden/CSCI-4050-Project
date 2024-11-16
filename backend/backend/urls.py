@@ -45,6 +45,7 @@ urlpatterns = [
     # you should be routed to the django Rest framework
     path('api/', include(router.urls)),
     path('api/', include('user_api.urls')),
+    path('api/', include('movie.urls')),
     path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('create-checkout-session/<pk>/', csrf_exempt(CreateStripeCheckoutSession.as_view()), name='checkout_session'),
     path('stripe-webhook/', stripe_webhook_view, name='stripe-webhook'),

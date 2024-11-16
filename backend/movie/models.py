@@ -34,7 +34,7 @@ class Showing(models.Model):
         return self.movie.title + ' - ' + self.date + ' ' + self.time
 
 class Booking(models.Model):
-    tickets = models.ManyToManyField('Ticket')
+    tickets = models.ManyToManyField('Ticket', related_name='tickets_in_booking')
     cardUsed = models.CharField(max_length=100)
     datePlaced = models.DateTimeField(auto_now_add=True)
     showtime = models.ForeignKey(Showing, on_delete=models.CASCADE)
@@ -44,6 +44,7 @@ class Booking(models.Model):
         return self.showtime.movie.title + ' - ' + self.showtime.date + ' ' + self.showtime.time
 
 class Ticket(models.Model):
+    booking = models.ForeignKey(Booking,related_name= 'booking_for_ticket' ,on_delete=models.CASCADE)
     seat = models.ForeignKey('Seat', on_delete=models.CASCADE)
     TICKET_TYPE_CHOICES = [
         ('child', 'Child'),
@@ -58,19 +59,21 @@ class Ticket(models.Model):
     
 class ShowRoom(models.Model):
     show_room_number = models.CharField(max_length=5)
-    seats = models.ManyToManyField('Seat')
-    
+    showings = models.ManyToManyField('Showing')
+    seats = models.ManyToManyField('Seat', related_name='seats_in_showrooms')  # Updated related_name
+
     def __str__(self):
         return self.show_room_number
-    
+
 class Seat(models.Model):
     row = models.CharField(max_length=5)
     col = models.CharField(max_length=5)
+    showroom = models.ForeignKey(ShowRoom, related_name='showroom_seats', on_delete=models.CASCADE)  # Updated related_name
     available = models.BooleanField()
-    
+
     def __str__(self):
         return self.row + self.col
-    
+
 class PaymentHistory(models.Model):
     user=models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, null=True)
     products=models.ManyToManyField(Ticket)
