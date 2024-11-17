@@ -34,17 +34,15 @@ class Showing(models.Model):
         return self.movie.title + ' - ' + self.date + ' ' + self.time
 
 class Booking(models.Model):
-    tickets = models.ManyToManyField('Ticket', related_name='tickets_in_booking')
     cardUsed = models.CharField(max_length=100)
     datePlaced = models.DateTimeField(auto_now_add=True)
-    showtime = models.ForeignKey(Showing, on_delete=models.CASCADE)
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    tickets = models.ManyToManyField('Ticket')
     
     def __str__(self):
-        return self.showtime.movie.title + ' - ' + self.showtime.date + ' ' + self.showtime.time
+        return self.user.username + ' - ' + self.datePlaced.strftime('%m/%d/%Y')
 
 class Ticket(models.Model):
-    booking = models.ForeignKey(Booking,related_name= 'booking_for_ticket' ,on_delete=models.CASCADE)
     seat = models.ForeignKey('Seat', on_delete=models.CASCADE)
     TICKET_TYPE_CHOICES = [
         ('child', 'Child'),

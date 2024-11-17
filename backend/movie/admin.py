@@ -44,23 +44,19 @@ class ShowingAdmin(admin.ModelAdmin):
 
 admin.site.register(Showing, ShowingAdmin)
 
+class TicketInline(admin.TabularInline):
+    model = Ticket
+    extra = 1  # Display 1 empty form by default
+
 
 # Admin for Booking
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('get_movie_title', 'user', 'get_show_date_time', 'get_seat_numbers', 'datePlaced')
-    search_fields = ('user__username', 'get_movie_title')
+    list_display = ('id', 'user', 'datePlaced', 'get_tickets')
 
-    def get_movie_title(self, obj):
-        return obj.showtime.movie.title
-    get_movie_title.short_description = 'Movie Title'
-
-    def get_show_date_time(self, obj):
-        return f"{obj.showtime.date} {obj.showtime.time}"
-    get_show_date_time.short_description = 'Show Date and Time'
-
-    def get_seat_numbers(self, obj):
-        return ', '.join([str(ticket.seat) for ticket in obj.tickets.all()])
-    get_seat_numbers.short_description = 'Seat Numbers'
+    def get_tickets(self, obj):
+        return ', '.join([str(ticket) for ticket in obj.tickets.all()])
+    
+    search_fields = ('user__username', 'datePlaced', 'cardUsed')
 
 
 admin.site.register(Booking, BookingAdmin)
