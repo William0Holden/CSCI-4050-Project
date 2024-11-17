@@ -82,8 +82,8 @@ class SeatView(viewsets.ViewSet):  # Use ViewSet instead of ModelViewSet for cus
         seat_serializer = SeatSerializer(data=seat_data)
         
         if seat_serializer.is_valid():
-            seat_serializer.save()
-            return Response({'message': 'Seat booked successfully'}, status=200)
+            seat = seat_serializer.save()
+            return Response(SeatSerializer(seat).data, status=201)
         return Response(seat_serializer.errors, status=400)
 
     def list(self, request):
