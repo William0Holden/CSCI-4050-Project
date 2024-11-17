@@ -5,6 +5,7 @@ from django.conf import settings
 from django.shortcuts import redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.mail import send_mail
@@ -71,16 +72,33 @@ class ShowRoomView(viewsets.ModelViewSet):
     serializer_class = ShowRoomSerializer
     queryset = ShowRoom.objects.all()
 
-class SeatView(viewsets.ModelViewSet):
+class SeatView(viewsets.ViewSet):  # Use ViewSet instead of ModelViewSet for custom methods
+
     permission_classes = [AllowAny]
     serializer_class = SeatSerializer
-    queryset = Seat.objects.all()
 
-    def post (self, request, *args, **kwargs):
-        seat = self.get_object()
-        seat.available = False
-        seat.save()
-        return Response({'message':'seat booked'}, status=200)
+    def post(self, request):
+        seat_data = request.data
+        seat_serializer = SeatSerializer(data=seat_data)
+        
+        if seat_serializer.is_valid():
+            seat_serializer.save()
+            return Response({'message': 'Seat booked successfully'}, status=200)
+        return Response(seat_serializer.errors, status=400)
+
+    def list(self, request):
+        seats = Seat.objects.all()
+        seat_serializer = SeatSerializer(seats, many=True)
+        return Response(seat_serializer.data, status=200)
+
+    def retrieve(self, request, pk=None):
+        try:
+            seat = Seat.objects.get(pk=pk)
+            seat_serializer = SeatSerializer(seat)
+            return Response(seat_serializer.data, status=200)
+        except Seat.DoesNotExist:
+            return Response({'error': 'Seat not found'}, status=404)
+    
 
 from .serializers import CouponSerializer
 from .models import Coupon

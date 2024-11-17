@@ -22,10 +22,17 @@ const ShowtimeSelection = () => {
   }
 
   const showtimes = movie.showings.map((showing) => (
-    <button key={showing.id} className="showtime-button">
-      {showing.date} - {showing.time}
-    </button>
+    <Link 
+      key={showing.id} 
+      to={`/seat-age-selection/${showing.id}`} 
+      className="showtime-link"
+    >
+      <button className="showtime-button">
+        {showing.date} - {showing.time}
+      </button>
+    </Link>
   ));
+  
 
   return (
     <div className="showtime-container">

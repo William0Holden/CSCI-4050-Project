@@ -42,6 +42,9 @@ class SeatSerializer(serializers.ModelSerializer):
         model = Seat
         fields = ('id', 'row', 'col', 'available', 'showroom', 'showing')
 
+    def create(self, validated_data):
+        return Seat.objects.create(**validated_data)
+
 
 class CouponSerializer(serializers.ModelSerializer):
     class Meta:
