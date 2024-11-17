@@ -105,7 +105,7 @@ class App extends Component {
         <Route path="/showtime-selection/:movie_id" element={<ShowtimeSelection />} />
         <Route exact path='/seat-age-selection/:showing_id' element={<SeatAgeSelection />} />
         <Route exact path='/checkout' element={<CheckoutForm />} />
-        <Route exact path='/order-confirm' element={<OrderConfirm />} />
+        <Route exact path='/order-confirm/:seat_id' element={<OrderConfirm />} />
         <Route exact path='/admin' element={<Admin />} />
         <Route exact path='/admin/manage-promos' element={<ManagePromos />} />
         <Route exact path='/admin/manage-movies' element={<ManageMovies />} />
