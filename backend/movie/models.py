@@ -1,5 +1,8 @@
 from django.db import models
 from user_api.models import AppUser
+from django.core.mail import EmailMessage
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
 
 # DO NOT DELETE MODELS
@@ -90,10 +93,32 @@ class Coupon(models.Model):
         return str(self.percent_off) + '%'
     
 class Discount(models.Model):
-    #coupon, can get id from this
-    coupon=models.ForeignKey(Coupon, on_delete=models.CASCADE, unique=True)
-    #customer-facing code
-    code=models.CharField(max_length=100)
+    # Coupon, can get id from this
+    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, unique=True)
+    # Customer-facing code
+    code = models.CharField(max_length=100)
 
     def __str__(self):
         return self.code
+
+@receiver(post_save, sender=Discount)
+def send_discount_email(sender, instance, created, **kwargs):
+    if created:  # Only send emails for newly created discounts
+        all_users = AppUser.objects.all()  # Fetch all users
+        percent_off = instance.coupon.percent_off
+        code = instance.code
+        
+        for user in all_users:
+            username = user.username
+            to_email = user.email
+            subject = 'CINEMAEBOOKING PROMO CODE!!'
+            message = (
+                f"Dear {username},\n\n"
+                f"Use promo code {code} for {percent_off}% off your next purchase!\n\n"
+                f"Happy watching,\nCinemaEBooking"
+            )
+            email = EmailMessage(subject, message, to=[to_email])
+            try:
+                email.send()
+            except Exception as e:
+                print(f"Error sending email to {to_email}: {e}")

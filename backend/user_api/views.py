@@ -120,4 +120,14 @@ class UserView(APIView):
 	def get(self, request):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+     
+
+class UserList(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def get(self, request):
+        users = AppUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response({'users': serializer.data}, status=status.HTTP_200_OK)
 

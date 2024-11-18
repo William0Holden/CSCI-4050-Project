@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('showrooms/', views.ShowRoomView.as_view({'get': 'list'}), name='showrooms'),
     path('showrooms/<int:pk>/', views.ShowRoomView.as_view({'get': 'retrieve'}), name='showroom'), 

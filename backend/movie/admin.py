@@ -115,3 +115,4 @@ class DiscountAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Discount, DiscountAdmin)
+

@@ -20,9 +20,6 @@ const NavBar = ({ isLoggedIn, setLoginStatus }) => {
             return (
                 <>
                     <li className="navbar-item">
-                        <Link to="/checkout" className="navbar-link">Checkout</Link>
-                    </li>
-                    <li className="navbar-item">
                         <Link to="/admin" className="navbar-link">Admin</Link>
                     </li>
                     <li className="navbar-item">
