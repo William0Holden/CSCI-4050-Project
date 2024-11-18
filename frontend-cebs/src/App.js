@@ -17,6 +17,7 @@ import MovieSelection from './components/MovieSelection';
 import NavBar from './components/NavBar';
 import PasswordReset from './components/logged-out/PasswordReset';
 import ResetPasswordForm from './components/logged-out/ResetPasswordForm';
+import MyBookings from './components/logged-in/MyBookings'
 
 import axios from 'axios';
 import { Component } from 'react';
@@ -106,11 +107,12 @@ class App extends Component {
         <Route exact path='/seat-age-selection/:showing_id' element={<SeatAgeSelection />} />
         <Route exact path='/checkout' element={<CheckoutForm />} />
         <Route exact path='/order-confirm/:seat_id' element={<OrderConfirm />} />
+        <Route exact path='/bookings' element={<MyBookings />} />
         <Route exact path='/admin' element={<Admin />} />
         <Route exact path='/admin/manage-promos' element={<ManagePromos />} />
         <Route exact path='/admin/manage-movies' element={<ManageMovies />} />
         <Route exact path='/forgot-password' element={<PasswordReset />} />
-        <Route path="reset-password-form/:token" element={<ResetPasswordForm />} />
+        <Route path="/reset-password-form/:token" element={<ResetPasswordForm />} />
       </Routes>
       </Router>
     )
