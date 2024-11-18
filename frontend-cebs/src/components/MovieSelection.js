@@ -5,26 +5,42 @@ import './MovieSelection.css'; // Make sure to create and style this CSS file
 // Look at backend/backend/movie/models.py for the fields
 
 const MovieSelection = (props) => {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [titleSearchTerm, setTitleSearchTerm] = useState('');
 
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+    const handleTitleSearchChange = (event) => {
+        setTitleSearchTerm(event.target.value);
+    };
+
+    const [categorySearchTerm, setCategorySearchTerm] = useState('');
+
+    const handleCategorySearchChange = (event) => {
+        setCategorySearchTerm(event.target.value);
     };
 
     const filteredMovies = props.movieData.filter((movie) =>
-        movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+        movie.title.toLowerCase().includes(titleSearchTerm.toLowerCase())
+        && movie.category.toLowerCase().includes(categorySearchTerm.toLowerCase())
     );
 
     return (
         <div className="movie-selection">
-            <h1>Select a Movie</h1> 
-            <input
-                className='search-bar'
-                type="text"
-                placeholder="Search for a movie..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-            />
+            <h1>Select a Movie</h1>
+            <div className="search-row">
+                <input
+                    className='search-bar'
+                    type="text"
+                    placeholder="Search movies by title..."
+                    value={titleSearchTerm}
+                    onChange={handleTitleSearchChange}
+                />
+                <input
+                    className='search-bar'
+                    type="text"
+                    placeholder="Search movies by category..."
+                    value={categorySearchTerm}
+                    onChange={handleCategorySearchChange}
+                />
+            </div>
             <div className="limited-height-div"> 
                 <div className="five-column-div">
                     {filteredMovies.map((movie) => (
