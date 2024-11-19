@@ -13,6 +13,6 @@ urlpatterns = [
     path('tickets/<int:pk>/', views.TicketView.as_view({'get': 'retrieve'}), name='ticket-detail'),
     path('bookings/', views.BookingView.as_view({'get': 'list'}), name='booking-list'),
     path('bookings/<int:pk>/', views.BookingView.as_view({'get': 'retrieve'}), name='booking-detail'),
-    path('bookings/user/<int:user_id>/', views.BookingView.as_view({'get': 'by_user'}), name='booking-by-user'),
+    path('bookings/user/<int:user_id>/', views.BookingView.as_view({'get': 'get_by_user'}), name='booking-by-user'),
 ]
 

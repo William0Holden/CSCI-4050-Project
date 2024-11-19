@@ -56,6 +56,10 @@ class BookingView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = BookingSerializer
     queryset = Booking.objects.all()
+    def get_by_user(self, request, user_id=None):
+        bookings = Booking.objects.filter(user_id=user_id)
+        serializer = BookingSerializer(bookings, many=True)
+        return Response(serializer.data, status=200)
 
 class TicketView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
