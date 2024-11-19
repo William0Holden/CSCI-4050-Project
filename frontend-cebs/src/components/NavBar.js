@@ -19,6 +19,9 @@ const NavBar = ({ isLoggedIn, setLoginStatus }) => {
         if (isLoggedIn) {
             return (
                 <>
+                <li className="navbar-item">
+                    <Link to="/bookings" className="navbar-link">My Bookings</Link>
+                </li>
                     <li className="navbar-item">
                         <Link to="/admin" className="navbar-link">Admin</Link>
                     </li>
