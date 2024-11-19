@@ -8,7 +8,8 @@ from .models import Movie, Booking, Ticket, Showing, ShowRoom, Seat, Coupon, Dis
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = ('id', 'cardUsed', 'datePlaced', 'user', 'tickets')
+        fields = ['user', 'cardUsed', 'tickets', 'datePlaced']
+
 
 
 class TicketSerializer(serializers.ModelSerializer):

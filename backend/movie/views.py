@@ -47,23 +47,37 @@ class MovieView(viewsets.ModelViewSet):
     # with the Movie list objects
     queryset = Movie.objects.all()
 
-
-# import the BookingSerializer from the serializer file
-from .serializers import BookingSerializer
-from .models import Booking
-
 class BookingView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = BookingSerializer
-    queryset = Booking.objects.all()
+
+    def post (self, request):
+        booking_data = request.data
+        booking_serializer = BookingSerializer(data=booking_data)
+        if booking_serializer.is_valid():
+            booking = booking_serializer.save()
+            return Response(BookingSerializer(booking).data, status=201)
+        return Response(booking_serializer.errors, status=400)
     def get_by_user(self, request, user_id=None):
         bookings = Booking.objects.filter(user_id=user_id)
         serializer = BookingSerializer(bookings, many=True)
         return Response(serializer.data, status=200)
 
+    queryset = Booking.objects.all()
+
+
 class TicketView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = TicketSerializer
+
+    def post (self, request):
+        ticket_data = request.data
+        ticket_serializer = TicketSerializer(data=ticket_data)
+        if ticket_serializer.is_valid():
+            ticket = ticket_serializer.save()
+            return Response(TicketSerializer(ticket).data, status=201)
+        return Response(ticket_serializer.errors, status=400)
+
     queryset = Ticket.objects.all()
 
 class ShowingView(viewsets.ModelViewSet):
