@@ -1,4 +1,5 @@
 import React from 'react';
+import Ticket from './Ticket'
 import { useParams, useNavigate } from 'react-router-dom';
 import './OrderConfirm.css';
 import axios from 'axios';
@@ -57,24 +58,16 @@ const OrderConfirm = () => {
 
   return (
     <div className="order-container">
-      <div className="order-details">
-        <h1>Order Summary</h1>
-        <h2>Ticket Details</h2>
-        <p><strong>Movie:</strong> {movie.title}</p>
-        <p><strong>Date:</strong> {showing.date}</p>
-        <p><strong>Time:</strong> {showing.time}</p>
-        <p><strong>Seat:</strong> Row {seat.row}, Seat {seat.col}</p>
-        <p><strong>Price:</strong> ${seat.price?.toFixed(2)}</p>
-        <p><strong>Quantity:</strong> 1</p>
-        <p><strong>Order Total:</strong> ${seat.price?.toFixed(2)}</p>
-      </div>
-      <div className="order-poster">
-        <h2>Movie Poster</h2>
-        <img
-          src={movie.picture_url || "https://via.placeholder.com/150"}
-          alt={`${movie.title} Poster`}
-        />
-      </div>
+      <h1>Order Summary</h1>
+      <Ticket 
+      title={movie.movie} 
+      date={movie.date} 
+      time={showing.time}
+      row={seat.row}
+      col={seat.col}
+      price={seat.price}
+      poster={movie.picture_url}
+      />
 
       {/* Button section */}
       <div className="button-container">

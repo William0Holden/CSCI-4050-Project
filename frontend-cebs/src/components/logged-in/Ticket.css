@@ -1,0 +1,17 @@
+ticket-details {
+    margin: 20px 0;
+}
+.ticket-details h2 {
+    margin-bottom: 10px;
+}
+.ticket-details p {
+    margin: 5px 0;
+}
+.ticket-poster {
+    text-align: center;
+    margin: 20px 0;
+}
+.ticket-poster img {
+    max-width: 100%;
+    height: auto;
+}

@@ -6,22 +6,8 @@
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.order-details {
-    margin: 20px 0;
-}
-.order-details h2 {
+.order-container h2 {
     margin-bottom: 10px;
-}
-.order-details p {
-    margin: 5px 0;
-}
-.order-poster {
-    text-align: center;
-    margin: 20px 0;
-}
-.order-poster img {
-    max-width: 100%;
-    height: auto;
 }
 .button-container {
     display: inline-flex;
