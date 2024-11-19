@@ -44,7 +44,7 @@ class App extends Component {
         picture_url: "",
         trailer_url: "",
         mpaaa_us_rating: "",
-        now_showing: "",
+        coming_soon: false,
         show_dates_times: []
       },
       movieList: [],
