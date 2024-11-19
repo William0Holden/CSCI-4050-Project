@@ -13,6 +13,7 @@ const Movie = (props) => {
                     <h5 className="movie-card-title">{props.title}</h5>
                     <p className="movie-card-text">Rating: {props.rating}</p>
                     <p className="movie-card-text">Category: {props.category}</p>
+                    <p className="movie-card-showing">Showing: {props.now_showing}</p>
                     <TrailerModal trailer_url={props.trailer_url} />
                     
                     {props.isLoggedIn ? (
