@@ -3,6 +3,7 @@ from user_api.models import AppUser
 from django.core.mail import EmailMessage
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.exceptions import ValidationError
 # Create your models here.
 
 # DO NOT DELETE MODELS
@@ -27,14 +28,31 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
     
+
+
 class Showing(models.Model):
     date = models.CharField(max_length=100)
     time = models.CharField(max_length=100)
     showRoom = models.ForeignKey('ShowRoom', on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, related_name="showings", on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return self.movie.title + ' - ' + self.date + ' ' + self.time
+
+    def clean(self):
+        # Check for overlapping showings in the same showroom
+        conflicting_showings = Showing.objects.filter(
+            showRoom=self.showRoom,
+            date=self.date,
+            time=self.time
+        ).exclude(id=self.id)  # Exclude the current showing if it's an update
+        
+        if conflicting_showings.exists():
+            raise ValidationError(f"A showing is already scheduled in this showroom on {self.date} at {self.time}.")
+
+    def save(self, *args, **kwargs):
+        self.clean()  # Run custom validation before saving
+        super().save(*args, **kwargs)
 
 class Booking(models.Model):
     cardUsed = models.CharField(max_length=100)
@@ -109,16 +127,17 @@ def send_discount_email(sender, instance, created, **kwargs):
         code = instance.code
         
         for user in all_users:
-            username = user.username
-            to_email = user.email
-            subject = 'CINEMAEBOOKING PROMO CODE!!'
-            message = (
-                f"Dear {username},\n\n"
-                f"Use promo code {code} for {percent_off}% off your next purchase!\n\n"
-                f"Happy watching,\nCinemaEBooking"
-            )
-            email = EmailMessage(subject, message, to=[to_email])
-            try:
-                email.send()
-            except Exception as e:
-                print(f"Error sending email to {to_email}: {e}")
+            if (user.promotions == True):
+                username = user.username
+                to_email = user.email
+                subject = 'CINEMAEBOOKING PROMO CODE!!'
+                message = (
+                    f"Dear {username},\n\n"
+                    f"Use promo code {code} for {percent_off}% off your next purchase!\n\n"
+                    f"Happy watching,\nCinemaEBooking"
+                )
+                email = EmailMessage(subject, message, to=[to_email])
+                try:
+                    email.send()
+                except Exception as e:
+                    print(f"Error sending email to {to_email}: {e}")
