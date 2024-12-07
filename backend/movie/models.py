@@ -64,6 +64,7 @@ class Booking(models.Model):
         return self.user.username + ' - ' + self.datePlaced.strftime('%m/%d/%Y')
 
 class Ticket(models.Model):
+    id = models.AutoField(primary_key=True)
     seat = models.ForeignKey('Seat', on_delete=models.CASCADE)
     TICKET_TYPE_CHOICES = [
         ('child', 'Child'),
