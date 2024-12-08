@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
+from django.conf import settings
+
 
 # Create your views here.
 
@@ -179,6 +181,7 @@ class CreateStripeCheckoutSession(APIView):
                     'product_id':product.id
                 },
                 allow_promotion_codes=True,
+                automatic_tax={'enabled': True},
                 mode = 'payment',
                 success_url='http://localhost:3000/' + '?success=true',
                 cancel_url='http://localhost:3000/' + '?canceled=true',
