@@ -127,16 +127,15 @@ const OrderConfirm = () => {
 
       {/* Ticket Type Selection */}
       <div className="ticket-type-selection">
-        <label htmlFor="ticket-type">Ticket Type:</label>
-        <select
-          id="ticket-type"
-          value={ticketType}
-          onChange={(e) => setTicketType(e.target.value)}
-        >
-          <option value="child">Child</option>
-          <option value="senior">Senior</option>
-          <option value="adult">Adult</option>
-        </select>
+        <label htmlFor="adultNum"># of Adults:</label>
+        <input type="number" id="adultNum" name="adultNum" min="1" max="10"/>
+        <label htmlFor="childNum">   # of Children:</label>
+        <input type="number" id="childNum" name="childNum" min="1" max="10"/>
+        <label htmlFor="seniorNum">   # of seniors:</label>
+        <input type="number" id="seniorNum" name="seniorNum" min="1" max="10"/>
+      </div>
+      <div>
+        <button type="submit">Submit</button>
       </div>
 
       {/* Button section */}
