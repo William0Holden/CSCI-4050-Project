@@ -94,8 +94,6 @@ const SeatAgeSelection = () => {
                 ))}
             </div>
             <form id="ageForm" onSubmit={handleSubmit}>
-                <label htmlFor="age">Enter your age:</label>
-                <input type="number" id="age" name="age" min="1" max="120" required />
                 <button type="submit">Submit</button>
             </form>
         </div>
