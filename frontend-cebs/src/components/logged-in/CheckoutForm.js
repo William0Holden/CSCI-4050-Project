@@ -1,64 +1,107 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import Ticket from './Ticket';
+import { Link, useParams, useNavigate} from 'react-router-dom'; // Import Link from react-router-dom
 import './CheckoutForm.css';
+import axios from 'axios';
 
 const CheckoutForm = (props) => {
-  return (
-    <div className="checkout-container">
-      <h1>Checkout</h1>
-      <img 
-        src="https://m.media-amazon.com/images/M/MV5BZTk5ODY0MmQtMzA3Ni00NGY1LThiYzItZThiNjFiNDM4MTM3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" 
-        alt="Movie Poster" 
-        className="checkout-image"
-      />
-      <form>
-        <div className="form-group">
-          <label htmlFor="movie-title">Movie Title</label>
-          <input type="text" id="movie-title" name="movie-title" required />
+  const { seat_id } = useParams();
+  const navigate = useNavigate();
+  const [seat, setSeat] = React.useState(null);
+  const [showing, setShowing] = React.useState(null);
+  const [movie, setMovie] = React.useState(null);
+  const [user, setUser] = React.useState(null); // Store user data
+  const [ticketType, setTicketType] = React.useState('adult'); // Default ticket type
+  const [ticketId, setTicketId] = React.useState(null); // Store ticket ID after creation
+
+    // Fetch seat data
+    React.useEffect(() => {
+      axios
+        .get(`http://localhost:8000/api/seats/${seat_id}/`)
+        .then((response) => {
+          setSeat(response.data);
+        })
+        .catch((error) => {
+          console.error('There was an error fetching the seat data!', error);
+        });
+    }, [seat_id]);
+  
+    // Fetch showing data
+    React.useEffect(() => {
+      if (seat?.showing) {
+        axios
+          .get(`http://localhost:8000/api/showings/${seat.showing}/`)
+          .then((response) => {
+            setShowing(response.data);
+          })
+          .catch((error) => {
+            console.error('There was an error fetching the showing data!', error);
+          });
+      }
+    }, [seat]);
+  
+    // Fetch movie data
+    React.useEffect(() => {
+      if (showing?.movie) {
+        axios
+          .get(`http://localhost:8000/api/movies/${showing.movie}/`)
+          .then((response) => {
+            setMovie(response.data);
+          })
+          .catch((error) => {
+            console.error('There was an error fetching the movie data!', error);
+          });
+      }
+    }, [showing]);
+  
+    // Fetch user data
+    React.useEffect(() => {
+      axios
+        .get('http://localhost:8000/api/user') // Adjust endpoint if necessary
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch((error) => {
+          console.error('There was an error fetching the user data!', error);
+        });
+    }, []);
+
+
+    return (
+      <div className="order-container">
+        <h1>Order Summary</h1>
+        <Ticket
+          title={movie.title}
+          date={showing.date}
+          time={showing.time}
+          row={seat.row}
+          col={seat.col}
+          type={null}
+          poster={movie.picture_url}
+        />
+  
+        {/* Ticket Type Selection */}
+        <div className="ticket-type-selection">
+          <label htmlFor="adultNum"> Adult Tickets($10):</label>
+          <input type="number" id="adultNum" name="adultNum" min="1" max="10"/>
         </div>
-        <div className="form-group">
-          <label htmlFor="quantity">Quantity</label>
-          <input type="number" id="quantity" name="quantity" min="1" max="10" required />
+        <div>
+          <label htmlFor="childNum"> Children Tickets($8):</label>
+          <input type="number" id="childNum" name="childNum" min="1" max="10"/>
         </div>
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input type="text" id="name" name="name" required />
+        <div>
+          <label htmlFor="seniorNum"> Senior Tickets($8):</label>
+          <input type="number" id="seniorNum" name="seniorNum" min="1" max="10"/>
         </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input type="email" id="email" name="email" required />
+  
+        {/* Button section */}
+        <div className="button-container">
+          <button className="confirm-button" onClick={handleCreateOrder}>
+            Create Ticket & Booking
+          </button>
         </div>
-        <div className="form-group">
-          <label htmlFor="payment-method">Payment Method</label>
-          <select id="payment-method" name="payment-method" required>
-            <option value="saved">Use Saved Payment Method</option>
-            <option value="new">Add New Payment Method</option>
-          </select>
-        </div>
-        <div id="new-payment-info">
-          <div className="form-group">
-            <label htmlFor="card-number">Card Number</label>
-            <input type="text" id="card-number" name="card-number" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="expiry-date">Expiry Date</label>
-            <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="cvv">CVV</label>
-            <input type="text" id="cvv" name="cvv" />
-          </div>
-        </div>
-      </form>
-      
-      {/* New Checkout Button */}
-      <div className="button-container">
-        <Link to="/order-confirm">
-          <button className="checkout-button">Checkout</button>
-        </Link>
       </div>
-    </div>
-  );
+    );
 };
 
 export default CheckoutForm;
