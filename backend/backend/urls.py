@@ -25,7 +25,7 @@ from django.urls import path, include
 from movie import views
 from movie.views import CreateStripeCheckoutSession
 from movie.views import stripe_webhook_view
-from movie.views import CreatePaymentIntent
+#from movie.views import CreatePaymentIntent
 
 # import routers from the REST framework
 # it is necessary for routing
@@ -49,5 +49,5 @@ urlpatterns = [
     path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('create-checkout-session/<pk>/', csrf_exempt(CreateStripeCheckoutSession.as_view()), name='checkout_session'),
     path('stripe-webhook/', stripe_webhook_view, name='stripe-webhook'),
-    path('create-payment-intent/', CreatePaymentIntent.as_view(), name='payment-intent'),
+    #path('create-payment-intent/', CreatePaymentIntent.as_view(), name='payment-intent'),
 ]

@@ -159,32 +159,61 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 class CreateStripeCheckoutSession(APIView):
     #sending product id from frontend
     def post(self, request, *args, **kwargs):
-        prod_id = self.kwargs['pk']
+        bookingId = self.kwargs['pk']
+        childAmt = 0
+        adultAmt = 0
+        seniorAmt = 0
         try:
-            product = Ticket.objects.get(id=prod_id)
+            booking = Booking.objects.get(id=bookingId)
+            tickets = booking.tickets
+            for ticket in tickets:
+                if ticket.type == "child":
+                    childAmt = childAmt + 1
+                elif ticket.type == "adult":
+                    adultAmt = adultAmt + 1
+                elif ticket.type == "senior":
+                    seniorAmt = seniorAmt + 1
+                else:
+                    print("invalid type")
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
                         'price_data':{
                             'currency':'usd',
-                            'unit_amount':int(product.ticket_price)*100,
+                            'unit_amount':int(6)*100,
                             'product_data':{
-                                'booking':product.booking,
-                                'ticket number':product.ticket_number,
-                                'ticket type':product.ticket_type
+                                'ticket type':'Child'
                             }
                         },
-                        'quantity':1,
+                        'quantity':childAmt,
+                    },
+                    {
+                        'price_data':{
+                            'currency':'usd',
+                            'unit_amount':int(8)*100,
+                            'product_data':{
+                                'ticket type':'Adult'
+                            }
+                        },
+                        'quantity':adultAmt,
+                    },
+                    {
+                        'price_data':{
+                            'currency':'usd',
+                            'unit_amount':int(7)*100,
+                            'product_data':{
+                                'ticket type':'Senior'
+                            }
+                        },
+                        'quantity':seniorAmt,
                     },
                 ],
-                metadata={
-                    'product_id':product.id
-                },
                 allow_promotion_codes=True,
                 automatic_tax={'enabled': True},
                 mode = 'payment',
                 success_url='http://localhost:3000/' + '?success=true',
                 cancel_url='http://localhost:3000/' + '?canceled=true',
+                customer_email=booking.user.email
             )
             return redirect(checkout_session.url, code=303)
         except Exception as e:
@@ -218,11 +247,10 @@ def stripe_webhook_view(request):
             recipient_list=[customer_email],
             from_email="cinemaebooker@gmail.com"
         )
-
-        #creating payment history
         PaymentHistory.objects.create(product=product, payment_status=True)
     return HttpResponse(status=200)
         
+'''
 class CreatePaymentIntent(APIView):
     def post(self, request, *args, **kwargs):
         prod_id = request.data
@@ -242,3 +270,4 @@ class CreatePaymentIntent(APIView):
                 return Response({'clientSecret':intent['client_secret']}, status=200)
             except Exception as e:
                 return Response({'error':str(e)}, status=400)
+                '''

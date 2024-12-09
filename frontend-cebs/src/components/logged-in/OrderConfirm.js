@@ -94,9 +94,9 @@ const OrderConfirm = () => {
       };
 
       try {
-        await axios.post('http://localhost:8000/api/bookings/', bookingData);
+        const bookingResponse = await axios.post('http://localhost:8000/api/bookings/', bookingData);
         alert('Booking successfully created!');
-        navigate('/bookings'); // Redirect user after success
+        navigate(`/create-checkout-session/${bookingResponse.data.id}`); // Redirect user after success
       } catch (error) {
         console.error('There was an error creating the booking!', error);
         alert('Failed to create booking.');
