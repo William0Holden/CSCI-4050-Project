@@ -118,6 +118,12 @@ class SeatView(viewsets.ViewSet):  # Use ViewSet instead of ModelViewSet for cus
             return Response(seat_serializer.data, status=200)
         except Seat.DoesNotExist:
             return Response({'error': 'Seat not found'}, status=404)
+        
+    def get_by_showing(self, request, showing_id=None):
+        seats = Seat.objects.filter(showing_id=showing_id)
+        seat_serializer = SeatSerializer(seats, many=True)
+        return Response(seat_serializer.data, status=200)
+    
     
 
 from .serializers import CouponSerializer

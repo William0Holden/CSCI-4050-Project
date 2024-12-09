@@ -9,6 +9,7 @@ urlpatterns = [
     path('showings/<int:pk>/', views.ShowingView.as_view({'get': 'retrieve'}), name='showing-detail'), 
     path('seats/', views.SeatView.as_view({'post': 'post', 'get': 'list'}), name='seat-list'),  # Handles both GET and POST for seats
     path('seats/<int:pk>/', views.SeatView.as_view({'get': 'retrieve'}), name='seat-detail'),
+    path('seats/showing/<int:showing_id>/', views.SeatView.as_view({'get': 'get_by_showing'}), name='seat-by-showing'),
     path('tickets/', views.TicketView.as_view({'get': 'list'}), name='ticket-list'),
     path('tickets/<int:pk>/', views.TicketView.as_view({'get': 'retrieve'}), name='ticket-detail'),
     path('bookings/', views.BookingView.as_view({'post': 'post', 'get': 'list'}), name='booking-list'),
