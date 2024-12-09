@@ -121,21 +121,22 @@ const OrderConfirm = () => {
         time={showing.time}
         row={seat.row}
         col={seat.col}
-        price={8.0}
+        type={null}
         poster={movie.picture_url}
       />
 
       {/* Ticket Type Selection */}
       <div className="ticket-type-selection">
-        <label htmlFor="adultNum"># of Adults:</label>
+        <label htmlFor="adultNum"> Adult Tickets($10):</label>
         <input type="number" id="adultNum" name="adultNum" min="1" max="10"/>
-        <label htmlFor="childNum">   # of Children:</label>
-        <input type="number" id="childNum" name="childNum" min="1" max="10"/>
-        <label htmlFor="seniorNum">   # of seniors:</label>
-        <input type="number" id="seniorNum" name="seniorNum" min="1" max="10"/>
       </div>
       <div>
-        <button type="submit">Submit</button>
+        <label htmlFor="childNum"> Children Tickets($8):</label>
+        <input type="number" id="childNum" name="childNum" min="1" max="10"/>
+      </div>
+      <div>
+        <label htmlFor="seniorNum"> Senior Tickets($8):</label>
+        <input type="number" id="seniorNum" name="seniorNum" min="1" max="10"/>
       </div>
 
       {/* Button section */}
