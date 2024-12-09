@@ -106,13 +106,13 @@ const MyBookings = () => {
                         <div key={booking.id} className="booking-card">
                             {booking.detailedTickets.map((ticket) => (
                                 <Ticket
-                                    key={ticket.id}
+                                    key={ticket.id} 
                                     title={ticket.movie.title}
                                     date={ticket.showing.date}
                                     time={ticket.showing.time}
                                     row={ticket.seat.row}
                                     col={ticket.seat.col}
-                                    price={ticket.price}
+                                    type={ticket.type}
                                     poster={ticket.movie.picture_url}
                                 />
                             ))}
