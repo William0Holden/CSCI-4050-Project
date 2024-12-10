@@ -12,7 +12,8 @@ from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 from django.conf import settings
-
+import json
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -162,6 +163,30 @@ def send_return_conf(request, user, to_email):
         print("error sending email")
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@csrf_exempt
+def attach_payment_method(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.data)
+            payment_method_id = data.get("paymentMethodId")
+            customer_id = data.get("customerId")
+
+            payment_method = stripe.PaymentMethod.attach(
+                payment_method_id,
+                customer = customer_id
+            )
+
+            stripe.Customer.modify(
+                customer_id,
+                invoice_settings={"default_payment_method": payment_method_id},
+            )
+
+            return JsonResponse({"success": True, "paymentMethod": payment_method})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+    return JsonResponse({"success": False, "error": "Invalid request method"})
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CreateStripeCheckoutSession(APIView):
