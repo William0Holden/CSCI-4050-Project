@@ -15,6 +15,7 @@ from django.conf import settings
 import json
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 
@@ -73,17 +74,27 @@ class BookingView(viewsets.ModelViewSet):
 
 class TicketView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
+    def put(self, request, pk=None):
+        try:
+            ticket = Ticket.objects.get(pk=pk)
+            ticket.isBooked = True
+            ticket.save()
+            return Response(TicketSerializer(ticket).data, status=200)
+        except Ticket.DoesNotExist:
+            return Response({'error': 'Ticket not found'}, status=404)
     serializer_class = TicketSerializer
+    queryset = Ticket.objects.all()
 
-    def post (self, request):
+    def post(self, request):
         ticket_data = request.data
         ticket_serializer = TicketSerializer(data=ticket_data)
         if ticket_serializer.is_valid():
-            ticket = ticket_serializer.save()
-            return Response(TicketSerializer(ticket).data, status=201)
+            try:
+                ticket = ticket_serializer.save(user=request.user)  # Attach user to ticket
+                return Response(TicketSerializer(ticket).data, status=201)
+            except Exception as e:
+                return Response({'error': str(e)}, status=400)
         return Response(ticket_serializer.errors, status=400)
-
-    queryset = Ticket.objects.all()
 
 class ShowingView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
@@ -103,12 +114,13 @@ class SeatView(viewsets.ViewSet):  # Use ViewSet instead of ModelViewSet for cus
     def post(self, request):
         seat_data = request.data
         seat_serializer = SeatSerializer(data=seat_data)
-        
         if seat_serializer.is_valid():
-            seat = seat_serializer.save()
-            return Response(SeatSerializer(seat).data, status=201)
+            try:
+                seat = seat_serializer.save()
+                return Response(SeatSerializer(seat).data, status=201)
+            except ValidationError as e:
+                return Response({'error': str(e)}, status=400)
         return Response(seat_serializer.errors, status=400)
-
     def list(self, request):
         seats = Seat.objects.all()
         seat_serializer = SeatSerializer(seats, many=True)

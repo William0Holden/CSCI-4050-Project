@@ -11,11 +11,10 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = ['user', 'cardUsed', 'tickets', 'datePlaced']
 
 
-
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ('id', 'seat', 'type', 'price')
+        fields = ('id', 'seat', 'type', 'price', 'user', 'isBooked')
 
 
 class ShowingSerializer(serializers.ModelSerializer):

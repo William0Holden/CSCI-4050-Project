@@ -64,7 +64,7 @@ admin.site.register(Booking, BookingAdmin)
 
 # Admin for Ticket
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ('seat', 'type', 'price')
+    list_display = ('seat', 'type', 'price', 'user', 'isBooked')
     search_fields = ('seat__row', 'seat__col', 'type')
 
 

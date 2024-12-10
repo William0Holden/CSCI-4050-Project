@@ -4,12 +4,10 @@ from django.core.mail import EmailMessage
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
+
 # Create your models here.
-
 # DO NOT DELETE MODELS
-
 # Run $python manage.py makemigrations then $python manage.py migrate after creating models
-
 
 class Movie(models.Model):
     id = models.AutoField(primary_key=True)
@@ -24,11 +22,9 @@ class Movie(models.Model):
     trailer_url = models.URLField(max_length=500)
     mpaa_us_rating = models.CharField(max_length=5)
     coming_soon = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.title
-    
-
 
 class Showing(models.Model):
     date = models.CharField(max_length=100)
@@ -46,7 +42,7 @@ class Showing(models.Model):
             date=self.date,
             time=self.time
         ).exclude(id=self.id)  # Exclude the current showing if it's an update
-        
+
         if conflicting_showings.exists():
             raise ValidationError(f"A showing is already scheduled in this showroom on {self.date} at {self.time}.")
 
@@ -59,13 +55,14 @@ class Booking(models.Model):
     datePlaced = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     tickets = models.ManyToManyField('Ticket')
-    
+
     def __str__(self):
         return self.user.username + ' - ' + self.datePlaced.strftime('%m/%d/%Y')
 
 class Ticket(models.Model):
     id = models.AutoField(primary_key=True)
     seat = models.ForeignKey('Seat', on_delete=models.CASCADE)
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE)  # Attach a user to each ticket
     TICKET_TYPE_CHOICES = [
         ('child', 'Child'),
         ('adult', 'Adult'),
@@ -73,10 +70,11 @@ class Ticket(models.Model):
     ]
     type = models.CharField(max_length=10, choices=TICKET_TYPE_CHOICES)
     price = models.DecimalField(max_digits=5, decimal_places=2)
+    isBooked = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.seat.__str__() + ' - ' + self.type
-    
+        return f"{self.seat} - {self.type} ({self.user.username})"
+
 class ShowRoom(models.Model):
     show_room_number = models.CharField(max_length=5)
 
@@ -92,25 +90,39 @@ class Seat(models.Model):
 
     def __str__(self):
         return self.row + self.col
-    
+
+    def clean(self):
+        # Prevent duplicate seats for the same showing
+        duplicate_seat = Seat.objects.filter(
+            row=self.row,
+            col=self.col,
+            showing=self.showing
+        ).exclude(id=self.id)  # Exclude the current seat if it's an update
+
+        if duplicate_seat.exists():
+            raise ValidationError(f"Seat {self.row}{self.col} is already taken for this showing.")
+
+    def save(self, *args, **kwargs):
+        self.clean()  # Run custom validation before saving
+        super().save(*args, **kwargs)
 
 class PaymentHistory(models.Model):
-    user=models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, null=True)
-    products=models.ManyToManyField(Ticket)
-    date=models.DateTimeField(auto_now_add=True)
-    payment_status=models.BooleanField()
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, null=True)
+    products = models.ManyToManyField(Ticket)
+    date = models.DateTimeField(auto_now_add=True)
+    payment_status = models.BooleanField()
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
         return ', '.join([str(product) for product in self.products.all()])
-    
+
 class Coupon(models.Model):
-    id=models.CharField(max_length=100, primary_key=True)
-    percent_off=models.IntegerField()
+    id = models.CharField(max_length=100, primary_key=True)
+    percent_off = models.IntegerField()
 
     def __str__(self):
         return str(self.percent_off) + '%'
-    
+
 class Discount(models.Model):
     # Coupon, can get id from this
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, unique=True)
@@ -126,9 +138,9 @@ def send_discount_email(sender, instance, created, **kwargs):
         all_users = AppUser.objects.all()  # Fetch all users
         percent_off = instance.coupon.percent_off
         code = instance.code
-        
+
         for user in all_users:
-            if (user.promotions == True):
+            if user.promotions:
                 username = user.username
                 to_email = user.email
                 subject = 'CINEMAEBOOKING PROMO CODE!!'
