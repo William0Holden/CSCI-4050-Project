@@ -3,3 +3,4 @@ npm install react-scripts
 npm install reactstrap bootstrap
 npm install react-modal
 npm install js-cookie
+npm install @stripe/stripe-js

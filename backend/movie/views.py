@@ -14,6 +14,7 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 import json
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
 
 # Create your views here.
 
@@ -285,6 +286,14 @@ def stripe_webhook_view(request):
         )
         PaymentHistory.objects.create(product=product, payment_status=True)
     return HttpResponse(status=200)
+
+@api_view(['POST'])
+def test_payment(request):
+    test_payment_intent = stripe.PaymentIntent.create(
+    amount=1000, currency='pln', 
+    payment_method_types=['card'],
+    receipt_email='test@example.com')
+    return Response(status=status.HTTP_200_OK, data=test_payment_intent)
         
 '''
 class CreatePaymentIntent(APIView):

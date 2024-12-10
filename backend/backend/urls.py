@@ -16,15 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 
-from django.views.decorators.csrf import csrf_exempt
-
 # add include to the path
 from django.urls import path, include
 
 # import views from movie
 from movie import views
-from movie.views import CreateStripeCheckoutSession
-from movie.views import stripe_webhook_view
 #from movie.views import CreatePaymentIntent
 
 # import routers from the REST framework
@@ -47,7 +43,5 @@ urlpatterns = [
     path('api/', include('user_api.urls')),
     path('api/', include('movie.urls')),
     path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
-    path('create-checkout-session/<pk>/', csrf_exempt(CreateStripeCheckoutSession.as_view()), name='checkout_session'),
-    path('stripe-webhook/', stripe_webhook_view, name='stripe-webhook'),
     #path('create-payment-intent/', CreatePaymentIntent.as_view(), name='payment-intent'),
 ]

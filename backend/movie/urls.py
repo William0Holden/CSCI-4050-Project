@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+from movie.views import CreateStripeCheckoutSession
+from movie.views import stripe_webhook_view
+from django.views.decorators.csrf import csrf_exempt
 
 
 urlpatterns = [
@@ -15,5 +18,8 @@ urlpatterns = [
     path('bookings/', views.BookingView.as_view({'post': 'post', 'get': 'list'}), name='booking-list'),
     path('bookings/<int:pk>/', views.BookingView.as_view({'get': 'retrieve'}), name='booking-detail'),
     path('bookings/user/<int:user_id>/', views.BookingView.as_view({'get': 'get_by_user'}), name='booking-by-user'),
+    path('test-payment/', views.test_payment),
+    path('create-checkout-session/<pk>/', csrf_exempt(CreateStripeCheckoutSession.as_view()), name='checkout_session'),
+    path('stripe-webhook/', stripe_webhook_view, name='stripe-webhook'),
 ]
 
