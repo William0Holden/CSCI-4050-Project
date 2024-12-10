@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
@@ -162,68 +163,72 @@ def send_return_conf(request, user, to_email):
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CreateStripeCheckoutSession(APIView):
-    #sending product id from frontend
     def post(self, request, *args, **kwargs):
         bookingId = self.kwargs['pk']
-        childAmt = 0
-        adultAmt = 0
-        seniorAmt = 0
         try:
+            # Get the booking by ID
             booking = Booking.objects.get(id=bookingId)
-            tickets = booking.tickets
+
+            # Use the related manager to access tickets
+            tickets = booking.tickets.all()
+            
+            childAmt = adultAmt = seniorAmt = 0
+
+            # Calculate quantities for each ticket type
             for ticket in tickets:
                 if ticket.type == "child":
-                    childAmt = childAmt + 1
+                    childAmt += 1
                 elif ticket.type == "adult":
-                    adultAmt = adultAmt + 1
+                    adultAmt += 1
                 elif ticket.type == "senior":
-                    seniorAmt = seniorAmt + 1
-                else:
-                    print("invalid type")
+                    seniorAmt += 1
+
+            # Prepare line items dynamically
+            line_items = []
+            if childAmt > 0:
+                line_items.append({
+                    'price_data': {
+                        'currency': 'usd',
+                        'unit_amount': 6 * 100,
+                        'product_data': {'name': 'Child Ticket'},
+                    },
+                    'quantity': childAmt,
+                })
+            if adultAmt > 0:
+                line_items.append({
+                    'price_data': {
+                        'currency': 'usd',
+                        'unit_amount': 8 * 100,
+                        'product_data': {'name': 'Adult Ticket'},
+                    },
+                    'quantity': adultAmt,
+                })
+            if seniorAmt > 0:
+                line_items.append({
+                    'price_data': {
+                        'currency': 'usd',
+                        'unit_amount': 7 * 100,
+                        'product_data': {'name': 'Senior Ticket'},
+                    },
+                    'quantity': seniorAmt,
+                })
+
+            # Create Stripe Checkout session
             checkout_session = stripe.checkout.Session.create(
-                line_items=[
-                    {
-                        'price_data':{
-                            'currency':'usd',
-                            'unit_amount':int(6)*100,
-                            'product_data':{
-                                'ticket type':'Child'
-                            }
-                        },
-                        'quantity':childAmt,
-                    },
-                    {
-                        'price_data':{
-                            'currency':'usd',
-                            'unit_amount':int(8)*100,
-                            'product_data':{
-                                'ticket type':'Adult'
-                            }
-                        },
-                        'quantity':adultAmt,
-                    },
-                    {
-                        'price_data':{
-                            'currency':'usd',
-                            'unit_amount':int(7)*100,
-                            'product_data':{
-                                'ticket type':'Senior'
-                            }
-                        },
-                        'quantity':seniorAmt,
-                    },
-                ],
+                line_items=line_items,
                 allow_promotion_codes=True,
-                automatic_tax={'enabled': True},
-                mode = 'payment',
-                success_url='http://localhost:3000/' + '?success=true',
-                cancel_url='http://localhost:3000/' + '?canceled=true',
-                customer_email=booking.user.email
+                automatic_tax={'enabled': False}, # can't be used without origin address
+                mode='payment',
+                success_url='http://localhost:3000/?success=true',
+                cancel_url='http://localhost:3000/?canceled=true',
+                customer_email=booking.user.email,
             )
             return redirect(checkout_session.url, code=303)
+
         except Exception as e:
-            return Response({'msg':'something went wrong while creating stripe session','error':str(e)}, status=500)
+            return Response({'msg': 'Error creating Stripe session', 'error': str(e)}, status=500)
 
 @csrf_exempt
 def stripe_webhook_view(request):

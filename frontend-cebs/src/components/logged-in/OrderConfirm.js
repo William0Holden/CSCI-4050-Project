@@ -94,9 +94,9 @@ const OrderConfirm = () => {
       };
 
       try {
-        const bookingResponse = await axios.post('http://localhost:8000/api/bookings/', bookingData);
+        await axios.post('http://localhost:8000/api/bookings/', bookingData);
         alert('Booking successfully created!');
-        navigate(`/create-checkout-session/${bookingResponse.data.id}`); // Redirect user after success
+        navigate('/bookings'); // Redirect user after success
       } catch (error) {
         console.error('There was an error creating the booking!', error);
         alert('Failed to create booking.');
@@ -121,22 +121,22 @@ const OrderConfirm = () => {
         time={showing.time}
         row={seat.row}
         col={seat.col}
-        type={null}
+        price={8.0}
         poster={movie.picture_url}
       />
 
       {/* Ticket Type Selection */}
       <div className="ticket-type-selection">
-        <label htmlFor="adultNum"> Adult Tickets($10):</label>
-        <input type="number" id="adultNum" name="adultNum" min="1" max="10"/>
-      </div>
-      <div>
-        <label htmlFor="childNum"> Children Tickets($8):</label>
-        <input type="number" id="childNum" name="childNum" min="1" max="10"/>
-      </div>
-      <div>
-        <label htmlFor="seniorNum"> Senior Tickets($8):</label>
-        <input type="number" id="seniorNum" name="seniorNum" min="1" max="10"/>
+        <label htmlFor="ticket-type">Ticket Type:</label>
+        <select
+          id="ticket-type"
+          value={ticketType}
+          onChange={(e) => setTicketType(e.target.value)}
+        >
+          <option value="child">Child</option>
+          <option value="senior">Senior</option>
+          <option value="adult">Adult</option>
+        </select>
       </div>
 
       {/* Button section */}
