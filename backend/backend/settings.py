@@ -27,12 +27,17 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+CSRF_COOKIE_SECURE = False # Set to True in production
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True # Set to False in production
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1',
     'http://0.0.0.0',
+    'https://checkout.stripe.com',
+    # add stripe urls here if this were to go to production
 ]
 # Application definition
 

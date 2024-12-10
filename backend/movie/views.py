@@ -251,11 +251,22 @@ class CreateStripeCheckoutSession(APIView):
                 cancel_url='http://localhost:3000/?canceled=true',
                 customer_email=booking.user.email,
             )
-            return redirect(checkout_session.url, code=303)
+            
+            # Return response with CORS headers
+            response = JsonResponse({'url': checkout_session.url,
+                                     'sessionid': checkout_session.id})
+            response["Access-Control-Allow-Origin"] = "http://localhost:3000"
+            response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+            response["Access-Control-Allow-Headers"] = "Content-Type"
+            return response
 
         except Exception as e:
-            return Response({'msg': 'Error creating Stripe session', 'error': str(e)}, status=500)
-
+            response = JsonResponse({'msg': 'Error creating Stripe session', 'error': str(e)}, status=500)
+            response["Access-Control-Allow-Origin"] = "http://localhost:3000"
+            response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+            response["Access-Control-Allow-Headers"] = "Content-Type"
+            return response
+        
 @csrf_exempt
 def stripe_webhook_view(request):
     payload = request.body
