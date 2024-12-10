@@ -8,7 +8,7 @@ import Login from './components/logged-out/Login';
 import EditProfile from './components/logged-in/EditProfile';
 import ShowtimeSelection from './components/logged-in/ShowtimeSelection';
 import SeatAgeSelection from './components/logged-in/SeatAgeSelection';
-import CheckoutForm from './components/logged-in/CheckoutForm';
+import CheckoutPage from './components/logged-in/CheckoutPage';
 import OrderConfirm from './components/logged-in/OrderConfirm';
 import Admin from './components/admin/AdminHome';
 import ManagePromos from './components/admin/ManagePromos';
@@ -106,7 +106,7 @@ class App extends Component {
         <Route exact path='/showtime-selection' element={<ShowtimeSelection />} />
         <Route path="/showtime-selection/:movie_id" element={<ShowtimeSelection />} />
         <Route exact path='/seat-age-selection/:showing_id' element={<SeatAgeSelection />} />
-        <Route exact path='/checkout' element={<CheckoutForm />} />
+        <Route exact path='/checkout' element={<CheckoutPage/>} />
         <Route exact path='/order-confirm/:seat_id' element={<OrderConfirm />} />
         <Route exact path='/bookings' element={<MyBookings />} />
         <Route exact path='/admin' element={<Admin />} />
