@@ -8,10 +8,11 @@ const stripePromise = loadStripe("pk_test_51QFgwMEs66IYT8coMzBUiE7OPfZmGUh7RopTR
 function CheckoutPage() {
   const [user, setUser] = useState(null);
   const [tickets, setTickets] = useState([]);
+  const [seats, setSeats] = useState([]);
   const [movies, setMovies] = useState([]);
   const [bookingId, setBookingId] = useState(null);
 
-  // Fetch user, tickets, and movies data when the page loads
+  // Fetch user, tickets, seats, and movies data when the page loads
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,13 +25,35 @@ function CheckoutPage() {
         const ticketsResponse = await axios.get(
           `http://localhost:8000/api/tickets/user/${userResponse.data.user.user_id}/`
         );
-        setTickets(ticketsResponse.data);
-        console.log("Tickets data:", ticketsResponse.data);
+        const ticketsData = ticketsResponse.data;
+        setTickets(ticketsData);
+        console.log("Tickets data:", ticketsData);
 
-        // Fetch movies data
-        const moviesResponse = await axios.get("http://localhost:8000/api/movies/");
-        setMovies(moviesResponse.data);
-        console.log("Movies data:", moviesResponse.data);
+        // Fetch seat data for each ticket
+        const seatPromises = ticketsData.map((ticket) =>
+          axios.get(`http://localhost:8000/api/seats/${ticket.seat}/`)
+        );
+        const seatResponses = await Promise.all(seatPromises);
+        const seatsData = seatResponses.map((response) => response.data);
+        setSeats(seatsData);
+
+        // Fetch movie data for each showing linked to the seat
+        const showingPromises = seatsData.map((seat) =>
+          axios.get(`http://localhost:8000/api/showings/${seat.showing}/`)
+        );
+        const showingResponses = await Promise.all(showingPromises);
+        const showingData = showingResponses.map((response) => response.data);
+
+        // Now fetch movie details based on movie ID from the showing data
+        const moviePromises = showingData.map((showing) =>
+          axios.get(`http://localhost:8000/api/movies/${showing.movie}/`)
+        );
+        const movieResponses = await Promise.all(moviePromises);
+        const moviesData = movieResponses.map((response) => response.data);
+        setMovies(moviesData);
+
+        console.log("Seats data:", seatsData);
+        console.log("Movies data:", moviesData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -48,11 +71,10 @@ function CheckoutPage() {
       }
 
       // Create booking
-      const ticket = tickets[0]; // Using the first ticket for this example
       const bookingData = {
         user: user.user.user_id,
         cardUsed: "1234567890",
-        tickets: tickets.map(ticket => ticket.id),
+        tickets: tickets.map((ticket) => ticket.id),
         datePlaced: new Date().toISOString(),
       };
       const bookingResponse = await axios.post(
@@ -115,20 +137,20 @@ function CheckoutPage() {
       <h1>Checkout Page</h1>
 
       {/* Display all tickets using the Ticket component */}
-      {tickets.length > 0 ? (
+      {tickets.length > 0 && seats.length > 0 && movies.length > 0 ? (
         <div>
           <h2>Your Tickets</h2>
           <div>
-            {tickets.map((ticket) => (
+            {tickets.map((ticket, index) => (
               <Ticket
                 key={ticket.id}
-                title={ticket.movieTitle}
-                date={ticket.showingDate}
-                time={ticket.showingTime}
-                row={ticket.row}
-                col={ticket.col}
+                title={movies[index]?.title || "Unknown Movie"}
+                date={seats[index]?.showing.date || "Unknown Date"}
+                time={seats[index]?.showing.time || "Unknown Time"}
+                row={seats[index]?.row || "N/A"}
+                col={seats[index]?.col || "N/A"}
                 price={ticket.price}
-                poster={ticket.posterUrl}
+                poster={movies[index]?.picture_url || ""}
               />
             ))}
           </div>
