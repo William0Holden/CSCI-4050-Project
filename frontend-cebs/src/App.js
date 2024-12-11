@@ -18,7 +18,6 @@ import NavBar from './components/NavBar';
 import PasswordReset from './components/logged-out/PasswordReset';
 import ResetPasswordForm from './components/logged-out/ResetPasswordForm';
 import MyBookings from './components/logged-in/MyBookings'
-
 import axios from 'axios';
 import { Component } from 'react';
 

@@ -1,24 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';  // Import useNavigate for redirection
+import { useParams, useNavigate } from 'react-router-dom';
 import './SeatAgeSelection.css';
 
 const SeatAgeSelection = () => {
-    const { showing_id } = useParams();  // Correctly destructure useParams
+    const { showing_id } = useParams();
     const [showing, setShowing] = useState(null);
-    const [selectedSeat, setSelectedSeat] = useState(null);  // Change to a single selected seat state
+    const [selectedSeat, setSelectedSeat] = useState(null);
     const [seatInfo, setSeatInfo] = useState(null);
-    const [bookedSeatId, setBookedSeatId] = useState(null);  // New state for booked seat id
-    const navigate = useNavigate();  // Initialize useNavigate hook
+    const [user, setUser] = useState(null);
+    const [ticketType, setTicketType] = useState('adult');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Fetch user data
+        axios
+            .get('http://localhost:8000/api/user')
+            .then(response => {
+                setUser(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+            });
+    }, []);
 
     useEffect(() => {
         // Fetch showing data
-        axios.get(`http://localhost:8000/api/showings/${showing_id}/`)
+        axios
+            .get(`http://localhost:8000/api/showings/${showing_id}/`)
             .then(response => {
                 setShowing(response.data);
             })
             .catch(error => {
-                console.error("There was an error fetching the showing data!", error);
+                console.error('Error fetching showing data:', error);
             });
     }, [showing_id]);
 
@@ -28,40 +42,47 @@ const SeatAgeSelection = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const form = event.target;
-        const data = new FormData(form);
-        const age = data.get('age');
-      
+
         const postData = {
             row: seatInfo.row,
             col: seatInfo.col,
             available: false,
             showing: showing.id,
-            showroom: showing.showRoom, // Assuming correct field naming from showing data
+            showroom: showing.showRoom,
         };
-        console.log('Posting data:', postData);
-    
+
         try {
-            const response = await axios.post('http://localhost:8000/api/seats/', postData);  // Await the response
-            navigate(`/order-confirm/${response.data.id}`);  // Redirect using response data
-        }
-        catch(error) {
-            console.error('Error booking seat:', error);
+            // Post the seat
+            const seatResponse = await axios.post('http://localhost:8000/api/seats/', postData);
+
+            const ticketData = {
+                type: ticketType,
+                price: ticketType === 'adult' ? 8.0 : ticketType === 'child' ? 6.0 : 7.0, // Price based on ticket type
+                seat: seatResponse.data.id, // Link the seat ID
+                user: user?.user?.user_id, // Attach the user ID
+                isBooked: false, // Set as unbooked initially
+            };
+
+            // Post the ticket
+            await axios.post('http://localhost:8000/api/tickets/', ticketData);
+
+            // Redirect to confirmation page
+            navigate(`/order-confirm/${seatResponse.data.id}`);
+        } catch (error) {
+            console.error('Error posting seat or ticket:', error);
         }
     };
-    
-    const seats = showing.seats || [];  // Use showing.seats instead of undefined `showings`
+
+    const seats = showing.seats || [];
 
     const handleSeatClick = (seatIndex) => {
-        // Adjust row and col to start at 1
-        const row = Math.floor(seatIndex / 10) + 1; 
+        const row = Math.floor(seatIndex / 10) + 1;
         const col = (seatIndex % 10) + 1;
-    
-        // If a seat is selected, deselect it by clearing selectedSeat
+
         if (selectedSeat === seatIndex) {
-            setSelectedSeat(null);  // Deselect the seat if it's already selected
+            setSelectedSeat(null);
         } else {
-            setSelectedSeat(seatIndex);  // Select the new seat
+            setSelectedSeat(seatIndex);
         }
 
         setSeatInfo({ row, col });
@@ -75,10 +96,9 @@ const SeatAgeSelection = () => {
                 {[...Array(10)].map((_, rowIndex) => (
                     <div key={`row-${rowIndex}`} className="seat-row">
                         {[...Array(10)].map((_, colIndex) => {
-                            // Adjust seatIndex calculation
-                            const seatIndex = rowIndex * 10 + colIndex; 
-                            const rowNumber = rowIndex + 1;  // Row number starts at 1
-                            const colNumber = colIndex + 1;  // Column number starts at 1
+                            const seatIndex = rowIndex * 10 + colIndex;
+                            const rowNumber = rowIndex + 1;
+                            const colNumber = colIndex + 1;
                             const isUnavailable = seats[seatIndex]?.available === false;
                             return (
                                 <div
@@ -94,6 +114,14 @@ const SeatAgeSelection = () => {
                 ))}
             </div>
             <form id="ageForm" onSubmit={handleSubmit}>
+                <label>
+                    Ticket Type:
+                    <select value={ticketType} onChange={(e) => setTicketType(e.target.value)}>
+                        <option value="adult">Adult</option>
+                        <option value="child">Child</option>
+                        <option value="senior">Senior</option>
+                    </select>
+                </label>
                 <button type="submit">Submit</button>
             </form>
         </div>

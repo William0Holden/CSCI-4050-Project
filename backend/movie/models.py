@@ -51,6 +51,7 @@ class Showing(models.Model):
         super().save(*args, **kwargs)
 
 class Booking(models.Model):
+    id = models.AutoField(primary_key=True)
     cardUsed = models.CharField(max_length=100)
     datePlaced = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)

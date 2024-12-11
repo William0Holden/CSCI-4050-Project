@@ -74,6 +74,9 @@ class BookingView(viewsets.ModelViewSet):
 
 class TicketView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
+    serializer_class = TicketSerializer
+    queryset = Ticket.objects.all()
+
     def put(self, request, pk=None):
         try:
             ticket = Ticket.objects.get(pk=pk)
@@ -82,8 +85,6 @@ class TicketView(viewsets.ModelViewSet):
             return Response(TicketSerializer(ticket).data, status=200)
         except Ticket.DoesNotExist:
             return Response({'error': 'Ticket not found'}, status=404)
-    serializer_class = TicketSerializer
-    queryset = Ticket.objects.all()
 
     def post(self, request):
         ticket_data = request.data
@@ -95,6 +96,11 @@ class TicketView(viewsets.ModelViewSet):
             except Exception as e:
                 return Response({'error': str(e)}, status=400)
         return Response(ticket_serializer.errors, status=400)
+
+    def get_by_user(self, request, user_id):
+        tickets = Ticket.objects.filter(user_id=user_id, isBooked=False)
+        serializer = TicketSerializer(tickets, many=True)
+        return Response(serializer.data)
 
 class ShowingView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
@@ -259,8 +265,8 @@ class CreateStripeCheckoutSession(APIView):
                 allow_promotion_codes=True,
                 automatic_tax={'enabled': False}, # can't be used without origin address
                 mode='payment',
-                success_url='http://localhost:3000/?success=true',
-                cancel_url='http://localhost:3000/?canceled=true',
+                success_url='http://localhost:3000/bookings/?success=true',
+                cancel_url='http://localhost:3000/bookings/?canceled=true',
                 customer_email=booking.user.email,
             )
             

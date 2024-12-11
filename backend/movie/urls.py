@@ -14,6 +14,7 @@ urlpatterns = [
     path('seats/<int:pk>/', views.SeatView.as_view({'get': 'retrieve'}), name='seat-detail'),
     path('seats/showing/<int:showing_id>/', views.SeatView.as_view({'get': 'get_by_showing'}), name='seat-by-showing'),
     path('tickets/', views.TicketView.as_view({'get': 'list'}), name='ticket-list'),
+    path('tickets/user/<int:user_id>/', views.TicketView.as_view({'get': 'get_by_user'}), name='ticket-by-user'),
     path('tickets/<int:pk>/', views.TicketView.as_view({'get': 'retrieve'}), name='ticket-detail'),
     path('bookings/', views.BookingView.as_view({'post': 'post', 'get': 'list'}), name='booking-list'),
     path('bookings/<int:pk>/', views.BookingView.as_view({'get': 'retrieve'}), name='booking-detail'),
