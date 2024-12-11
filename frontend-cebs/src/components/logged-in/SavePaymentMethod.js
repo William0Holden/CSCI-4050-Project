@@ -8,6 +8,8 @@ const SavePaymentMethod = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [userEmail, setUserEmail] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [stripeId, setStripeId] = useState(null); // Track the user's existing stripe_id
 
     useEffect(() => {
         // Fetch user information when the component mounts
@@ -15,6 +17,8 @@ const SavePaymentMethod = () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/user');
                 setUserEmail(response.data.user.email); // Adjust the path if `email` is nested differently
+                setUserId(response.data.user.user_id); // Assuming user object has an id field
+                setStripeId(response.data.user.stripe_id); // Get existing stripe_id if available
             } catch (err) {
                 console.error('Error fetching user:', err);
                 setMessage('Unable to fetch user information. Please try again.');
@@ -25,73 +29,96 @@ const SavePaymentMethod = () => {
     }, []);
 
     const handleSave = async () => {
-        if (!userEmail) {
+        if (!userEmail || !userId) {
             setMessage('User information not available. Cannot save payment method.');
             return;
         }
-    
+
         setLoading(true);
         setMessage('');
         const cardElement = elements.getElement(CardElement);
-    
+
         try {
             // Create a payment method
             const { paymentMethod, error } = await stripe.createPaymentMethod({
                 type: 'card',
                 card: cardElement,
             });
-    
+
             if (error) {
                 console.error(error);
                 setMessage(error.message);
                 setLoading(false);
                 return;
             }
-    
+
             console.log('Payment method:', paymentMethod.id);
-    
-            // Fetch or create customer using email
-            const customerResponse = await fetch('http://localhost:8000/api/create-customer/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: userEmail }),
-            });
-            const customerData = await customerResponse.json();
-    
-            if (customerData.error) {
-                setMessage(customerData.error);
-                setLoading(false);
-                return;
+
+            let customerIdToUse = stripeId;
+
+            // If the user doesn't have a stripe_id, create a new customer
+            if (!customerIdToUse) {
+                // Fetch or create customer using email
+                const customerResponse = await fetch('http://localhost:8000/api/create-customer/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: userEmail }),
+                });
+                const customerData = await customerResponse.json();
+
+                if (customerData.error) {
+                    setMessage(customerData.error);
+                    setLoading(false);
+                    return;
+                }
+
+                customerIdToUse = customerData.customer.id.toString();
+                console.log('Created Customer ID:', customerIdToUse);
             }
-    
+
             // Attach payment method to customer
-            const customerIdToPass = customerData.customer.id.toString();
             const paymentMethodIdToPass = paymentMethod.id.toString();
-            console.log('Customer ID:', customerIdToPass);
             console.log('Payment Method ID:', paymentMethodIdToPass);
-    
+
             const attachResponse = await fetch('http://localhost:8000/api/attach-payment-method/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    customerId: customerIdToPass,  // Adjusted to match backend expected key
-                    paymentMethodId: paymentMethodIdToPass, // Adjusted to match backend expected key
+                    customerId: customerIdToUse,  // Use existing or newly created customer ID
+                    paymentMethodId: paymentMethodIdToPass, // Pass payment method ID
                 }),
             });
             const attachData = await attachResponse.json();
-    
+
             if (attachData.error) {
                 setMessage(attachData.error);
+                setLoading(false);
+                return;
+            }
+
+            // If the user did not have a stripe_id, update the user object with the newly created Stripe customer ID
+            if (!stripeId) {
+                const updateUserResponse = await axios.put(`http://localhost:8000/api/update-stripe-id/${userId}`, {
+                    stripe_id: customerIdToUse,  // Update with the customer ID from Stripe
+                });
+
+                if (updateUserResponse.status === 200) {
+                    setMessage('Payment method saved and Stripe ID updated successfully!');
+                } else {
+                    setMessage('Failed to update Stripe ID.');
+                }
             } else {
                 setMessage('Payment method saved successfully!');
             }
+
         } catch (err) {
             console.error('Error saving payment method:', err);
             setMessage('An error occurred. Please try again.');
         }
+
         setLoading(false);
     };
-    
+
     return (
         <div>
             <h2>Save Payment Method</h2>
