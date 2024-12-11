@@ -4,7 +4,6 @@ import TrailerModal from './TrailerModal';
 import { Link } from 'react-router-dom';
 
 const Movie = (props) => {
-
     return (
         <div className="movie-container">
             <div className="movie-card">
@@ -14,8 +13,10 @@ const Movie = (props) => {
                     <p className="movie-card-text">Rating: {props.rating}</p>
                     <p className="movie-card-text">Category: {props.category}</p>
                     <div className="movie-buttons">
-                        <TrailerModal trailer_url={props.trailer_url} />
-                        
+                        <TrailerModal 
+                            trailer_url={props.trailer_url} 
+                            synopsis={props.synopsis} 
+                        />
                         {props.isLoggedIn ? (
                             <Link to={`/showtime-selection/${props.movie_id}`} className="book-button">
                                 Book Now
@@ -26,6 +27,6 @@ const Movie = (props) => {
             </div>
         </div>
     );
-}
+};
 
 export default Movie;

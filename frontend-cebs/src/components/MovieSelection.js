@@ -61,6 +61,7 @@ const MovieSelection = (props) => {
                                 showtimes={movie.show_dates_times}
                                 trailer_url={movie.trailer_url}
                                 category={movie.category}
+                                synopsis={movie.synopsis}
                             />
                     ))}
                 </div>
@@ -78,6 +79,7 @@ const MovieSelection = (props) => {
                                 showtimes={movie.show_dates_times}
                                 trailer_url={movie.trailer_url}
                                 category={movie.category}
+                                synopsis={movie.synopsis}
                             />
                     ))}
                 </div>
