@@ -11,6 +11,7 @@ function CheckoutPage() {
   const [seats, setSeats] = useState([]);
   const [movies, setMovies] = useState([]);
   const [bookingId, setBookingId] = useState(null);
+  const [showings, setShowings] = useState([]);  // Renamed to `showings` for clarity
 
   // Fetch user, tickets, seats, and movies data when the page loads
   useEffect(() => {
@@ -37,12 +38,13 @@ function CheckoutPage() {
         const seatsData = seatResponses.map((response) => response.data);
         setSeats(seatsData);
 
-        // Fetch movie data for each showing linked to the seat
+        // Fetch showing data for each seat's showing reference
         const showingPromises = seatsData.map((seat) =>
           axios.get(`http://localhost:8000/api/showings/${seat.showing}/`)
         );
         const showingResponses = await Promise.all(showingPromises);
         const showingData = showingResponses.map((response) => response.data);
+        setShowings(showingData);
 
         // Now fetch movie details based on movie ID from the showing data
         const moviePromises = showingData.map((showing) =>
@@ -137,22 +139,28 @@ function CheckoutPage() {
       <h1>Checkout Page</h1>
 
       {/* Display all tickets using the Ticket component */}
-      {tickets.length > 0 && seats.length > 0 && movies.length > 0 ? (
+      {tickets.length > 0 && seats.length > 0 && movies.length > 0 && showings.length > 0 ? (
         <div>
           <h2>Your Tickets</h2>
           <div>
-            {tickets.map((ticket, index) => (
-              <Ticket
-                key={ticket.id}
-                title={movies[index]?.title || "Unknown Movie"}
-                date={seats[index]?.showing.date || "Unknown Date"}
-                time={seats[index]?.showing.time || "Unknown Time"}
-                row={seats[index]?.row || "N/A"}
-                col={seats[index]?.col || "N/A"}
-                price={ticket.price}
-                poster={movies[index]?.picture_url || ""}
-              />
-            ))}
+            {tickets.map((ticket, index) => {
+              const showing = showings[index];
+              const movie = movies[index];
+              const seat = seats[index];
+
+              return (
+                <Ticket
+                  key={ticket.id}
+                  title={movie?.title || "Unknown Movie"}
+                  date={showing?.date || "Unknown Date"}
+                  time={showing?.time || "Unknown Time"}
+                  row={seat?.row || "N/A"}
+                  col={seat?.col || "N/A"}
+                  price={ticket.price}
+                  poster={movie?.picture_url || ""}
+                />
+              );
+            })}
           </div>
         </div>
       ) : (
