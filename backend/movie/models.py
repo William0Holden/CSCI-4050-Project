@@ -147,18 +147,9 @@ def create_stripe_coupon(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Discount)
 def create_stripe_discount(sender, instance, created, **kwargs):
     if created:
-        discount = stripe.PromotionCode.create(
-            coupon=instance.coupon.id,
-            code=instance.code,
-        )
-
-@receiver(post_save, sender=Discount)
-def send_discount_email(sender, instance, created, **kwargs):
-    if created:  # Only send emails for newly created discounts
         all_users = AppUser.objects.all()  # Fetch all users
         percent_off = instance.coupon.percent_off
         code = instance.code
-
         for user in all_users:
             if user.promotions:
                 username = user.username
@@ -174,6 +165,10 @@ def send_discount_email(sender, instance, created, **kwargs):
                     email.send()
                 except Exception as e:
                     print(f"Error sending email to {to_email}: {e}")
+        discount = stripe.PromotionCode.create(
+            coupon=instance.coupon.id,
+            code=code,
+        )
 
 @receiver(post_save, sender=Booking)
 def send_booking_email(sender, instance, created, **kwargs):
