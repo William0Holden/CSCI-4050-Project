@@ -61,9 +61,6 @@ const Register = () => {
       home_city: formData.addAddress ? formData.city : '',
       home_state: formData.addAddress ? formData.state : '',
       zipcode: formData.addAddress ? formData.zip : '',
-      card_number: formData.addPayment ? formData.cardNumber : '',
-      card_exp_date: formData.addPayment ? formData.expiryDate : '',
-      card_cvv: formData.addPayment ? formData.cvv : ''
     };
 
     try {
@@ -136,29 +133,6 @@ const Register = () => {
             <input type="text" id="zip" name="zip" value={formData.zip} onChange={handleInputChange} />
           </div>
         )}
-
-        <div className="row">
-          <div className="column">
-            <label htmlFor="add-payment">Add Payment Information</label>
-          </div>
-          <div className="column">
-            <input type="checkbox" id="add-payment" name="addPayment" checked={formData.addPayment} onChange={handleInputChange} />
-          </div>
-        </div>
-
-        {formData.addPayment && (
-          <div id="payment-form">
-            <label htmlFor="Register-number">Card Number</label>
-            <input type="text" id="Register-number" name="cardNumber" value={formData.cardNumber} onChange={handleInputChange} />
-
-            <label htmlFor="expiry-date">Expiry Date</label>
-            <input type="text" id="expiry-date" name="expiryDate" value={formData.expiryDate} onChange={handleInputChange} />
-
-            <label htmlFor="cvv">CVV</label>
-            <input type="text" id="cvv" name="cvv" value={formData.cvv} onChange={handleInputChange} />
-          </div>
-        )}
-        
 
         <button type="submit">Register</button>
       </form>
