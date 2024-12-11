@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./EditProfile.css";
 
 const EditProfile = () => {
@@ -9,15 +10,6 @@ const EditProfile = () => {
     phone_num: '',
     first_name: '',
     last_name: '',
-    card_number: '',
-    card_exp_date: '',
-    card_cvv: '',
-    card_number2: '',
-    card_exp_date2: '',
-    card_cvv2: '',
-    card_number3: '',
-    card_exp_date3: '',
-    card_cvv3: '',
     home_street: '',
     home_city: '',
     home_state: '',
@@ -25,6 +17,8 @@ const EditProfile = () => {
     promotions: false,
     password: '', // Password state
   });
+
+  const navigate = useNavigate(); // useNavigate hook for navigation
 
   useEffect(() => {
     // Fetch user data
@@ -48,10 +42,6 @@ const EditProfile = () => {
       ...prevState,
       [name]: type === 'checkbox' ? checked : value,
     }));
-  };
-
-  const handleCardSave = (e) => {
-
   };
 
   const handleSubmit = (e) => {
@@ -80,45 +70,45 @@ const EditProfile = () => {
     <div className="edit-profile-container">
       <form className="edit-profile-form" action="/updateProfile" method="post">
         <h1>Edit Profile</h1>
-        <div class="row">
-          <div class="column">
-              <div>
-                <label htmlFor="email">Email:</label>
-                <input
-                  className="input-field"
-                  type="email"
-                  name="email"
-                  value={user.email}
-                  onChange={handleChange}
-                  maxLength="50"
-                  required
-                  disabled
-                />
-              </div>
-              <div>
-                <label htmlFor="username">Username:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="username"
-                  value={user.username}
-                  onChange={handleChange}
-                  maxLength="50"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor ="phone_num">Phone Number:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="phone_num"
-                  value={user.phone_num}
-                  onChange={handleChange}
-                  maxLength="10"
-                  required
-                />
-              </div>
+        <div className="row">
+          <div className="column">
+            <div>
+              <label htmlFor="email">Email:</label>
+              <input
+                className="input-field"
+                type="email"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                maxLength="50"
+                required
+                disabled
+              />
+            </div>
+            <div>
+              <label htmlFor="username">Username:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="username"
+                value={user.username}
+                onChange={handleChange}
+                maxLength="50"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="phone_num">Phone Number:</label>
+              <input
+                className="input-field"
+                type="text"
+                name="phone_num"
+                value={user.phone_num}
+                onChange={handleChange}
+                maxLength="10"
+                required
+              />
+            </div>
             <div>
               <label htmlFor="first_name">First Name:</label>
               <input
@@ -144,8 +134,7 @@ const EditProfile = () => {
               />
             </div>
             <div>
-              {/* Password field */}
-              <label htmlFor ="">New Password:</label>
+              <label htmlFor="">New Password:</label>
               <p>Must enter your existing password or a new password to submit changes.</p>
               <input
                 className="input-field"
@@ -157,6 +146,7 @@ const EditProfile = () => {
               />
             </div>
           </div>
+
           <div className="column">
             <div>
               <label htmlFor="home_street">Home Street:</label>
@@ -181,7 +171,7 @@ const EditProfile = () => {
               />
             </div>
             <div>
-              <label  htmlFor="home_state">Home State:</label>
+              <label htmlFor="home_state">Home State:</label>
               <input
                 className="input-field"
                 type="text"
@@ -207,148 +197,27 @@ const EditProfile = () => {
 
         <div className="row">
           <div className="column">
-            <label htmlFor="add-payment">Add primary payment method</label>
+            <label>Receive Promotions</label>
           </div>
           <div className="column">
-            <input type="checkbox" id="add-payment" name="addPayment" checked={user.addPayment} onChange={handleChange} />
+            <input
+              type="checkbox"
+              name="promotions"
+              checked={user.promotions}
+              onChange={handleChange}
+            />
           </div>
         </div>
 
-          {user.addPayment && (
-            <div className="column">
-              <div>
-                <label htmlFor="card_number">Card Number:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="card_number"
-                  value={user.card_number}
-                  onChange={handleChange}
-                  maxLength="19"
-                />
-              </div>
-              <div>
-                <label htmlFor="card_exp_date">Card Expiration Date:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="card_exp_date"
-                  value={user.card_exp_date}
-                  onChange={handleChange}
-                  maxLength="5"
-                />
-              </div>
-              <div>
-                <label htmlFor="card_cvv">Card CVV:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="card_cvv"
-                  value={user.card_cvv}
-                  onChange={handleChange}
-                  maxLength="4"
-                />
-              </div>
-              <button className="green-button" type="submit" onClick={handleCardSave}>Save Card</button>
-          </div>)}
+        <button className="green-button" type="submit" onClick={handleSubmit}>Save Changes</button>
+      </form>
 
-          <div className="column">
-          <div className="row">
-          <div className="column">
-            <label htmlFor="add-payment">Add additional payment</label>
-          </div>
-          <div className="column">
-            <input type="checkbox" id="add-payment" name="morePayment" checked={user.morePayment} onChange={handleChange} />
-          </div>
-          </div>
-            
-          {user.morePayment && (
-            <div>
-              <div>
-                <label htmlFor="card_number_2">Card Number 2:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="card_number2"
-                  value={user.card_number2}
-                  onChange={handleChange}
-                  maxLength="19"
-                />
-              </div>
-              <div>
-                <label htmlFor="card_exp_date_2">Card Expiration Date 2:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="card_exp_date2"
-                  value={user.card_exp_date2}
-                  onChange={handleChange}
-                  maxLength="5"
-                />
-              </div>
-              <div>
-                <label htmlFor="card_cvv_2">Card CVV 2:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="card_cvv2"
-                  value={user.card_cvv2}
-                  onChange={handleChange}
-                  maxLength="4"
-                />
-              </div>
-              <div>
-                <label htmlFor="card_number_3">Card Number 3:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="card_number3"
-                  value={user.card_number3}
-                  onChange={handleChange}
-                  maxLength="19"
-                />
-              </div>
-              <div>
-                <label htmlFor="card_exp_date_3">Card Expiration Date 3:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="card_exp_date3"
-                  value={user.card_exp_date3}
-                  onChange={handleChange}
-                  maxLength="5"
-                />
-              </div>
-              <div>
-                <label htmlFor="card_cvv_3">Card CVV 3:</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  name="card_cvv3"
-                  value={user.card_cvv3}
-                  onChange={handleChange}
-                  maxLength="4"
-                />
-              </div>
-              <button className="green-button" type="submit" onClick={handleCardSave}>Save Card</button>
-          </div>)}
-          </div>
-
-          <div className="row">
-            <div className="column">
-              <label> Receive Promotions</label>
-            </div>
-            <div className="column">
-              <input
-                type="checkbox"
-                name="promotions"
-                checked={user.promotions}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-        </form>
-      <button className="green-button" type="submit" onClick={handleSubmit}>Save Changes</button>
+      {/* Button to navigate to /save-payment-method */}
+      <div className="navigate-button">
+        <button className="green-button" onClick={() => navigate('/save-payment-method')}>
+          Go to Save Payment Method
+        </button>
+      </div>
     </div>
   );
 };

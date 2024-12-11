@@ -95,6 +95,14 @@ function CheckoutPage() {
         console.log(`Ticket ${ticket.id} marked as booked.`);
       }
 
+      // Get user's stripe_id from user data
+      const stripe_id = user.user.stripe_id;
+
+      if (!stripe_id) {
+        alert("Stripe ID is not available. Cannot proceed with payment.");
+        return;
+      }
+
       // Proceed to checkout
       const csrfTokenMatch = document.cookie.match(/csrftoken=([\w-]+)/);
       const csrfToken = csrfTokenMatch ? csrfTokenMatch[1] : "";
@@ -108,7 +116,10 @@ function CheckoutPage() {
             "X-CSRFToken": csrfToken,
           },
           credentials: "include",
-          body: JSON.stringify({ bookingId: bookingResponse.data.id }),
+          body: JSON.stringify({
+            bookingId: bookingResponse.data.id,
+            stripe_id: stripe_id,  // Send the stripe_id along with the bookingId
+          }),
         }
       );
 
@@ -165,16 +176,14 @@ function CheckoutPage() {
             </div>
           </div>
           <div className="button-container">
-          <button className="proceed-button" onClick={handleProceedToPayment}>
+            <button className="proceed-button" onClick={handleProceedToPayment}>
               Proceed to Payment
-          </button>
+            </button>
+          </div>
         </div>
-      </div>
       ) : (
         <p>No tickets to display.</p>
       )}
-
-      
     </div>
   );
 }

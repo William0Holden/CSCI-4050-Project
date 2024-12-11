@@ -203,6 +203,11 @@ def attach_payment_method(request):
                 payment_method_id,
                 customer=customer_id
             )
+            
+            stripe.PaymentMethod.modify(
+                payment_method_id,
+                metadata={"allow_redisplay": "always"}
+            )
 
             # Set the payment method as the default for invoices
             stripe.Customer.modify(
@@ -231,7 +236,6 @@ def create_customer(request):
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
     return JsonResponse({"success": False, "error": "Invalid request method"})
-
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CreateStripeCheckoutSession(APIView):
@@ -285,21 +289,35 @@ class CreateStripeCheckoutSession(APIView):
                     'quantity': seniorAmt,
                 })
 
+            # Extract the stripe_id from the POST data
+            stripe_id = request.data.get('stripe_id', None)
+
+            if not stripe_id:
+                return JsonResponse({'success': False, 'error': 'Stripe ID is required'})
+
+            # Fetch the customer's saved payment methods
+            payment_methods = stripe.PaymentMethod.list(
+                customer=stripe_id,
+                type="card",  # Only fetch saved card payment methods
+            )
+
             # Create Stripe Checkout session with saved payment methods support
-            checkout_session = stripe.checkout.Session.create(
-                line_items=line_items,
-                allow_promotion_codes=True,
-                automatic_tax={'enabled': False},
-                mode='payment',
-                success_url='http://localhost:3000/bookings/?success=true',
-                cancel_url='http://localhost:3000/bookings/?canceled=true',
-                customer_email=booking.user.email,
-                payment_method_types=['card'],  # Ensure this is set to allow payment by saved card
-                payment_intent_data={
+            checkout_session_data = {
+                'line_items': line_items,
+                'allow_promotion_codes': True,
+                'automatic_tax': {'enabled': False},
+                'mode': 'payment',
+                'success_url': 'http://localhost:3000/bookings/?success=true',
+                'cancel_url': 'http://localhost:3000/bookings/?canceled=true',
+                'customer': stripe_id,
+                'payment_method_types': ['card'],
+                'payment_intent_data': {
                     'setup_future_usage': 'off_session',  # This will save the card for future use
                 },
-                customer=booking.user.stripe_id,  # Attach the saved payment methods to the customer
-            )
+            }
+
+            # Create the checkout session
+            checkout_session = stripe.checkout.Session.create(**checkout_session_data)
             
             response = JsonResponse({'url': checkout_session.url, 'sessionid': checkout_session.id})
             response["Access-Control-Allow-Origin"] = "http://localhost:3000"
@@ -313,7 +331,8 @@ class CreateStripeCheckoutSession(APIView):
             response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
             response["Access-Control-Allow-Headers"] = "Content-Type"
             return response
-       
+
+
 @csrf_exempt
 def stripe_webhook_view(request):
     payload = request.body
