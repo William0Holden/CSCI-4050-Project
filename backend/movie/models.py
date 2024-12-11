@@ -4,6 +4,8 @@ from django.core.mail import EmailMessage
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
+import stripe
+stripe.api_key = "pk_test_51QFgwMEs66IYT8coMzBUiE7OPfZmGUh7RopTR0XlihXCf2eRSaLxVA3CFT2RY64RcwiRxfnN5w4WATb7A96vjpdE00yRdWZZ7d"
 
 # Create your models here.
 # DO NOT DELETE MODELS
@@ -132,6 +134,23 @@ class Discount(models.Model):
 
     def __str__(self):
         return self.code
+    
+@receiver(post_save, sender=Coupon)
+def create_stripe_coupon(sender, instance, created, **kwargs):
+    if created:
+        coupon = stripe.Coupon.create(
+            id = instance.id,
+            duration="once",
+            percent_off=instance.percent_off,
+        )
+
+@receiver(post_save, sender=Discount)
+def create_stripe_discount(sender, instance, created, **kwargs):
+    if created:
+        discount = stripe.PromotionCode.create(
+            coupon=instance.coupon.id,
+            code=instance.code,
+        )
 
 @receiver(post_save, sender=Discount)
 def send_discount_email(sender, instance, created, **kwargs):
@@ -155,3 +174,23 @@ def send_discount_email(sender, instance, created, **kwargs):
                     email.send()
                 except Exception as e:
                     print(f"Error sending email to {to_email}: {e}")
+
+@receiver(post_save, sender=Booking)
+def send_booking_email(sender, instance, created, **kwargs):
+    if created:  # Only send emails for newly created bookings
+        user = instance.user
+        username = user.username
+        to_email = user.email
+        subject = 'Thank You For Your Purchase'
+        message = (
+            f"Dear {username},\n\n"
+            f"Thank you for choosing to book your cinematic viewing experience through us.\n\n"
+            f"Happy watching,\nCinemaEBooking"
+            )
+        email = EmailMessage(subject, message, to=[to_email])
+        try:
+            email.send()
+        except Exception as e:
+            print(f"Error sending email to {to_email}: {e}")
+
+
