@@ -10,8 +10,9 @@
     margin-bottom: 10px;
 }
 .button-container {
-    display: inline-flex;
-    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 .proceed-button {
     flex: wrap;

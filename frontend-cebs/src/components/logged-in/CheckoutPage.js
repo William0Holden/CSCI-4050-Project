@@ -177,7 +177,7 @@ function CheckoutPage() {
           </div>
           <div className="button-container">
             <button className="proceed-button" onClick={handleProceedToPayment}>
-              Proceed to Payment
+                Proceed to Payment
             </button>
           </div>
         </div>

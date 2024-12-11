@@ -39,3 +39,23 @@
     font-size: 1rem;
     color: #555;
 }
+.movie-buttons {
+    text-decoration: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+.book-button {
+    text-decoration: none;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.book-button:hover {
+    background-color: #0056b3;
+}

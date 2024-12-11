@@ -25,9 +25,9 @@ const ShowtimeSelection = () => {
     <Link 
       key={showing.id} 
       to={`/seat-age-selection/${showing.id}`} 
-      className="showtime-link"
+      className="time-selection"
     >
-      <button className="showtime-button">
+      <button className="time-button">
         {showing.date} - {showing.time}
       </button>
     </Link>
