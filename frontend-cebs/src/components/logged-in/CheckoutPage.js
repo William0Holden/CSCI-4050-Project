@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import Ticket from "./Ticket";
+import './CheckoutPage.css';
 
 const stripePromise = loadStripe("pk_test_51QFgwMEs66IYT8coMzBUiE7OPfZmGUh7RopTR0XlihXCf2eRSaLxVA3CFT2RY64RcwiRxfnN5w4WATb7A96vjpdE00yRdWZZ7d");
 
@@ -135,44 +136,45 @@ function CheckoutPage() {
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+    <div className="checkout-container">
       <h1>Checkout Page</h1>
 
       {/* Display all tickets using the Ticket component */}
       {tickets.length > 0 && seats.length > 0 && movies.length > 0 && showings.length > 0 ? (
         <div>
-          <h2>Your Tickets</h2>
           <div>
-            {tickets.map((ticket, index) => {
-              const showing = showings[index];
-              const movie = movies[index];
-              const seat = seats[index];
-
-              return (
-                <Ticket
-                  key={ticket.id}
-                  title={movie?.title || "Unknown Movie"}
-                  date={showing?.date || "Unknown Date"}
-                  time={showing?.time || "Unknown Time"}
-                  row={seat?.row || "N/A"}
-                  col={seat?.col || "N/A"}
-                  price={ticket.price}
-                  poster={movie?.picture_url || ""}
-                />
-              );
-            })}
+            <h2>Your Tickets</h2>
+            <div className="ticket-details">
+              {tickets.map((ticket, index) => {
+                const showing = showings[index];
+                const movie = movies[index];
+                const seat = seats[index];
+                return (
+                  <Ticket
+                    key={ticket.id}
+                    title={movie?.title || "Unknown Movie"}
+                    date={showing?.date || "Unknown Date"}
+                    time={showing?.time || "Unknown Time"}
+                    row={seat?.row || "N/A"}
+                    col={seat?.col || "N/A"}
+                    price={ticket.price}
+                    poster={movie?.picture_url || ""}
+                  />
+                );
+              })}
+            </div>
           </div>
+          <div className="button-container">
+          <button className="proceed-button" onClick={handleProceedToPayment}>
+              Proceed to Payment
+          </button>
         </div>
+      </div>
       ) : (
         <p>No tickets to display.</p>
       )}
 
-      <button
-        onClick={handleProceedToPayment}
-        style={{ padding: "10px 20px", fontSize: "16px", cursor: "pointer", marginTop: "20px" }}
-      >
-        Proceed to Payment
-      </button>
+      
     </div>
   );
 }

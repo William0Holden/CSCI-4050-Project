@@ -8,7 +8,7 @@ const Ticket = (props) => {
         return (
             <div className="ticket-container">
                 <div className="ticket-details">
-                    <h2>Ticket Details</h2>
+                    <h3>Ticket Details</h3>
                     <p><strong>Movie:</strong> {props.title}</p>
                     <p><strong>Date:</strong> {props.date}</p>
                     <p><strong>Time:</strong> {props.time}</p>
