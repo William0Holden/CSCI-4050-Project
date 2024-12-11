@@ -53,14 +53,24 @@ const SeatAgeSelection = () => {
 
         try {
             // Post the seat
-            const seatResponse = await axios.post('http://localhost:8000/api/seats/', postData);
+            let seatResponse;
+            try {
+                seatResponse = await axios.post('http://localhost:8000/api/seats/', postData);
+            } catch (error) {
+                if (error.response && error.response.status === 400) {
+                    alert('The seat is already taken.');
+                    return;
+                } else {
+                    throw error;
+                }
+            }
 
             const ticketData = {
-            type: ticketType,
-            price: ticketType === 'adult' ? 8.0 : ticketType === 'child' ? 6.0 : 7.0, // Price based on ticket type
-            seat: seatResponse.data.id, // Link the seat ID
-            user: user?.user?.user_id, // Attach the user ID
-            isBooked: false, // Set as unbooked initially
+                type: ticketType,
+                price: ticketType === 'adult' ? 8.0 : ticketType === 'child' ? 6.0 : 7.0, // Price based on ticket type
+                seat: seatResponse.data.id, // Link the seat ID
+                user: user?.user?.user_id, // Attach the user ID
+                isBooked: false, // Set as unbooked initially
             };
 
             // Post the ticket
@@ -69,11 +79,7 @@ const SeatAgeSelection = () => {
             // Redirect to confirmation page
             navigate(`/order-confirm/${seatResponse.data.id}`);
         } catch (error) {
-            if (error.response && error.response.status === 400) {
-            alert('The seat is already taken.');
-            } else {
             console.error('Error posting seat or ticket:', error);
-            }
         }
     };
 
