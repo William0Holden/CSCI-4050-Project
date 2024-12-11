@@ -50,6 +50,10 @@ const EditProfile = () => {
     }));
   };
 
+  const handleCardSave = (e) => {
+
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -245,6 +249,7 @@ const EditProfile = () => {
                   maxLength="4"
                 />
               </div>
+              <button className="green-button" type="submit" onClick={handleCardSave}>Save Card</button>
           </div>)}
 
           <div className="column">
@@ -253,7 +258,7 @@ const EditProfile = () => {
             <label htmlFor="add-payment">Add additional payment</label>
           </div>
           <div className="column">
-            <input type="checkbox" id="add-payment" name="morePayment" checked={user.addPayment} onChange={handleChange} />
+            <input type="checkbox" id="add-payment" name="morePayment" checked={user.morePayment} onChange={handleChange} />
           </div>
           </div>
             
@@ -325,16 +330,24 @@ const EditProfile = () => {
                   maxLength="4"
                 />
               </div>
+              <button className="green-button" type="submit" onClick={handleCardSave}>Save Card</button>
           </div>)}
           </div>
-      </form>
-      <label>Receive Promotions:</label>
-      <input
-        type="checkbox"
-        name="promotions"
-        checked={user.promotions}
-        onChange={handleChange}
-      />
+
+          <div className="row">
+            <div className="column">
+              <label> Receive Promotions</label>
+            </div>
+            <div className="column">
+              <input
+                type="checkbox"
+                name="promotions"
+                checked={user.promotions}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </form>
       <button className="green-button" type="submit" onClick={handleSubmit}>Save Changes</button>
     </div>
   );
