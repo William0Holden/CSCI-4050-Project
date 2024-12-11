@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import './SavePaymentMethod.css';
 import axios from 'axios';
 
 const SavePaymentMethod = () => {
@@ -120,13 +121,16 @@ const SavePaymentMethod = () => {
     };
 
     return (
-        <div>
-            <h2>Save Payment Method</h2>
-            <CardElement />
-            <button onClick={handleSave} disabled={loading || !stripe}>
-                {loading ? 'Saving...' : 'Save Card'}
-            </button>
-            {message && <p>{message}</p>}
+        <div className="save-payment-container">
+            <div className="save-payment-form">
+                <h1>Save Payment Method</h1>
+                <CardElement />
+                <div><p></p></div>
+                <button className="green-button" onClick={handleSave} disabled={loading || !stripe}>
+                    {loading ? 'Saving...' : 'Save Card'}
+                </button>
+                {message && <p>{message}</p>}
+            </div>
         </div>
     );
 };

@@ -1,16 +1,15 @@
-.edit-profile-container {
+.save-payment-container {
     max-width: 600px;
     width: 80%;
     margin: 50px auto;
 }
-.edit-profile-form {
+.save-payment-form {
     background: white;
     padding: 2em;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.input-field {
-    width: 80%;
+#StripeElement {
     padding: 0.5em;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -25,14 +24,4 @@
 }
 .green-button:hover {
     background-color: #45a049;
-}
-.forms {
-    display:none;
-    margin-top: 1em;
-}
-.row {
-    display: flex;
-}
-.column {
-    flex: 40%;
 }

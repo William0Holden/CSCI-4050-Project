@@ -192,6 +192,13 @@ const EditProfile = () => {
                 maxLength="9"
               />
             </div>
+            <div><p></p></div>
+            {/* Button to navigate to /save-payment-method */}
+            <div>
+              <button className="green-button" onClick={() => navigate('/save-payment-method')}>
+                Go to Save Payment Method
+              </button>
+            </div>
           </div>
         </div>
 
@@ -211,13 +218,6 @@ const EditProfile = () => {
 
         <button className="green-button" type="submit" onClick={handleSubmit}>Save Changes</button>
       </form>
-
-      {/* Button to navigate to /save-payment-method */}
-      <div className="navigate-button">
-        <button className="green-button" onClick={() => navigate('/save-payment-method')}>
-          Go to Save Payment Method
-        </button>
-      </div>
     </div>
   );
 };
