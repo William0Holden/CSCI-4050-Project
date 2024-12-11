@@ -155,107 +155,6 @@ const EditProfile = () => {
           </div>
           <div className="column">
             <div>
-              <label htmlFor="card_number">Card Number:</label>
-              <input
-                className="input-field"
-                type="text"
-                name="card_number"
-                value={user.card_number}
-                onChange={handleChange}
-                maxLength="19"
-              />
-            </div>
-            <div>
-              <label htmlFor="card_exp_date">Card Expiration Date:</label>
-              <input
-                className="input-field"
-                type="text"
-                name="card_exp_date"
-                value={user.card_exp_date}
-                onChange={handleChange}
-                maxLength="5"
-              />
-            </div>
-            <div>
-              <label htmlFor="card_cvv">Card CVV:</label>
-              <input
-                className="input-field"
-                type="text"
-                name="card_cvv"
-                value={user.card_cvv}
-                onChange={handleChange}
-                maxLength="4"
-              />
-            </div>
-            <div>
-              <label htmlFor="card_number_2">Card Number 2:</label>
-              <input
-                className="input-field"
-                type="text"
-                name="card_number2"
-                value={user.card_number2}
-                onChange={handleChange}
-                maxLength="19"
-              />
-            </div>
-            <div>
-              <label htmlFor="card_exp_date_2">Card Expiration Date 2:</label>
-              <input
-                className="input-field"
-                type="text"
-                name="card_exp_date2"
-                value={user.card_exp_date2}
-                onChange={handleChange}
-                maxLength="5"
-              />
-            </div>
-            <div>
-              <label htmlFor="card_cvv_2">Card CVV 2:</label>
-              <input
-                className="input-field"
-                type="text"
-                name="card_cvv2"
-                value={user.card_cvv2}
-                onChange={handleChange}
-                maxLength="4"
-              />
-            </div>
-            <div>
-              <label htmlFor="card_number_3">Card Number 3:</label>
-              <input
-                className="input-field"
-                type="text"
-                name="card_number3"
-                value={user.card_number3}
-                onChange={handleChange}
-                maxLength="19"
-              />
-            </div>
-            <div>
-              <label htmlFor="card_exp_date_3">Card Expiration Date 3:</label>
-              <input
-                className="input-field"
-                type="text"
-                name="card_exp_date3"
-                value={user.card_exp_date3}
-                onChange={handleChange}
-                maxLength="5"
-              />
-            </div>
-            <div>
-              <label htmlFor="card_cvv_3">Card CVV 3:</label>
-              <input
-                className="input-field"
-                type="text"
-                name="card_cvv3"
-                value={user.card_cvv3}
-                onChange={handleChange}
-                maxLength="4"
-              />
-            </div>
-          </div>
-          <div className="column">
-            <div>
               <label htmlFor="home_street">Home Street:</label>
               <input
                 className="input-field"
@@ -301,6 +200,133 @@ const EditProfile = () => {
             </div>
           </div>
         </div>
+
+        <div className="row">
+          <div className="column">
+            <label htmlFor="add-payment">Add primary payment method</label>
+          </div>
+          <div className="column">
+            <input type="checkbox" id="add-payment" name="addPayment" checked={user.addPayment} onChange={handleChange} />
+          </div>
+        </div>
+
+          {user.addPayment && (
+            <div className="column">
+              <div>
+                <label htmlFor="card_number">Card Number:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="card_number"
+                  value={user.card_number}
+                  onChange={handleChange}
+                  maxLength="19"
+                />
+              </div>
+              <div>
+                <label htmlFor="card_exp_date">Card Expiration Date:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="card_exp_date"
+                  value={user.card_exp_date}
+                  onChange={handleChange}
+                  maxLength="5"
+                />
+              </div>
+              <div>
+                <label htmlFor="card_cvv">Card CVV:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="card_cvv"
+                  value={user.card_cvv}
+                  onChange={handleChange}
+                  maxLength="4"
+                />
+              </div>
+          </div>)}
+
+          <div className="column">
+          <div className="row">
+          <div className="column">
+            <label htmlFor="add-payment">Add additional payment</label>
+          </div>
+          <div className="column">
+            <input type="checkbox" id="add-payment" name="morePayment" checked={user.addPayment} onChange={handleChange} />
+          </div>
+          </div>
+            
+          {user.morePayment && (
+            <div>
+              <div>
+                <label htmlFor="card_number_2">Card Number 2:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="card_number2"
+                  value={user.card_number2}
+                  onChange={handleChange}
+                  maxLength="19"
+                />
+              </div>
+              <div>
+                <label htmlFor="card_exp_date_2">Card Expiration Date 2:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="card_exp_date2"
+                  value={user.card_exp_date2}
+                  onChange={handleChange}
+                  maxLength="5"
+                />
+              </div>
+              <div>
+                <label htmlFor="card_cvv_2">Card CVV 2:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="card_cvv2"
+                  value={user.card_cvv2}
+                  onChange={handleChange}
+                  maxLength="4"
+                />
+              </div>
+              <div>
+                <label htmlFor="card_number_3">Card Number 3:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="card_number3"
+                  value={user.card_number3}
+                  onChange={handleChange}
+                  maxLength="19"
+                />
+              </div>
+              <div>
+                <label htmlFor="card_exp_date_3">Card Expiration Date 3:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="card_exp_date3"
+                  value={user.card_exp_date3}
+                  onChange={handleChange}
+                  maxLength="5"
+                />
+              </div>
+              <div>
+                <label htmlFor="card_cvv_3">Card CVV 3:</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  name="card_cvv3"
+                  value={user.card_cvv3}
+                  onChange={handleChange}
+                  maxLength="4"
+                />
+              </div>
+          </div>)}
+          </div>
       </form>
       <label>Receive Promotions:</label>
       <input
