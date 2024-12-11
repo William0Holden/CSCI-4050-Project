@@ -11,4 +11,5 @@ urlpatterns = [
     path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('users', views.UserList.as_view(), name='users'),
+    path('update-stripe-id/<int:user_id>', views.UpdateStripeId.as_view(), name='update-stripe-id'),
 ]
