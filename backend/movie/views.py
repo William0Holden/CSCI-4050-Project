@@ -187,21 +187,47 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 def attach_payment_method(request):
     if request.method == "POST":
         try:
-            data = json.loads(request.data)
-            payment_method_id = data.get("paymentMethodId")
-            customer_id = data.get("customerId")
+            # Parse the JSON data from the request body
+            data = json.loads(request.body)
+            
+            # Ensure values are strings
+            payment_method_id = str(data.get("paymentMethodId", ""))
+            customer_id = str(data.get("customerId", ""))
 
+            # Validate inputs
+            if not payment_method_id or not customer_id:
+                return JsonResponse({"success": False, "error": "Invalid payment method ID or customer ID"})
+
+            # Attach the payment method to the customer
             payment_method = stripe.PaymentMethod.attach(
                 payment_method_id,
-                customer = customer_id
+                customer=customer_id
             )
 
+            # Set the payment method as the default for invoices
             stripe.Customer.modify(
                 customer_id,
                 invoice_settings={"default_payment_method": payment_method_id},
             )
 
+            # Return the success response with the attached payment method
             return JsonResponse({"success": True, "paymentMethod": payment_method})
+        except Exception as e:
+            # Handle and return any errors
+            return JsonResponse({"success": False, "error": str(e)})
+    
+    # Handle invalid request methods
+    return JsonResponse({"success": False, "error": "Invalid request method"})
+
+@csrf_exempt
+def create_customer(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            customer = stripe.Customer.create(
+                email=data["email"]
+            )
+            return JsonResponse({"success": True, "customer": customer})
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
     return JsonResponse({"success": False, "error": "Invalid request method"})
@@ -259,20 +285,23 @@ class CreateStripeCheckoutSession(APIView):
                     'quantity': seniorAmt,
                 })
 
-            # Create Stripe Checkout session
+            # Create Stripe Checkout session with saved payment methods support
             checkout_session = stripe.checkout.Session.create(
                 line_items=line_items,
                 allow_promotion_codes=True,
-                automatic_tax={'enabled': False}, # can't be used without origin address
+                automatic_tax={'enabled': False},
                 mode='payment',
                 success_url='http://localhost:3000/bookings/?success=true',
                 cancel_url='http://localhost:3000/bookings/?canceled=true',
                 customer_email=booking.user.email,
+                payment_method_types=['card'],  # Ensure this is set to allow payment by saved card
+                payment_intent_data={
+                    'setup_future_usage': 'off_session',  # This will save the card for future use
+                },
+                customer=booking.user.stripe_id,  # Attach the saved payment methods to the customer
             )
             
-            # Return response with CORS headers
-            response = JsonResponse({'url': checkout_session.url,
-                                     'sessionid': checkout_session.id})
+            response = JsonResponse({'url': checkout_session.url, 'sessionid': checkout_session.id})
             response["Access-Control-Allow-Origin"] = "http://localhost:3000"
             response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
             response["Access-Control-Allow-Headers"] = "Content-Type"
@@ -284,7 +313,7 @@ class CreateStripeCheckoutSession(APIView):
             response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
             response["Access-Control-Allow-Headers"] = "Content-Type"
             return response
-        
+       
 @csrf_exempt
 def stripe_webhook_view(request):
     payload = request.body

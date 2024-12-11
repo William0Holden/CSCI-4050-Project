@@ -22,5 +22,7 @@ urlpatterns = [
     path('test-payment/', views.test_payment),
     path('create-checkout-session/<int:pk>/', csrf_exempt(CreateStripeCheckoutSession.as_view()), name='checkout_session'),
     path('stripe-webhook/', stripe_webhook_view, name='stripe-webhook'),
+    path('create-customer/', views.create_customer),
+    path('attach-payment-method/', views.attach_payment_method),
 ]
 
