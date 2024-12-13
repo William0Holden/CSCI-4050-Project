@@ -5,6 +5,9 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail, EmailMessage
+import stripe
+from django.conf import settings
+
 
 class AppUserManager(BaseUserManager):
     def create_user(self, email, phone_num, first_name, last_name, password=None, **extra_fields):
@@ -20,7 +23,11 @@ class AppUserManager(BaseUserManager):
             raise ValueError("A last name is required.")
         
         email = self.normalize_email(email)
-        user = self.model(email=email, phone_num=phone_num, first_name=first_name, last_name=last_name, **extra_fields)
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        customer = stripe.Customer.create(
+            email=email,
+        )
+        user = self.model(email=email, stripe_id=customer.id, phone_num=phone_num, first_name=first_name, last_name=last_name, **extra_fields)
         user.set_password(password) # automatically hashes the password
         user.save()
         return user
@@ -38,6 +45,7 @@ class AppUserManager(BaseUserManager):
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
     user_id = models.AutoField(primary_key=True)
+    stripe_id = models.CharField(blank=True, max_length=500, null=True)
     email = models.EmailField(max_length=50, unique=True)
     username = models.CharField(max_length=50)
     phone_num = models.CharField(max_length=10)
@@ -57,6 +65,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     home_state = models.CharField(blank=True, max_length=2)
     zipcode = models.CharField(blank=True, max_length=9)
     promotions = models.BooleanField(default=False)
+    bookings = models.ManyToManyField('movie.Booking', blank=True)
 
     # New fields
     is_staff = models.BooleanField(default=False)

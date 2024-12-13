@@ -21,6 +21,7 @@ from django.urls import path, include
 
 # import views from movie
 from movie import views
+#from movie.views import CreatePaymentIntent
 
 # import routers from the REST framework
 # it is necessary for routing
@@ -40,5 +41,7 @@ urlpatterns = [
     # you should be routed to the django Rest framework
     path('api/', include(router.urls)),
     path('api/', include('user_api.urls')),
+    path('api/', include('movie.urls')),
     path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+    #path('create-payment-intent/', CreatePaymentIntent.as_view(), name='payment-intent'),
 ]

@@ -1,55 +1,58 @@
 # import serializers from the REST framework
 from rest_framework import serializers
-
-# import the movie data model
-from .models import Movie
-from .models import Booking
-from .models import Ticket
-from .models import Showing
-from .models import ShowRoom
-from .models import Seat
+from .models import Movie, Booking, Ticket, Showing, ShowRoom, Seat, Coupon, Discount
 
 
-# create a serializer class
-class MovieSerializer(serializers.ModelSerializer):
-
-    # create a meta class
-    class Meta:
-        model = Movie
-        fields = ('id', 'title', 'category', 'cast', 'director', 'producer', 'synopsis', 'reviews', 'picture_url', 'trailer_url', 'mpaa_us_rating', 'show_dates_times')
+# Create a serializer class for each model
 
 class BookingSerializer(serializers.ModelSerializer):
-
-    # create a meta class
     class Meta:
         model = Booking
-        fields = ('id', 'movie', 'user', 'show_date_time', 'seat_number', 'booking_date_time')
+        fields = ['id', 'user', 'cardUsed', 'tickets', 'datePlaced']
+
 
 class TicketSerializer(serializers.ModelSerializer):
-
-    # create a meta class
     class Meta:
         model = Ticket
-        fields = ('id', 'booking', 'ticket_number', 'ticket_type', 'ticket_price')
+        fields = ('id', 'seat', 'type', 'price', 'user', 'isBooked')
+
 
 class ShowingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Showing
+        fields = ('id', 'movie', 'date', 'time', 'showRoom')
+
+
+class MovieSerializer(serializers.ModelSerializer):
+    showings = ShowingSerializer(many=True, read_only=True)
     
-        # create a meta class
-        class Meta:
-            model = Showing
-            fields = ('id', 'movie', 'show_date_time', 'seat_numbers')
+    class Meta:
+        model = Movie
+        fields = ('id', 'title', 'category', 'cast', 'director', 'producer', 'synopsis', 'reviews', 'picture_url', 'trailer_url', 'mpaa_us_rating', 'coming_soon', 'showings')
+
 
 class ShowRoomSerializer(serializers.ModelSerializer):
-        
-            # create a meta class
-            class Meta:
-                model = ShowRoom
-                fields = ('id', 'show_room_number', 'seat_capacity')
+    class Meta:
+        model = ShowRoom
+        fields = ('id', 'show_room_number')
+
 
 class SeatSerializer(serializers.ModelSerializer):
-            
-                # create a meta class
-                class Meta:
-                    model = Seat
-                    fields = ('id', 'show_room', 'seat_number', 'seat_type', 'seat_price')
-                    
+    class Meta:
+        model = Seat
+        fields = ('id', 'row', 'col', 'available', 'showroom', 'showing')
+
+    def create(self, validated_data):
+        return Seat.objects.create(**validated_data)
+
+
+class CouponSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coupon
+        fields = ('id', 'percent_off')
+
+
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = ('coupon', 'code')

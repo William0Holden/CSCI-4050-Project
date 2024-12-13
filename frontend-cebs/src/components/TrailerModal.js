@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import './TrailerModal.css'; // Make sure to create and style this CSS file
 
-const TrailerModal = ({ trailer_url }) => {
+const TrailerModal = ({ trailer_url, synopsis }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const openModal = () => {
@@ -21,7 +21,7 @@ const TrailerModal = ({ trailer_url }) => {
 
     return (
         <div>
-            <button className="modal-button" onClick={openModal}>Watch Trailer</button>
+            <button className="modal-button" onClick={openModal}>More Details</button>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
@@ -40,6 +40,12 @@ const TrailerModal = ({ trailer_url }) => {
                         title="Embedded youtube"
                     ></iframe>
                 </div>
+                {synopsis && (
+                    <div className="synopsis">
+                        <h4>Synopsis</h4>
+                        <p>{synopsis}</p>
+                    </div>
+                )}
             </Modal>
         </div>
     );

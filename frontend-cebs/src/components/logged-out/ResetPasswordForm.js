@@ -23,7 +23,7 @@ const ResetPasswordForm = () => {
 
         try {
 
-            console.log('Token:', token); // FIX THIS FIX THIS FIX THIS FIX THIS
+            console.log('Token:', token); 
             const response = await axios.post(
                 'http://localhost:8000/api/password_reset/confirm/', 
                 { password, token }  // Token is passed with the password in the request body

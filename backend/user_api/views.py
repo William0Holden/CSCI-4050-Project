@@ -16,6 +16,41 @@ from .tokens import account_activation_token
 from django.shortcuts import redirect
 from django.contrib import messages
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
+
+class UpdateStripeId(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+
+    def put(self, request, user_id=None):
+        if user_id is None:
+            return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the user from the database by user_id
+        try:
+            user = get_user_model().objects.get(user_id=user_id)
+        except get_user_model().DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Ensure the user is authenticated and the correct user is making the update
+        if request.user != user:
+            return Response({"error": "You are not authorized to update this user's Stripe ID"}, 
+                            status=status.HTTP_403_FORBIDDEN)
+
+        # Get the new Stripe ID from the request data
+        stripe_id = request.data.get('stripe_id')
+        if not stripe_id:
+            return Response({"error": "Stripe ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Update the user's stripe_id
+        user.stripe_id = stripe_id
+        user.save()
+
+        return Response({"message": "Stripe ID updated successfully"}, status=status.HTTP_200_OK)
+
     
 def activate(request, uidb64, token):
     User = get_user_model()
@@ -120,4 +155,13 @@ class UserView(APIView):
 	def get(self, request):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+     
 
+class UserList(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def get(self, request):
+        users = AppUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response({'users': serializer.data}, status=status.HTTP_200_OK)

@@ -8,7 +8,7 @@ import Login from './components/logged-out/Login';
 import EditProfile from './components/logged-in/EditProfile';
 import ShowtimeSelection from './components/logged-in/ShowtimeSelection';
 import SeatAgeSelection from './components/logged-in/SeatAgeSelection';
-import CheckoutForm from './components/logged-in/CheckoutForm';
+import CheckoutPage from './components/logged-in/CheckoutPage';
 import OrderConfirm from './components/logged-in/OrderConfirm';
 import Admin from './components/admin/AdminHome';
 import ManagePromos from './components/admin/ManagePromos';
@@ -17,7 +17,8 @@ import MovieSelection from './components/MovieSelection';
 import NavBar from './components/NavBar';
 import PasswordReset from './components/logged-out/PasswordReset';
 import ResetPasswordForm from './components/logged-out/ResetPasswordForm';
-
+import MyBookings from './components/logged-in/MyBookings';
+import SavePaymentMethod from './components/logged-in/SavePaymentMethod';
 import axios from 'axios';
 import { Component } from 'react';
 
@@ -43,6 +44,7 @@ class App extends Component {
         picture_url: "",
         trailer_url: "",
         mpaaa_us_rating: "",
+        coming_soon: false,
         show_dates_times: []
       },
       movieList: [],
@@ -89,7 +91,7 @@ class App extends Component {
       <Router>
       <NavBar isLoggedIn={this.state.isLoggedIn} setLoginStatus={this.setLoginStatus} />
       <Routes>
-        <Route exact path='/' element={<MovieSelection movieData={this.state.movieList} />} />
+        <Route exact path='/' element={<MovieSelection movieData={this.state.movieList} isLoggedIn = {this.state.isLoggedIn} />} />
         <Route exact path='/login' element={<Login setLoginStatus={this.setLoginStatus} />} />
         <Route exact path='/register' element={<Register />} />
         <Route exact path='/register/confirm' element={<RegisterConfirm />} />
@@ -102,14 +104,17 @@ class App extends Component {
         />
         
         <Route exact path='/showtime-selection' element={<ShowtimeSelection />} />
-        <Route exact path='/seat-age-selection' element={<SeatAgeSelection />} />
-        <Route exact path='/checkout' element={<CheckoutForm />} />
-        <Route exact path='/order-confirm' element={<OrderConfirm />} />
+        <Route path="/showtime-selection/:movie_id" element={<ShowtimeSelection />} />
+        <Route exact path='/seat-age-selection/:showing_id' element={<SeatAgeSelection />} />
+        <Route exact path='/checkout' element={<CheckoutPage/>} />
+        <Route exact path='/order-confirm/:seat_id' element={<OrderConfirm />} />
+        <Route exact path='/bookings' element={<MyBookings />} />
         <Route exact path='/admin' element={<Admin />} />
         <Route exact path='/admin/manage-promos' element={<ManagePromos />} />
         <Route exact path='/admin/manage-movies' element={<ManageMovies />} />
         <Route exact path='/forgot-password' element={<PasswordReset />} />
-        <Route path="reset-password-form/:token" element={<ResetPasswordForm />} />
+        <Route path="/reset-password-form/:token" element={<ResetPasswordForm />} />
+        <Route exact path='/save-payment-method' element={<SavePaymentMethod />} />
       </Routes>
       </Router>
     )

@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -28,12 +27,17 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+CSRF_COOKIE_SECURE = False # Set to True in production
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True # Set to False in production
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1',
     'http://0.0.0.0',
+    'https://checkout.stripe.com',
+    # add stripe urls here if this were to go to production
 ]
 # Application definition
 
@@ -162,3 +166,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_WEBHOOK_SECRET='whsec_1fa02433cbca5165c551d11e9c6a6277e9fcd461ed941fa5a29b6a691686c8ff'
+STRIPE_SECRET_KEY='sk_test_51QFgwMEs66IYT8cosYV5jWyjVxvndiBtPdA57vxTEibVcxbsGY6Spf3MF9V9VGfhEs1uuWEEsdBhmz0GkCPtHweo00izvm7XvN'
+STRIPE_PUBLIC_KEY='pk_test_51QFgwMEs66IYT8coMzBUiE7OPfZmGUh7RopTR0XlihXCf2eRSaLxVA3CFT2RY64RcwiRxfnN5w4WATb7A96vjpdE00yRdWZZ7d'
